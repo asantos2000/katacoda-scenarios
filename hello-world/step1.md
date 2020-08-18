@@ -1,7 +1,7 @@
-This is your first step.
+Vamos conhecer o seu cluster.
 
-## Task
+## Tarefas
 
-This is an _example_ of creating a scenario and running a **command**
+Primeiro **comando** que você deve conhecer é como obter informações sobre o seu cluster.
 
-`echo 'Hello World'`{{execute}}
+`echo 'kubectl cluster-info`{{execute}}

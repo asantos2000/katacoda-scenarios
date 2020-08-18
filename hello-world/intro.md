@@ -1,1 +1,1 @@
-Welcome to your first Katacoda Scenario!
+Bem vindo ao curso interativo de kubernetes.

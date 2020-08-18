@@ -1,13 +1,19 @@
 {
-  "title": "Hello World Scenario",
-  "description": "Your First Scenario",
+  "title": "Olá K8s",
+  "description": "Seu primeiro deploy no K8s",
   "difficulty": "beginner",
-  "time": "2 minutes",
+  "time": "10 minutes",
   "details": {
-    "steps": [{
-      "title": "Step 1 - Run Command",
-      "text": "step1.md"
-    }],
+    "steps": [
+      {
+        "title": "Passo 1 - Conhecendo o cluster",
+        "text": "step1.md"
+      },
+      {
+        "title": "Passo 1 - Conhecendo o cluster",
+        "text": "step1.md"
+      }
+    ],
     "intro": {
       "text": "intro.md",
       "credits": ""
@@ -18,7 +24,7 @@
   },
   "environment": {
     "uilayout": "terminal",
-    "uimessage1": "\u001b[32mYour Interactive Bash Terminal.\r\nStart Kubernetes using `launch.sh`\u001b[m\r\n"
+    "uimessage1": "\u001b[32mYour Interactive Bash Terminal.\u001b[m\r\n"
   },
   "backend": {
     "imageid": "kubernetes-cluster-running:1.18"
