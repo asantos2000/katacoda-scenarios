@@ -6,6 +6,10 @@ Primeiro **comando** que você deve conhecer é como obter informações sobre o
 
 `kubectl cluster-info`{{execute}}
 
+A versão.
+
+`kubectl version`{{execute}}
+
 Você pode verificar quais namespaces existem no seu cluster.
 
 `kubectl get namespaces`{{execute}}
