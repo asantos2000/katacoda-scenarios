@@ -12,7 +12,9 @@ Adicionando um repositório externo (fora do docker.io)
 
 Instalando a imagem com helm.
 
-`helm install my-release --set service.type=NodePort bitnami/nginx`{{execute}}
+`values.yaml`{{open}}
+
+`helm install my-release -f values.yaml bitnami/nginx`{{execute}}
 
 Um parâmetro foi customizado, que indica que tipo de serviço será criado.
 
