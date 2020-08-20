@@ -31,12 +31,6 @@
           "file": "values.yaml",
           "target": "/root/example"
         }
-      ],
-      "host01": [
-        {
-          "file": "values2.yaml",
-          "target": "/root/example"
-        }
       ]
     }    
   },
