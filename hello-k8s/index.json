@@ -3,6 +3,7 @@
   "description": "Seu primeiro deploy no K8s",
   "difficulty": "beginner",
   "time": "10 minutes",
+  "icon": "fa-kubernetes",
   "details": {
     "steps": [
       {
@@ -37,8 +38,7 @@
   "environment": {
     "uilayout": "editor-terminal",
     "uieditorpath": "/root/example",
-    "uimessage1": "\u001b[32mYour Interactive Bash Terminal.\u001b[m\r\n",
-    "icon": "fa fa-kubernetes"
+    "uimessage1": "\u001b[32mYour Interactive Bash Terminal.\u001b[m\r\n"
   },
   "backend": {
     "imageid": "kubernetes-cluster-running:1.18"
