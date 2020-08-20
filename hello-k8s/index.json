@@ -24,11 +24,25 @@
     },
     "finish": {
       "text": "finish.md"
-    }
+    },
+    "assets": {
+      "client": [
+        {
+          "file": "values.yaml",
+          "target": "/root/example"
+        }
+      ],
+      "host01": [
+        {
+          "file": "values2.yaml",
+          "target": "/root/example"
+        }
+      ]
+    }    
   },
   "environment": {
     "uilayout": "editor-terminal",
-    "showide": true,
+    "uieditorpath": "/root/example",
     "uimessage1": "\u001b[32mYour Interactive Bash Terminal.\u001b[m\r\n",
     "icon": "fa fa-kubernetes"
   },
