@@ -1,5 +1,5 @@
 {
-  "title": "Olá K8s v1.01",
+  "title": "Olá K8s v1.02",
   "description": "Seu primeiro deploy no K8s",
   "difficulty": "beginner",
   "time": "10 minutes",
@@ -23,10 +23,10 @@
     }
   },
   "environment": {
-    "uilayout": "editor-terminal-terminal",
+    "uilayout": "vscode-terminal-terminal",
     "showide": true,
     "uimessage1": "\u001b[32mYour Interactive Bash Terminal.\u001b[m\r\n",
-    "icon": "kubernetes.png"
+    "icon": "fa-kubernetes"
   },
   "backend": {
     "imageid": "kubernetes-cluster-running:1.18"
