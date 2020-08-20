@@ -23,7 +23,7 @@
     }
   },
   "environment": {
-    "uilayout": "vscode-terminal-terminal",
+    "uilayout": "vscode-terminal-split",
     "showide": true,
     "uimessage1": "\u001b[32mYour Interactive Bash Terminal.\u001b[m\r\n",
     "icon": "fa-kubernetes"
