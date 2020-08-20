@@ -6,9 +6,9 @@
 
 ## URL
 
-`echo [[HOST_SUBDOMAIN]]-80-[[KATACODA_HOST]].[[KATACODA_DOMAIN]]`{{execute}}
+`echo http://[[HOST_SUBDOMAIN]]-30170-[[KATACODA_HOST]].[[KATACODA_DOMAIN]]`{{execute}}
 
-<pre>[[HOST_SUBDOMAIN]]-80-[[KATACODA_HOST]].[[KATACODA_DOMAIN]]</pre>
+<pre>[[HOST_SUBDOMAIN]]-30170-[[KATACODA_HOST]].[[KATACODA_DOMAIN]]</pre>
 
 <pre>[[HOST_SUBDOMAIN]]</pre>
 
