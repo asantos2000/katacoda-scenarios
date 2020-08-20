@@ -1,0 +1,13 @@
+## IP Address
+
+echo [[HOST_IP]]{{execute}}
+
+[[HOST_IP]]
+## URL
+
+echo [[HOST_SUBDOMAIN]]-80-[[KATACODA_HOST]].[[KATACODA_DOMAIN]]{{execute}}
+
+[[HOST_SUBDOMAIN]]-80-[[KATACODA_HOST]].[[KATACODA_DOMAIN]]
+[[HOST_SUBDOMAIN]]
+[[KATACODA_HOST]]
+[[KATACODA_DOMAIN]]
