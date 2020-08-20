@@ -1,0 +1,5 @@
+service:
+  nodePorts:
+    http: "30170"
+    https: "30173"
+  type: NodePort
