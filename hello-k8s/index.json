@@ -25,7 +25,12 @@
   "environment": {
     "uilayout": "terminal-terminal",
     "showide": true,
-    "uimessage1": "\u001b[32mYour Interactive Bash Terminal.\u001b[m\r\n"
+    "uimessage1": "\u001b[32mYour Interactive Bash Terminal.\u001b[m\r\n",
+    "icon": "assets/kubernetes.png",
+    "showdashboard": true,
+    "dashboards": [{"name": "HELM", "href": "https://helm.sh/docs/helm/helm_get_values/"},
+        {"name": "Port 80", "port": 80},
+        {"name": "Placeholder", "href": "https://[[HOST_SUBDOMAIN]]-80-[[KATACODA_HOST]].environments.katacoda.com"}]    
   },
   "backend": {
     "imageid": "kubernetes-cluster-running:1.18"
