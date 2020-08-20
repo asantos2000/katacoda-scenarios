@@ -12,9 +12,9 @@ Adicionando um repositório externo (fora do docker.io)
 
 Instalando a imagem com helm.
 
-`values.yaml`{{open}}
+`assets/values.yaml`{{open}}
 
-`helm install my-release -f values.yaml bitnami/nginx`{{execute}}
+`helm install my-release -f assets/values.yaml bitnami/nginx`{{execute}}
 
 Um parâmetro foi customizado, que indica que tipo de serviço será criado.
 
