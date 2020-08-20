@@ -1,13 +1,17 @@
 ## IP Address
 
-echo [[HOST_IP]]{{execute}}
+`echo [[HOST_IP]]`{{execute}}
 
-[[HOST_IP]]
+<pre>[[HOST_IP]]</pre>
+
 ## URL
 
-echo [[HOST_SUBDOMAIN]]-80-[[KATACODA_HOST]].[[KATACODA_DOMAIN]]{{execute}}
+`echo [[HOST_SUBDOMAIN]]-80-[[KATACODA_HOST]].[[KATACODA_DOMAIN]]`{{execute}}
 
-[[HOST_SUBDOMAIN]]-80-[[KATACODA_HOST]].[[KATACODA_DOMAIN]]
-[[HOST_SUBDOMAIN]]
-[[KATACODA_HOST]]
-[[KATACODA_DOMAIN]]
+<pre>[[HOST_SUBDOMAIN]]-80-[[KATACODA_HOST]].[[KATACODA_DOMAIN]]</pre>
+
+<pre>[[HOST_SUBDOMAIN]]</pre>
+
+<pre>[[KATACODA_HOST]]</pre>
+
+<pre>[[KATACODA_DOMAIN]]</pre>
