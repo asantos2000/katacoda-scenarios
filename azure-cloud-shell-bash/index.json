@@ -1,0 +1,47 @@
+{
+  "title": "Bash in Azure Cloud Shell",
+  "description": "Introduction to Azure Cloud",
+  "difficulty": "Intermediate",
+  "time": "15 minutes",
+  "details": {
+    "steps": [{
+      "title": "Start Cloud Shell",
+      "text": "steps/1/text.md"
+    },
+    {
+      "title": "Select the Bash environment",
+      "text": "steps/2/text.md"
+    },    
+	{
+      "title": "Create a resource group",
+      "text": "steps/3/text.md"
+    },
+	{
+      "title": "Create a Linux VM",
+      "text": "steps/4/text.md"
+    },
+	{
+      "title": "SSH into your Linux VM",
+      "text": "steps/5/text.md"
+    },
+	{
+      "title": "Cleaning up",
+      "text": "steps/6/text.md"
+  }],
+    "intro": {
+      "code": "set-env.sh",
+      "text": "intro.md",
+      "credits": ""
+    },
+    "finish": {
+      "text": "finish.md"
+    }
+  },
+  "environment": {
+    "uilayout": "vscode",
+    "uimessage1": "\u001b[32mBrought to you by https://LearningVoyage.com\u001b[m\r\n"
+  },
+  "backend": {
+    "imageid": "vscode"
+  }
+}
