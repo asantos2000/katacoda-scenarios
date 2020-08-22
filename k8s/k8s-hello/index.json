@@ -40,6 +40,10 @@
         {
           "file": "values.yaml",
           "target": "/root/example"
+        },
+        {
+          "file": "k8s-arch.png",
+          "target": "/root/example"
         }
       ]
     }    
