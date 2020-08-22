@@ -27,7 +27,7 @@ This Kubernetes terminology quiz covers some of the main elements of the contain
 ( ) A smaller version of Kubernetes
 ( ) A device that collects data in an organized manner for easy access
 
->>Q6: What is the purpose of a ReplicaSet?
+>>Q6: What is the purpose of a ReplicaSet? <<
 ( ) To prevent clones from invading other clusters
 ( ) To monitor and respond to environmental latency
 (*) To duplicate pods
