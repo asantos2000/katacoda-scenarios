@@ -1,55 +1,34 @@
-Katacoda supports inline interactive quiz elements that can be included as any step within the scenario. The Quiz format supports different question and answer styles. Users cannot proceed until they have answered all the questions correctly.
+This Kubernetes terminology quiz covers some of the main elements of the container management technology and its uses.
 
-## Example Quiz
+## Quiz
 
-Within Q1, requires are users to enter the exact string.
+>>Q1: Which command you can issue commands to kubernetes from command line?<<
+=== kubectl
 
->>Q1: Enter the exact string test<<
-=== test
+>>Q2: Which command is used to describe pods config<<
+=~= describe
 
-For Q2, the question requires user to enter a string containing a certain keyword.
+>>Q3: Which kubernetes components are part of Persistent Volume <<
+[*] PV
+[ ] POD
+[ ] Container
+[*] PVC
+[ ] Deployment
 
->>Q2: Enter the string containing test<<
-=~= test
+>>Q4: What is the function of a node? <<
+( ) To communicate with hosts on a network
+( ) To store data collected by the OS
+(*) To run pods according to master components
+( ) To channel incoming data from multiple input ports to a specific port
 
-Q3 is multiple choice question, requiring users to select all the correct answers.
+>>Q5: What is a kubelet? <<
+(*) A node agent that manages pods and their containers
+( ) Software that is used to run containers outside of pods
+( ) A smaller version of Kubernetes
+( ) A device that collects data in an organized manner for easy access
 
->>Q3: Multiple Choice <<
-[*] Correct
-[*] Correct
-[ ] Incorrect
-
-Q4 is a single choice where users must select the correct answer.
-
->>Q4: Single Choice <<
-(*) Correct
-( ) Incorrect
-
-## Markdown
-
-All of the above questions have been defined within Markdown. There is no official syntax for a Quiz within markdown, as such the syntax for the above quiz is as follows:
-
-<pre>
->>Q1: Enter the extract string test<<
-=== test
-
->>Q2: Enter the string containing test<<
-=~= test
-
->>Q3: Multiple Choice <<
-[*] Correct
-[*] Correct
-[ ] Incorrect
-
->>Q4: Single Choice <<
-(*) Correct
-( ) Incorrect
-</pre>
-
-The ***** within single and multiple choice indicates the correct answer. The syntax **===** is exact match, while **=~=** is a string containing match.
-
-**Note:** There should not be a blank line between the question and the possible answers.
-
-## Correct and Incorrect Ansers
-
-When a user clicks **Check Answers**, the correct answers will appear with a Green tick! If they have entered anything incorrect they will be asked to check and try again.
+>>Q6: What is the purpose of a ReplicaSet? <<
+( ) To prevent clones from invading other clusters
+( ) To monitor and respond to environmental latency
+(*) To duplicate pods
+( ) To create and maintain volumes
