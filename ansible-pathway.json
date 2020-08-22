@@ -1,0 +1,17 @@
+{
+  "title": "Ansible",
+  "description": "Introduction to Istio Service Mesh",
+  "icon": "fa-ansible",
+  "courses": [
+    {
+      "course_id": "ansible-introduction",
+      "title": "Ansible Introduction",
+      "description": "Simple walkthrough of command-line Ansible and executing your first Ansible Playbook"
+    },    
+    {
+      "course_id": "ansible-web-server",
+      "title": "Ansible web servers",
+      "description": "Simple walkthrough of building web servers with Ansible on Red Hat Enterprise Linux"
+    }
+  ]
+}
