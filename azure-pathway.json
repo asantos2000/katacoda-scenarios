@@ -4,22 +4,22 @@
   "icon": "fa-linux",
   "courses": [
     {
-      "course_id": "azure/azure-cli-authentication",
+      "course_id": "azure-cli-authentication",
       "title": "Azure CLI Authentication",
       "description": "Introduction to Azure Cloud"
     },    
     {
-      "course_id": "azure/azure-cloud--shell-bash",
+      "course_id": "azure-cloud--shell-bash",
       "title": "Bash in Azure Cloud Shell",
       "description": "Introduction to Azure Cloud"
     },
     {
-      "course_id": "azure/azure-cloud--shell-powershell",
+      "course_id": "azure-cloud--shell-powershell",
       "title": "PowerShell in Azure Cloud Shell",
       "description": "Introduction to Azure Cloud"
     },
     {
-      "course_id": "azure/azure-install-cli",
+      "course_id": "azure-install-cli",
       "title": "Install Azure CLI on Linux",
       "description": "Introduction to Azure Cloud"
     }
