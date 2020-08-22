@@ -16,7 +16,7 @@ Instalando a imagem com helm.
 
 Iremos customizar o deploy com os seguintes valores:
 
-<pre code class="yaml">
+<pre class="yaml">
 service:
   nodePorts:
     http: "30170"
