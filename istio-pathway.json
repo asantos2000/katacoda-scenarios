@@ -1,6 +1,7 @@
 {
   "title": "Istio",
   "description": "Introduction to Istio Service Mesh",
+  "icon": "fa-kubernetes",
   "courses": [
     {
       "course_id": "deploy-istio-on-kubernetes",
