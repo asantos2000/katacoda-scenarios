@@ -21,7 +21,9 @@
     ],
     "intro": {
       "text": "intro.md",
-      "credits": ""
+      "credits": "Anderson",
+      "courseData": "background.sh",
+      "code": "foreground.sh"
     },
     "finish": {
       "text": "finish.md"
