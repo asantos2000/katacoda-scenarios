@@ -16,15 +16,13 @@ Instalando a imagem com helm.
 
 Iremos customizar o deploy com os seguintes valores:
 
-<pre>
-<code class="yaml">
+```yaml
 service:
   nodePorts:
     http: "30170"
     https: "30173"
   type: NodePort
-</code>
-</pre>
+```
 
 `helm install my-release -f /root/example/values.yaml bitnami/nginx`{{execute}}
 
