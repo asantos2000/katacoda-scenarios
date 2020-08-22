@@ -28,7 +28,7 @@
     ],
     "intro": {
       "text": "intro.md",
-      "credits": "Anderson",
+      "credits": "__Author:__ @adsantos",
       "courseData": "background.sh",
       "code": "foreground.sh"
     },
