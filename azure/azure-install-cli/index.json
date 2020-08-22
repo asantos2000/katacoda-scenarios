@@ -1,4 +1,7 @@
 {
+  "id": "azure-install-cli",
+  "pathwayId": "azure",
+  "pathwayTitle": "Azure",
   "title": "Install Azure CLI on Linux",
   "description": "Introduction to Azure Cloud",
   "difficulty": "Intermediate",

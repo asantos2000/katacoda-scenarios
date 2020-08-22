@@ -1,4 +1,7 @@
 {
+  "id": "azure-cloud--shell-bash",
+  "pathwayId": "azure",
+  "pathwayTitle": "Azure",
   "title": "Bash in Azure Cloud Shell",
   "description": "Introduction to Azure Cloud",
   "difficulty": "Intermediate",

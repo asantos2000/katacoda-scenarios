@@ -1,4 +1,7 @@
 {
+  "id": "azure-cli-authentication",
+  "pathwayId": "azure",
+  "pathwayTitle": "Azure",
   "title": "Azure CLI Authentication",
   "description": "Introduction to Azure Cloud",
   "difficulty": "Intermediate",
