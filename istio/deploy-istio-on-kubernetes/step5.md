@@ -13,6 +13,6 @@ The deployment included three versions of the _reviews_ microservice to showcase
 
 The services communicate over HTTP using DNS for service discovery. An overview of the architecture is shown below.
 
-![BookInfo Architecture](https://katacoda.com/courses/istio/deploy-istio-on-kubernetes/assets/bookinfo-arch.png)
+![BookInfo Architecture](assets/bookinfo-arch.png)
 
-The source code for the application is available on [Github](https://github.com/istio/istio/tree/release-0.1/samples/apps/bookinfo/src)
+The source code for the application is available on [Github](https://github.com/istio/istio/tree/master/samples/bookinfo)

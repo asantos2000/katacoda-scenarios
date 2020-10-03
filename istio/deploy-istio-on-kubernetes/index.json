@@ -57,18 +57,11 @@
         }
     },
     "environment": {
-        "showdashboard": true,
-        "dashboard": "Dashboard",
-        "uilayout": "terminal-terminal-v1",
-        "uimessage1": "\u001b[32mYour Interactive Bash Terminal.\u001b[m\r\n",
-        "uidependencies": [
-            "/socket.io/socket.io.js",
-            "/javascripts/term.js",
-            "/javascripts/terminal-application.js"
-        ]
-    },
-    "backend": {
-        "port": 80,
-        "dockerimage": "istio"
-    }
+        "uilayout": "editor-terminal",
+        "uieditorpath": "/root/example",
+        "uimessage1": "\u001b[32mYour Interactive Bash Terminal.\u001b[m\r\n"
+      },
+      "backend": {
+        "imageid": "kubernetes-cluster-running:1.18"
+      }
 }

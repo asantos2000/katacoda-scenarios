@@ -8,8 +8,7 @@ The previous step deployed the Istio Pilot, Mixer, Ingress-Controller, and Egres
 
 * **Ingress/Egress** - Configure path based routing.
 
-* **Istio CA** - Secures service to service communication over TLS. Providing a key management system to automate key and certificate generation, distribution, rotation, and revocation
-
 The overall architecture is shown below.
 
-![Istio Architecture](https://katacoda.com/courses/istio/deploy-istio-on-kubernetes/assets/istio-arch1.png)
+![Istio Architecture](https://istio.io/latest/docs/ops/deployment/architecture/arch.svg)
+Source: <https://istio.io>
