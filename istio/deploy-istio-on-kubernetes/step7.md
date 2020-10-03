@@ -1,3 +1,29 @@
+# View the dashboard
+
+Istio integrates with several different telemetry applications.
+
+Use the following instructions to deploy the Kiali dashboard, along with Prometheus, Grafana, and Jaeger.
+
+First install kiali CRD: `kubectl apply -f kiali-crds.yaml`{{execute}}
+
+`kubectl apply -f $ISTIO_HOME/samples/addons`{{execute)}
+
+> We install kiali CRD becouse of error `unable to recognize "istio-1.7.3/samples/addons/kiali.yaml": no matches for kind "MonitoringDashboard" in version "monitoring.kiali.io/v1alpha1"`. Check if it's necessary in future versions.
+
+Wait for kiali is ready:
+
+`while ! kubectl wait --for=condition=available --timeout=600s deployment/kiali -n istio-system; do sleep 1; done`{{execute}}
+
+## Check Status
+
+As with Istio, these addons are deployed via Pods.
+
+`watch kubectl get pods -n istio-system`{{execute}}
+
+> Before continue hit <kbd>Ctrl</kbd>+<kbd>C</kbd> on terminal. `echo "Ready to go."`{{execute interrupt}}
+
+> CTRL + C on terminal to exit
+
 With Istio's insight into how applications communicate, it can generate profound insights into how applications are working and performance metrics.
 
 ## Generate Load

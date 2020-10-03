@@ -1,21 +1,10 @@
-# View the dashboard
+This example deploys a sample application composed of four separate microservices used to demonstrate various Istio features.
 
-Istio integrates with several different telemetry applications.
+The Bookinfo application is broken into four separate microservices:
 
-Use the following instructions to deploy the Kiali dashboard, along with Prometheus, Grafana, and Jaeger.
+* productpage. The productpage microservice calls the details and reviews microservices to populate the page.
+* details. The details microservice contains book information.
+* reviews. The reviews microservice contains book reviews. It also calls the ratings microservice.
+* ratings. The ratings microservice contains book ranking information that accompanies a book review.
 
-`kubectl apply -f $ISTIO_HOME/samples/addons`{{execute)}
-
-> if return `unable to recognize "istio-1.7.3/samples/addons/kiali.yaml": no matches for kind "MonitoringDashboard" in version "monitoring.kiali.io/v1alpha1"` try install kiali CRD first: `kubectl apply -f kiali-crds.yaml`{{execute}}.
-
-Wait for kiali is ready:
-
-`while ! kubectl wait --for=condition=available --timeout=600s deployment/kiali -n istio-system; do sleep 1; done`{{execute}}
-
-## Check Status
-
-As with Istio, these addons are deployed via Pods.
-
-`watch kubectl get pods -n istio-system`{{execute}}
-
-> CTRL + C on terminal to exit
+![](https://istio.io/latest/docs/examples/bookinfo/noistio.svg)

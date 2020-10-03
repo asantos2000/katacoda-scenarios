@@ -2,7 +2,7 @@ To showcase Istio, a BookInfo web application has been created. This sample depl
 
 When deploying an application that will be extended via Istio, the Kubernetes YAML definitions are extended via _kube-inject_. This will configure the services proxy sidecar (Envoy), Mixers, Certificates and Init Containers.
 
-`kubectl apply -f istio-$ISTIO_VERSION/samples/bookinfo/platform/kube/bookinfo.yaml`{{execute}}
+`kubectl apply -f $ISTIO_HOME/samples/bookinfo/platform/kube/bookinfo.yaml`{{execute}}
 
 ## Check Status
 

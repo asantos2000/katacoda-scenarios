@@ -6,11 +6,11 @@ One aspect of traffic management is controlling traffic routing based on the HTT
 
 The example below will send all traffic for the user "jason" to the reviews:v2, meaning they'll only see the black stars.
 
-`cat istio-$ISTIO_VERSION/bookinfo/route-rule-reviews-test-v2.yaml`{{execute}}
+`cat $ISTIO_HOME/bookinfo/route-rule-reviews-test-v2.yaml`{{execute}}
 
 Similarly to deploying Kubernetes configuration, routing rules can be applied using _istioctl_.
 
-`istioctl create -f istio-$ISTIO_VERSION/bookinfo/route-rule-reviews-test-v2.yaml`{{execute}}
+`istioctl create -f $ISTIO_HOME/bookinfo/route-rule-reviews-test-v2.yaml`{{execute}}
 
 Visit the [product page](https://[[HOST_SUBDOMAIN]]-80-[[KATACODA_HOST]].environments.katacoda.com/productpage) and signin as a user jason (password jason)
 
@@ -20,11 +20,11 @@ The ability to split traffic for testing and rolling out changes is important. T
 
 The rule below ensures that 50% of the traffic goes to reviews:v1 (no stars), or reviews:v3 (red stars).
 
-`cat istio-$ISTIO_VERSION/bookinfo/route-rule-reviews-50-v3.yaml`{{execute}}
+`cat $ISTIO_HOME/bookinfo/route-rule-reviews-50-v3.yaml`{{execute}}
 
 Likewise, this is deployed using _istioctl_.
 
-`istioctl create -f istio-$ISTIO_VERSION/bookinfo/route-rule-reviews-50-v3.yaml`{{execute}}
+`istioctl create -f $ISTIO_HOME/bookinfo/route-rule-reviews-50-v3.yaml`{{execute}}
 
 _Note:_ The weighting is not round robin, multiple requests may go to the same service.
 
@@ -32,11 +32,11 @@ _Note:_ The weighting is not round robin, multiple requests may go to the same s
 
 Given the above approach, if the canary release were successful then we'd want to move 100% of the traffic to reviews:v3.
 
-`cat istio-$ISTIO_VERSION/bookinfo/route-rule-reviews-v3.yaml`{{execute}}
+`cat $ISTIO_HOME/bookinfo/route-rule-reviews-v3.yaml`{{execute}}
 
 This can be done by updating the route with new weighting and rules.
 
-`istioctl replace -f istio-$ISTIO_VERSION/bookinfo/route-rule-reviews-v3.yaml`{{execute}}
+`istioctl replace -f $ISTIO_HOME/bookinfo/route-rule-reviews-v3.yaml`{{execute}}
 
 ## List All Routes
 
