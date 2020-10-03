@@ -10,7 +10,8 @@
         "steps": [
             {
                 "title": "Launch Kubernetes Cluster",
-                "code": "set-env.sh",
+                "courseData": "step1-back.sh",
+                "code": "step1-fore.sh",
                 "text": "step1.md"
             },
             {
@@ -49,7 +50,6 @@
         ],
         "intro": {
             "text": "intro.md",
-            "courseData": "courseBase.sh",
             "credits": ""
         },
         "finish": {

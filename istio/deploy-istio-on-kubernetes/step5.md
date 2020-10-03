@@ -13,6 +13,6 @@ The deployment included three versions of the _reviews_ microservice to showcase
 
 The services communicate over HTTP using DNS for service discovery. An overview of the architecture is shown below.
 
-![BookInfo Architecture](assets/bookinfo-arch.png)
+![BookInfo Architecture](https://istio.io/latest/docs/examples/bookinfo/noistio.svg)
 
 The source code for the application is available on [Github](https://github.com/istio/istio/tree/master/samples/bookinfo)

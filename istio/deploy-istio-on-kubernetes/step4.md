@@ -6,7 +6,7 @@ When deploying an application that will be extended via Istio, the Kubernetes YA
 
 ## Check Status
 
-`watch kubectl get pods -n istio-system`{{execute}}
+`watch kubectl get pods`{{execute}}
 
 > !! CTRL + C on terminal to exit
 
@@ -32,7 +32,7 @@ Ensure that there are no issues with the configuration:
 
 Once running the application can be accessed via the path _/productpage_.
 
-The ingress routing information can be viewed using `kubectl describe ingress`{{execute}}
+The ingress routing information can be viewed using `kubectl describe virtualservice`{{execute}}
 
 `export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')`{{execute}}
 
