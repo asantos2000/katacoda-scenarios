@@ -1,13 +1,16 @@
-To collect and view metrics provided by Mixer, install Prometheus Grafana and ServiceGraph addons.
+# View the dashboard
 
-Prometheus gathers metrics from the Mixer. `kubectl apply -f istio/addons/prometheus.yaml`{{execute}}
+Istio integrates with several different telemetry applications.
 
-Grafana produces dashboards based on the data collected by Prometheus. `kubectl apply -f istio/addons/grafana.yaml`{{execute}}
+Use the following instructions to deploy the Kiali dashboard, along with Prometheus, Grafana, and Jaeger.
 
-ServiceGraph delivers the ability to visualise dependencies between services. `kubectl apply -f istio/addons/servicegraph.yaml`{{execute}}
+`kubectl apply -f $ISTIO_HOME/samples/addons`{{execute)}
 
-Zipkin offers distributed tracing. `kubectl apply -f istio/addons/zipkin.yaml`{{execute}}
+> if return `unable to recognize "istio-1.7.3/samples/addons/kiali.yaml": no matches for kind "MonitoringDashboard" in version "monitoring.kiali.io/v1alpha1"` try install kiali CRD first: `kubectl apply -f kiali-crds.yaml`{{execute}}.
 
+Wait for kiali is ready:
+
+`while ! kubectl wait --for=condition=available --timeout=600s deployment/kiali -n istio-system; do sleep 1; done`{{execute}}
 
 ## Check Status
 

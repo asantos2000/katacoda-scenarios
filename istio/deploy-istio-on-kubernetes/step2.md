@@ -14,6 +14,10 @@ After it has successfully run, add the bin folder to your path.
 
 `export PATH=$PWD/istio-$ISTIO_VERSION/bin:$PATH`{{execute}}
 
+And create a environment variable to point to our istio home:
+
+`export ISTIO_HOME=$PWD/istio-$ISTIO_VERSION`{{execute}}
+
 ## Install Istio
 
 The basic components of Istio, for more options see [Installation Configuration Profiles](https://istio.io/latest/docs/setup/additional-setup/config-profiles/).
@@ -26,10 +30,10 @@ This will deploy Pilot, Mixer, Ingress-Controller, and Egress-Controller.
 
 Add a namespace label to instruct Istio to automatically inject Envoy sidecar proxies when you deploy your application later:
 
-`kubectl label namespace default istio-injection=enabled`{{execute}}
+`kubectl label namespace/default istio-injection=enabled`{{execute}}
 
 ## Check Status
 
-All the services are deployed as Pods. Once they're running, Istio is correctly deployed.
+Once PODS are running, Istio is correctly deployed and ready to go.
 
 `kubectl get pods -n istio-system`{{execute}}

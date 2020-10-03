@@ -1,12 +1,10 @@
-The previous step deployed the Istio Pilot, Mixer, Ingress-Controller, and Egress-Controller, and the Istio CA (Certificate Authority).
+The previous step deployed the istiod, istio-ingressgateway, and istio-egressgateway.
 
-* **Pilot** - Responsible for configuring the Envoy and Mixer at runtime.
+[**istiod**](https://istio.io/latest/blog/2020/tradewinds-2020/#fewer-moving-parts) is the control plane, it provides service discovery, configuration and certificate management, and it's compose of:
 
-* **Envoy** - Sidecar proxies per microservice to handle ingress/egress traffic between services in the cluster and from a service to external services. The proxies form a secure microservice mesh providing a rich set of functions like discovery, rich layer-7 routing, circuit breakers, policy enforcement and telemetry recording/reporting functions.
+**Envoy** is part of data plane. Istio uses an extended version of the [Envoy](https://envoyproxy.github.io/envoy/) proxy. Envoy is a high-performance proxy developed in C++ to mediate all inbound and outbound traffic for all services in the service mesh. Envoy proxies are the only Istio components that interact with data plane traffic..
 
-* **Mixer** - Create a portability layer on top of infrastructure backends. Enforce policies such as ACLs, rate limits, quotas, authentication, request tracing and telemetry collection at an infrastructure level.
-
-* **Ingress/Egress** - Configure path based routing.
+* **Ingress/Egress** - They are Envoys deployed sololed and responsible for let data get in and out of the cluster.
 
 The overall architecture is shown below.
 
