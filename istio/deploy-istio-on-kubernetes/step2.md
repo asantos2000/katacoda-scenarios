@@ -5,6 +5,7 @@ Istio is installed in two parts. The first part involves the CLI tooling that wi
 The following command will install the Istio 0.7.1 release.
 
 `export ISTIO_VERSION=1.7.3`{{execute}}
+
 `export TARGET_ARCH=x86_64`{{execute}}
 
 `curl -L https://istio.io/downloadIstio | sh -`{{execute}}

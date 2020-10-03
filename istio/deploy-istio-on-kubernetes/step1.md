@@ -1,7 +1,5 @@
-To start, launch the Kubernetes cluster. This will launch a two-node Kubernetes cluster with one master and one node.
-
-`launch.sh`{{execute}}
+Kubernetes is already started and running, mybe take a few minutes to get everything up and running. Check the health of the cluster.
 
 #### Health Check
 
-Once started, you can get the status of the cluster with `kubectl cluster-info`{{execute}}
+You can get the status of the cluster with `kubectl cluster-info`{{execute}} and `kubectl get pods --all-namespaces`{{execute}}

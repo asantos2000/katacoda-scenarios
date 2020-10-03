@@ -13,4 +13,6 @@ Zipkin offers distributed tracing. `kubectl apply -f istio/addons/zipkin.yaml`{{
 
 As with Istio, these addons are deployed via Pods.
 
-`kubectl get pods -n istio-system`{{execute}}
+`watch kubectl get pods -n istio-system`{{execute}}
+
+> CTRL + C on terminal to exit

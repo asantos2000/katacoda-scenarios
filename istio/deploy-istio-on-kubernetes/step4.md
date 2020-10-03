@@ -6,13 +6,15 @@ When deploying an application that will be extended via Istio, the Kubernetes YA
 
 ## Check Status
 
-`kubectl get pods`{{execute}}
+`watch kubectl get pods -n istio-system`{{execute}}
+
+> !! CTRL + C on terminal to exit
 
 When the Pods are starting, you may see initiation steps happening as the container is created. This is configuring the Envoy sidebar for handling the traffic management and authentication for the application within the Istio service mesh.
 
 And services
 
-`kubectl get services` {{execute}}
+`kubectl get services`{{execute}}
 
 Verify everything is working correctly 
 
