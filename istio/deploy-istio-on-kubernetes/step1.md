@@ -3,3 +3,5 @@ Kubernetes is already started and running, mybe take a few minutes to get everyt
 #### Health Check
 
 You can get the status of the cluster with `kubectl cluster-info`{{execute}} and `kubectl get pods --all-namespaces`{{execute}}
+
+> Wait until all pods are running.
