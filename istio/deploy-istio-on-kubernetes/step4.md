@@ -38,14 +38,8 @@ The ingress gateway port:
 
 `export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')`{{execute}}
 
-The ingress gateway secure port:
-
-`export SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].nodePort}')`{{execute}}
-
 Now we can access ther product page using one of this ports:
 
 `echo http://[[HOST_SUBDOMAIN]]-$INGRESS_PORT-[[KATACODA_HOST]].[[KATACODA_DOMAIN]]/productpage`{{execute}}
-
-`echo https://[[HOST_SUBDOMAIN]]-$INGRESS_PORT-[[KATACODA_HOST]].[[KATACODA_DOMAIN]]/productpage`{{execute}}
 
 The architecture of the application is described in the next step.
