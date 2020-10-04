@@ -60,4 +60,14 @@ And the api url is:
 
 `echo https://[[HOST_SUBDOMAIN]]-$INGRESS_PORT-[[KATACODA_HOST]].[[KATACODA_DOMAIN]]/api/v1/products`{{execute}}
 
-The architecture of the application is described in the next step.
+## Apply default destination rules
+
+Before you can use Istio to control the Bookinfo version routing, you need to define the available versions, called subsets, in destination rules.
+
+`istio-1.7.3/samples/bookinfo/networking/destination-rule-all.yaml`{{open}}
+
+`kubectl apply -f $ISTIO_HOME/samples/bookinfo/networking/destination-rule-all.yaml`{{execute}}
+
+And show them all:
+
+`kubectl get destinationrules -o yaml`{{execute}}
