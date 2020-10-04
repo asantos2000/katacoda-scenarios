@@ -22,7 +22,9 @@ And we can verify if everything is working correctly calling the product page:
 
 Associate this application with the Istio gateway configuring an ingress-gateway and a virtual service:
 
-`kubectl apply -f istio-$ISTIO_VERSION/samples/bookinfo/networking/bookinfo-gateway.yaml`{{execute}}
+`$ISTIO_HOME/samples/bookinfo/networking/bookinfo-gateway.yaml`{{open}}
+
+`kubectl apply -f $ISTIO_HOME/samples/bookinfo/networking/bookinfo-gateway.yaml`{{execute}}
 
 Ensure that there are no issues with the configuration:
 
@@ -40,6 +42,6 @@ The ingress gateway port:
 
 Now we can access ther product page using one of this ports:
 
-`echo http://[[HOST_SUBDOMAIN]]-$INGRESS_PORT-[[KATACODA_HOST]].[[KATACODA_DOMAIN]]/productpage`{{execute}}
+`echo https://[[HOST_SUBDOMAIN]]-$INGRESS_PORT-[[KATACODA_HOST]].[[KATACODA_DOMAIN]]/productpage`{{execute}}
 
 The architecture of the application is described in the next step.

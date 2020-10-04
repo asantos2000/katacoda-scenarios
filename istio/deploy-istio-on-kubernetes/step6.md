@@ -10,7 +10,7 @@ The example below will send all traffic for the user "jason" to the reviews:v2, 
 
 `kubectl apply -f $ISTIO_HOME/samples/bookinfo/networking/virtual-service-reviews-jason-v2-v3.yaml`{{execute}}
 
-Visit the product page `echo http://[[HOST_SUBDOMAIN]]-$INGRESS_PORT-[[KATACODA_HOST]].environments.katacoda.com/productpage` and signin as a user jason (password jason)
+Visit the product page `echo https://[[HOST_SUBDOMAIN]]-$INGRESS_PORT-[[KATACODA_HOST]].environments.katacoda.com/productpage`{{execute}} and signin as a user jason (password jason)
 
 ## Traffic Shaping for Canary Releases
 
@@ -34,4 +34,7 @@ Given the above approach, if the canary release were successful then we'd want t
 
 ## List All Routes
 
-It's possible to get a list of all the rules applied using `istioctl get routerules`{{execute}}
+It's possible to get a list of all the rules applied using `istioctl proxy-status`{{execute}}
+
+To see a route of particular pod run `istioctl proxy-config route $(kubectl get pods -l app=productpage -o jsonpath='{.items[*].metadata.name}').default`
+
