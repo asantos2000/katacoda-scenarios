@@ -64,7 +64,7 @@
         }
     },
     "environment": {
-        "uilayout": "editor-terminal",
+        "uilayout": "vscode-terminal-split",
         "uieditorpath": "/root",
         "uimessage1": "\u001b[32mYour Interactive Bash Terminal.\u001b[m\r\n"
       },
