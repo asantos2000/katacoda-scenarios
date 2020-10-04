@@ -1,3 +1,7 @@
+[Observability](https://istio.io/latest/docs/concepts/observability/) is one of the greatest features of Istio.
+
+Istio generates detailed telemetry for all service communications within a mesh. This telemetry provides observability of service behavior, empowering operators to troubleshoot, maintain, and optimize their applications – without imposing any additional burdens on service developers.
+
 ## Install add-ons and extras
 
 Istio integrates with several different telemetry applications.

@@ -16,7 +16,7 @@
                 "text": "step1.md"
             },
             {
-                "title": "Deploy Istio",
+                "title": "Get started",
                 "text": "step2.md"
             },
             {
@@ -24,7 +24,7 @@
                 "text": "step2a.md"
             },
             {
-                "title": "Bookinfo Application",
+                "title": "The Bookinfo Application",
                 "text": "step3.md"
             },
             {
@@ -32,15 +32,15 @@
                 "text": "step4.md"
             },
             {
-                "title": "Bookinfo Architecture",
+                "title": "The Bookinfo Architecture",
                 "text": "step5.md"
             },
             {
-                "title": "Control Routing",
+                "title": "Traffic Management",
                 "text": "step6.md"
             },
             {
-                "title": "Access Metrics",
+                "title": "Monitoring",
                 "text": "step7.md"
             }
         ],
