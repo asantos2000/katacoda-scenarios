@@ -4,9 +4,10 @@ The previous step deployed the istiod, istio-ingressgateway, and istio-egressgat
 
 [**Envoy**](https://istio.io/latest/docs/ops/deployment/architecture/) is part of data plane. Istio uses an extended version of the [Envoy](https://envoyproxy.github.io/envoy/) proxy. Envoy is a high-performance proxy developed in C++ to mediate all inbound and outbound traffic for all services in the service mesh. Envoy proxies are the only Istio components that interact with data plane traffic..
 
-**Ingress/Egress** - They are Envoys deployed sololed and responsible for let data get in and out of the cluster.
+**Ingress/Egress** - They are Envoys deployed alone and they are responsible for let data get in and out of the cluster.
 
-The overall architecture is shown below.
+The Istio overall architecture is shown below.
 
 ![Istio Architecture](https://istio.io/latest/docs/ops/deployment/architecture/arch.svg)
-Source: <https://istio.io>
+
+You can learn more about at [Istio's Architecture](https://istio.io/latest/docs/ops/deployment/architecture/)

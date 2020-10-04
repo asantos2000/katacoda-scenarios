@@ -1,0 +1,123 @@
+# Source: grafana/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana-np
+  namespace: istio-system
+  labels:
+    helm.sh/chart: grafana-5.3.5
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: grafana
+    app.kubernetes.io/version: "7.0.5"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: NodePort
+  ports:
+    - name: service
+      nodePort: 30000
+      port: 3000
+      protocol: TCP
+      targetPort: 3000
+
+  selector:
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: grafana
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tracing-np
+  namespace: istio-system
+  labels:
+    app: jaeger
+spec:
+  type: NodePort
+  ports:
+    - name: http-query
+      nodePort: 30080
+      port: 80
+      protocol: TCP
+      targetPort: 16686
+  selector:
+    app: jaeger
+---
+# Source: kiali-server/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: kiali-np
+  namespace: istio-system
+  labels:
+    helm.sh/chart: kiali-server-1.22.0
+    app: kiali
+    app.kubernetes.io/name: kiali
+    app.kubernetes.io/instance: kiali-server
+    version: "v1.22.0"
+    app.kubernetes.io/version: "v1.22.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    kiali.io/api-spec: https://kiali.io/api
+    kiali.io/api-type: rest
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    protocol: TCP
+    nodePort: 32001
+    port: 20001
+  - name: http-metrics
+    protocol: TCP
+    port: 9090
+  selector:
+    app.kubernetes.io/name: kiali
+    app.kubernetes.io/instance: kiali-server
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: zipkin
+  name: zipkin-np
+  namespace: istio-system
+spec:
+  type: NodePort
+  ports:
+    - port: 9411
+      nodePort: 30941
+      targetPort: 9411
+      name: http-query
+  selector:
+    app: zipkin
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: weave-scope-app-np
+  annotations:
+    cloud.weave.works/launcher-info: |-
+      {
+        "original-request": {
+          "url": "/k8s/v1.13/scope.yaml",
+          "date": "Sun Oct 04 2020 00:15:54 GMT+0000 (UTC)"
+        },
+        "email-address": "support@weave.works"
+      }
+  labels:
+    name: weave-scope-app
+    app: weave-scope
+    weave-cloud-component: scope
+    weave-scope-component: app
+  namespace: weave
+spec:
+  type: NodePort
+  ports:
+    - name: app
+      nodePort: 34040
+      port: 80
+      protocol: TCP
+      targetPort: 4040
+  selector:
+    name: weave-scope-app
+    app: weave-scope
+    weave-cloud-component: scope
+    weave-scope-component: app

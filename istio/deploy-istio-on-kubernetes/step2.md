@@ -2,7 +2,7 @@ Istio is installed in two parts. The first part involves the CLI tooling that wi
 
 ## Install CLI tooling
 
-The following command will install the Istio 0.7.1 release.
+The following command will install the Istio 1.7.3 release, the latest version in October of 2020.
 
 `export ISTIO_VERSION=1.7.3`{{execute}}
 
@@ -10,23 +10,23 @@ The following command will install the Istio 0.7.1 release.
 
 `curl -L https://istio.io/downloadIstio | sh -`{{execute}}
 
-After it has successfully run, add the bin folder to your path.
+After it has successfully run, add the `bin` folder to your path.
 
 `export PATH=$PWD/istio-$ISTIO_VERSION/bin:$PATH`{{execute}}
 
-And create a environment variable to point to our istio home:
+And create an environment variable to point to our Istio home:
 
 `export ISTIO_HOME=$PWD/istio-$ISTIO_VERSION`{{execute}}
 
 ## Install Istio
 
-The basic components of Istio, for more options see [Installation Configuration Profiles](https://istio.io/latest/docs/setup/additional-setup/config-profiles/).
+The basics components of Istio can be installed in this way, for more options see [Installation Configuration Profiles](https://istio.io/latest/docs/setup/additional-setup/config-profiles/).
 
 `istioctl install --set profile=demo`{{execute}}
 
-This will deploy Pilot, Mixer, Ingress-Controller, and Egress-Controller.
+This will deploy Istiod, Ingress-Controller, and Egress-Controller.
 
-## Inject istio side car
+## Injecting Istio sidecar
 
 Add a namespace label to instruct Istio to automatically inject Envoy sidecar proxies when you deploy your application later:
 
@@ -34,6 +34,6 @@ Add a namespace label to instruct Istio to automatically inject Envoy sidecar pr
 
 ## Check Status
 
-Once PODS are running, Istio is correctly deployed and ready to go.
+Once all PODs are running, Istio is correctly deployed and ready to go.
 
 `kubectl get pods -n istio-system`{{execute}}
