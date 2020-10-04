@@ -22,9 +22,9 @@ And we can verify if everything is working correctly calling the product page:
 
 Associate this application with the Istio gateway configuring an ingress-gateway and a virtual service:
 
-`$ISTIO_HOME/samples/bookinfo/networking/bookinfo-gateway.yaml`{{open}}
+`istio-1.7.3/samples/bookinfo/networking/bookinfo-gateway.yaml`{{open}}
 
-`kubectl apply -f $ISTIO_HOME/samples/bookinfo/networking/bookinfo-gateway.yaml`{{execute}}
+`kubectl apply -f istio-1.7.3/samples/bookinfo/networking/bookinfo-gateway.yaml`{{execute}}
 
 Ensure that there are no issues with the configuration:
 

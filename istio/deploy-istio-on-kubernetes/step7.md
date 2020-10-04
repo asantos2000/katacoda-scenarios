@@ -12,7 +12,7 @@ First install kiali CRD: `kubectl apply -f kiali-crds.yaml`{{execute}}
 
 > We install kiali CRD becouse of error `unable to recognize "istio-1.7.3/samples/addons/kiali.yaml": no matches for kind "MonitoringDashboard" in version "monitoring.kiali.io/v1alpha1"`. Check if it's still necessary for future versions.
 
-### Scope
+**Scope**
 
 It's not part of Istio download package, but it can be deployed onto a Kubernetes cluster with the command `kubectl create -f 'https://cloud.weave.works/launch/k8s/weavescope.yaml'`{{execute}}
 
