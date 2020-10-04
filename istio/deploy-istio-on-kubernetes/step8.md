@@ -12,7 +12,7 @@ Wait for it to be deployed by checking the status of the pods using `kubectl get
 
 Once deployed, expose the service to the public.
 
-View Scope on port 4040 at https://[[HOST_SUBDOMAIN]]-34040-[[KATACODA_HOST]].environments.katacoda.com/
+View Scope on port 4040 at https://[[HOST_SUBDOMAIN]]-30404-[[KATACODA_HOST]].environments.katacoda.com/
 
 ## Generate Load
 
@@ -20,7 +20,7 @@ Scope works by mapping active system calls to different parts of the application
 
 `
 while true; do
-  curl -s https://[[HOST_SUBDOMAIN]]-30446-[[KATACODA_HOST]].environments.katacoda.com/productpage > /dev/null
+  curl -s https://[[HOST_SUBDOMAIN]]-30224-[[KATACODA_HOST]].environments.katacoda.com/productpage > /dev/null
   echo -n .;
   sleep 0.2
 done

@@ -112,7 +112,7 @@ spec:
   type: NodePort
   ports:
     - name: app
-      nodePort: 34040
+      nodePort: 30404
       port: 80
       protocol: TCP
       targetPort: 4040

@@ -1,4 +1,4 @@
-# View the dashboard
+## Install add-ons and extras
 
 Istio integrates with several different telemetry applications.
 
@@ -11,6 +11,12 @@ First install kiali CRD: `kubectl apply -f kiali-crds.yaml`{{execute}}
 `kubectl apply -f $ISTIO_HOME/samples/addons/extras/zipkin.yaml`{{execute}}
 
 > We install kiali CRD becouse of error `unable to recognize "istio-1.7.3/samples/addons/kiali.yaml": no matches for kind "MonitoringDashboard" in version "monitoring.kiali.io/v1alpha1"`. Check if it's still necessary for future versions.
+
+### Scope
+
+It's not part of Istio download package, but it can be deployed onto a Kubernetes cluster with the command `kubectl create -f 'https://cloud.weave.works/launch/k8s/weavescope.yaml'`{{execute}}
+
+Wait for it to be deployed by checking the status of the pods using `kubectl get pods -n weave`{{execute}}
 
 ## Check Status
 
@@ -26,7 +32,7 @@ With Istio's insight into how applications communicate, it can generate profound
 
 To access services outside the cluster, we create services for each add-on.
 
-`kubectl apply -f service-addons.yaml`{{execute}}
+`kubectl apply -f services-addons.yaml`{{execute}}
 
 They are (-np):
 
@@ -70,12 +76,16 @@ Click on a span to view the details on an individual request and the HTTP calls 
 
 [Kiali](https://kiali.io/) is a management console for Istio-based service mesh. It provides dashboards, observability and lets you to operate your mesh with robust configuration and validation capabilities.
 
-http://[[HOST_SUBDOMAIN]]-32001-[[KATACODA_HOST]].environments.katacoda.com/zipkin/
+http://[[HOST_SUBDOMAIN]]-32001-[[KATACODA_HOST]].environments.katacoda.com/
 
 ## Jaeger
 
 [Jaeger](https://www.jaegertracing.io/), inspired by Dapper and OpenZipkin, is a distributed tracing system released as open source by Uber Technologies. It is used for monitoring and troubleshooting microservices-based distributed systems.
 
-http://[[HOST_SUBDOMAIN]]-30080-[[KATACODA_HOST]].environments.katacoda.com/zipkin/
+http://[[HOST_SUBDOMAIN]]-30080-[[KATACODA_HOST]].environments.katacoda.com/
 
 Before continuing, stop the traffic process with <kbd>Ctrl</kbd>+<kbd>C</kbd>. `echo "Ready to go."`{{execute interrupt}}
+
+## Scope
+
+View Scope on port 4040 at https://[[HOST_SUBDOMAIN]]-30404-[[KATACODA_HOST]].environments.katacoda.com/
