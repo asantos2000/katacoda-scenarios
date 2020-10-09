@@ -8,9 +8,9 @@ Open `istio-1.7.3/samples/bookinfo/networking/virtual-service-all-v1.yaml`{{open
 
 Install on cluster with `kubectl apply -f $ISTIO_HOME/samples/bookinfo/networking/virtual-service-all-v1.yaml`{{execute}} command.
 
-And show them with: `kubectl get destinationrules -o yaml`{{execute}} 
+And show them with: `kubectl get destinationrules -o yaml`{{execute}}
 
-Test it accessing the product page at `echo https://[[HOST_SUBDOMAIN]]-$INGRESS_PORT-[[KATACODA_HOST]].environments.katacoda.com/productpage`
+Test it accessing the product page at `echo https://[[HOST_SUBDOMAIN]]-$INGRESS_PORT-[[KATACODA_HOST]].environments.katacoda.com/productpage`{{execute}}
 
 > Keep it open, you'll use it a lot in this step.
 
