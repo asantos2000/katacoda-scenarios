@@ -74,7 +74,7 @@
         "uimessage1": "\u001b[32mYour Interactive Bash Terminal.\u001b[m\r\n",
         "showide": true,
         "idePort": 23000,
-        "uilayout": "terminal"
+        "uilayout": "terminal-terminal"
       },
       "backend": {
         "imageid": "kubernetes-cluster-running:1.18"

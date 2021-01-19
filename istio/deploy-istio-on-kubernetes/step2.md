@@ -6,8 +6,6 @@ The following command will install the Istio 1.8.1 release, the latest version i
 
 `export ISTIO_VERSION=1.8.1`{{execute}}
 
-`export TARGET_ARCH=x86_64`{{execute}}
-
 `curl -L https://istio.io/downloadIstio | sh -`{{execute}}
 
 After it has successfully run, add the `bin` folder to your path.
