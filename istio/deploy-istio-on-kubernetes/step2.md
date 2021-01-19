@@ -2,9 +2,9 @@ Istio is installed in two parts. The first part involves the CLI tooling that wi
 
 ## Install CLI tooling
 
-The following command will install the Istio 1.7.3 release, the latest version in October of 2020.
+The following command will install the Istio 1.8.1 release, the latest version in October of 2020.
 
-`export ISTIO_VERSION=1.7.3`{{execute}}
+`export ISTIO_VERSION=1.8.1`{{execute}}
 
 `export TARGET_ARCH=x86_64`{{execute}}
 

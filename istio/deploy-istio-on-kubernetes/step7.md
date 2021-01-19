@@ -14,7 +14,7 @@ First install kiali CRD: `kubectl apply -f kiali-crds.yaml`{{execute}}
 
 `kubectl apply -f $ISTIO_HOME/samples/addons/extras/zipkin.yaml`{{execute}}
 
-> We install kiali CRD becouse of error `unable to recognize "istio-1.7.3/samples/addons/kiali.yaml": no matches for kind "MonitoringDashboard" in version "monitoring.kiali.io/v1alpha1"`. Check if it's still necessary for future versions.
+> We install kiali CRD becouse of error `unable to recognize "istio-1.8.1/samples/addons/kiali.yaml": no matches for kind "MonitoringDashboard" in version "monitoring.kiali.io/v1alpha1"`. Check if it's still necessary for future versions.
 
 **Scope**
 

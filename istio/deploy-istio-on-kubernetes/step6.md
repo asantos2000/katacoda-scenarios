@@ -4,7 +4,7 @@ One of the main features of Istio is its traffic management. As a Microservice a
 
 In this case, the virtual services will route all traffic to `v1` of each microservice.
 
-Open `istio-1.7.3/samples/bookinfo/networking/virtual-service-all-v1.yaml`{{open}} on editor.
+Open `istio-1.8.1/samples/bookinfo/networking/virtual-service-all-v1.yaml`{{open}} on editor.
 
 Install on cluster with `kubectl apply -f $ISTIO_HOME/samples/bookinfo/networking/virtual-service-all-v1.yaml`{{execute}} command.
 
@@ -20,7 +20,7 @@ One aspect of traffic management is controlling traffic routing based on the HTT
 
 The example below will send all traffic for the user "jason" to the reviews:v2, meaning they'll only see the black stars.
 
-`istio-1.7.3/samples/bookinfo/networking/virtual-service-reviews-test-v2.yaml`{{open}}
+`istio-1.8.1/samples/bookinfo/networking/virtual-service-reviews-test-v2.yaml`{{open}}
 
 `kubectl apply -f $ISTIO_HOME/samples/bookinfo/networking/virtual-service-reviews-test-v2.yaml`{{execute}}
 
@@ -32,7 +32,7 @@ The ability to split traffic for testing and rolling out changes is important. T
 
 The rule below ensures that 50% of the traffic goes to reviews:v1 (no stars), or reviews:v3 (red stars).
 
-`istio-1.7.3/samples/bookinfo/networking/virtual-service-reviews-50-v3.yaml`{{open}}
+`istio-1.8.1/samples/bookinfo/networking/virtual-service-reviews-50-v3.yaml`{{open}}
 
 `kubectl apply -f $ISTIO_HOME/samples/bookinfo/networking/virtual-service-reviews-50-v3.yaml`{{execute}}
 
@@ -44,7 +44,7 @@ Test it on product page.
 
 Given the above approach, if the canary release were successful then we'd want to move 100% of the traffic to reviews:v3.
 
-`istio-1.7.3/samples/bookinfo/networking/virtual-service-reviews-v3.yaml`{{open}}
+`istio-1.8.1/samples/bookinfo/networking/virtual-service-reviews-v3.yaml`{{open}}
 
 `kubectl apply -f $ISTIO_HOME/samples/bookinfo/networking/virtual-service-reviews-v3.yaml`{{execute}}
 
@@ -60,4 +60,4 @@ To see a route of particular pod run `istioctl proxy-config route $(kubectl get 
 
 ## Cleanup
 
-If you mess up or want to start over, there a script at `istio-1.7.3/samples/bookinfo/platform/kube/cleanup.sh`.Run it on the terminal and it'll restore the configuration back to the beginning of step 4.
+If you mess up or want to start over, there a script at `istio-1.8.1/samples/bookinfo/platform/kube/cleanup.sh`.Run it on the terminal and it'll restore the configuration back to the beginning of step 4.

@@ -34,9 +34,9 @@ At this point, there are no differences of any regular deployment besides the ad
 
 Associate this application with the Istio gateway configuring an ingress gateway and a virtual service:
 
-`istio-1.7.3/samples/bookinfo/networking/bookinfo-gateway.yaml`{{open}}
+`istio-1.8.1/samples/bookinfo/networking/bookinfo-gateway.yaml`{{open}}
 
-`kubectl apply -f istio-1.7.3/samples/bookinfo/networking/bookinfo-gateway.yaml`{{execute}}
+`kubectl apply -f istio-1.8.1/samples/bookinfo/networking/bookinfo-gateway.yaml`{{execute}}
 
 Ensure that there are no issues with the configuration:
 
@@ -64,7 +64,7 @@ And the api url is:
 
 Before you can use Istio to control the Bookinfo version routing, you need to define the available versions, called subsets, in destination rules.
 
-`istio-1.7.3/samples/bookinfo/networking/destination-rule-all.yaml`{{open}}
+`istio-1.8.1/samples/bookinfo/networking/destination-rule-all.yaml`{{open}}
 
 `kubectl apply -f $ISTIO_HOME/samples/bookinfo/networking/destination-rule-all.yaml`{{execute}}
 
