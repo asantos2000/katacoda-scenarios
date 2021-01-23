@@ -1,0 +1,248 @@
+# Colocando o Istio em execução
+
+## Acessando o k8s
+
+Vamos configurar o ambiente, você precisará configurá-lo a cada nova seção ou executar o jupyter passando as variáveis, como descrito no [README](README.md) e não precisará repetir esses comandos novamente.
+
+[Opcional] Se você não estiver usando o docker-desktop será necessário obter o arquivo de configuração e ajustar a variável KUBECONFIG
+
+`export KUBECONFIG=~/.kube/config`{{execute}}
+
+> Local do kubeconfig do docker-desktop. Selecione o local onde você colocou o arquivo de config para outras opções (AKS, EKS, GKE, etc).
+
+[Opcional] Se você tem o Visual Studio Code e gostaria de usá-lo como editor para o kubernetes com o comando `kubectl edit`
+
+`export KUBE_EDITOR="code -w"`{{execute}}
+
+[Opcional] Se você tem mais de um cluster na configuração, verifique se está apontando para o correto.
+
+`kubectl config get-contexts`{{execute}}
+
+Vamos verificar como estão os nós do nosso cluster:
+
+`kubectl get nodes`{{execute}}
+
+## Instalando o Istio (linux)
+
+Para instalar a última versão do Istio, neste momento 1.8.1, você pode ir até a página [Getting Started](https://istio.io/latest/docs/setup/getting-started/#download) ou seguir as instruções abaixo:
+
+`curl -L https://istio.io/downloadIstio | sh -`{{execute}}
+
+Para usar o comando `istioctl`, que está no diretório `bin` do download, coloque-o na variável `PATH` ou copie o arquivo `bin/istioctl` para um diretório no seu `PATH`
+
+## Opção 1: Copiar o arquivo para seu diretório de binários
+
+`ISTIO_VERSION=1.8.1`{{execute}}
+
+Verificar onde está o executável do Istio
+
+`ls istio-$ISTIO_VERSION/bin`{{execute}}
+
+Vamos coloca-lo no diretório bin do usuário
+
+`[ ! -d ~/bin ] && echo "Directory ~/bin DOES NOT exists. Creating..." && mkdir ~/bin`{{execute}}
+
+Verificar o conteúdo da variável PATH
+
+`echo $PATH | grep $HOME/bin`{{execute}}
+
+`[ ! $? -eq 0 ] && echo "Not in the PATH variable. Adding..." && export PATH=~/bin:$PATH`{{execute}}
+
+Copiar o arquivo para o diretório bin
+
+`cp istio-$ISTIO_VERSION/bin/istioctl ~/bin`{{execute}}
+
+Teste
+
+`istioctl version`{{execute}}
+
+## Opção 2: Incluir a instalação no PATH
+
+Você pode copiar o comando em qualquer diretório ou mantê-lo no diretório do Istio e ajustar a variável `PATH` na sessão.
+
+`export PATH=$PWD/istio-$ISTIO_VERSION/bin:$PATH`{{execute}}
+
+`echo $PATH`{{execute}}
+
+`istioctl --help`{{execute}}
+
+## O mínimo do Istio
+
+Desde a versão 1.6 o Istio é composto de uma única entrega chamada `istiod` e ela pode ser instalada com o comando abaixo:
+
+Isso deve demorar de 2 a 5 minutos.
+
+`istioctl install --set profile=minimal --skip-confirmation`{{execute}}
+
+Vamos verificar o que foi instalado
+
+Obtendo os namespaces:
+
+`kubectl get ns`{{execute}}
+
+Verificando o namespace do Istio:
+
+`kubectl get all -n istio-system`{{execute}}
+
+Neste ponto já temos o Istio instalado.
+
+## Istio CRDs
+
+O Istio é uma aplicação que é executada no kubernetes e adiciona recursos personalizados ([CRD](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)) para sua configuração.
+
+Você pode obter uma lista completa executando o comando abaixo:
+
+`kubectl api-resources | grep istio`{{execute}}
+
+Esses são os recursos adicionados e na segunda coluna o nome abreviado, você pode utilizar um ou outro, por exemplo:
+
+Abreviado:
+
+`kubectl get dr`{{execute}}
+
+Que é equivalente a:
+
+`kubectl get destinationrules`{{execute}}
+
+Você verá muito disso no kubernetes, para uma lista completa de recursos e suas abreviações execute o mesmo comando acima, mas sem o filtro `kubectl api-resources`
+
+`kubectl api-resources --api-group=networking.istio.io`{{execute}}
+
+`kubectl api-resources --api-group=security.istio.io`{{execute}}
+
+> Note que todos as configurações para recursos do Istio são aplicados para um _namespace_ (Namespaced=true), isso significa que a configuração terá efeito apenas em um _namespace_, porém, configurações que poderão ser aplicadas para toda a malha de serviços serão realizadas no _namespace_ do Istio, o `istio-system`.
+
+## Ativando o Istio para um namespace
+
+Um elemento chave do Istio é o _sidecar_ ou _proxy_, como veremos na discussão sobre arquitetura do Istio. Para que o Istio injete-o nos PODs da aplicação, é necessário marcar o _namespace_ da seguinte forma:
+
+`kubectl label namespace default istio-injection=enabled`{{execute}}
+
+Vamos verificar como ficou a configuração do namespace
+
+`kubectl describe ns/default`{{execute}}
+
+O `istiod` irá monitorar todos os _namespaces_ com o rótulo `istio-injection=enabled` e adicionar ao POD um _container_ de proxy, o _sidecar_.
+
+Vamos fazer _deploy_ de uma aplicação exemplo para verificar esse comportamento.
+
+## Criando uma aplicação demo
+
+Vamos criar uma aplicação simples.
+
+`mkdir -p exemplos/2_simple-app`{{execute}}
+
+Criando o arquivo de deployment:
+
+```
+cat <<EOT > exemplos/2_simple-app/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-app
+  labels:
+    app: simple-app
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+        app: simple-app
+        version: v1
+  template:
+    metadata:
+      labels:
+        app: simple-app
+        version: v1
+    spec:
+      containers:
+        - name: simple-app
+          image: "nginx:stable"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+EOT
+```{{execute}}
+
+O de serviço:
+
+```
+cat <<EOT > exemplos/2_simple-app/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: simple-app
+  labels:
+    app: simple-app
+    version: v1
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: simple-app
+    version: v1
+EOT
+```{{execute}}
+
+Listando os arquivos criados:
+
+`ls -la exemplos/2_simple-app`{{execute}}
+
+Criamos dois arquivos, o `deployment.yaml` e o `service.yaml` no diretório `exemplos/simple-app`, agora vamos instala-la no _namespace_ default (quando omitido é onde os recursos serão criados).
+
+Inspecione os arquivos e tente descobrir o que será instalado no cluster, uma dica, procure a pela imagem.
+
+
+`kubectl apply -f exemplos/2_simple-app`{{execute}}
+
+Verificando a situação do POD.
+
+`kubectl get pods`{{execute}}
+
+> Para instalar a aplicação em um _namespace_ diferente adicione `--namesapce` ou `-n`ao comando. Exemplo: `kubectl apply -f exemplos/2_simple-app -n test-app`
+
+Vamos acessar nossa aplicação, ela foi configurada para o tipo de serviço `ClusterIP`, o que significa que o acesso é interno, apenas entre os PODs do cluster, mas podemos acessá-la utilizando o comando `kubectl port-forward`.
+
+`kubectl port-forward svc/simple-app 8000:80`{{execute}}
+
+Vá até o seu navegador e entre acesse a url: <http://localhost:8000>
+
+Pronto, você tem acesso à sua aplicação como se estivesse sendo executada na sua máquina. Claro que o kubernetes pode estar na sua máquina, mas isso funcionará em qualquer kubernetes, local ou remoto.
+
+Para interromper:
+* No Jupyter Lab ou Notebook: Clique no icone <kbd>◾</kbd> (_Interrup the kernel_ na barra de ferramentas)
+* No terminal: tecle <kbd>CTRL</kbd>+<kbd>C</kbd>
+
+Verificando o que foi instalado.
+
+`kubectl get --show-labels all`{{execute}}
+
+Note que o pod/simple-app tem 2/2 na coluna pronto (Ready), isso significa que dois containers de dois estão ok, vamos verificar quem é o segundo container.
+
+Usaremos um dos labels do pod para encontra-lo
+
+`kubectl describe pod -l app=simple-app`{{execute}}
+
+É uma grande quantidade de informação, vamos procurar uma seção chamada `Containers` e nela a nossa aplicação `simple-app`.
+
+Como você pode ver, a imagem desse container é `nginx`, com a tag `stable`, mais abaixo tem um segundo container `istio-proxy`, com a imagem `docker.io/istio/proxyv2` e a _tag_ para a  versão `1.8.1`.
+
+Esse container não faz parte do [exemplos/2_simple-app/deployment.yaml](exemplos/2_simple-app/deployment.yaml), ele foi adicionado ao seu pod pelo `istiod`.
+
+Caso você precise saber todos os _namespaces_ que tem a injeção do _conteiner_ _proxy_ do Istio ativado, basta executar o comando:
+
+`kubectl get ns -l istio-injection=enabled`{{execute}}
+
+Até o momento, somente o namespace `default`, onde configuramos a marcação, foi encontrado.
+
+## Conclusão
+
+Neste ponto temos o mínimo do Istio em execução no nosso cluster, mas com exceção de um container extra isso não significa muito.
+
+Na próxima parte iremos explorar os recursos que esta instalação mínima do Istio pode oferecer.

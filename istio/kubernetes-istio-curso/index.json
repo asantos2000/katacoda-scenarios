@@ -1,0 +1,114 @@
+{
+    "id": "deploy-istio-on-kubernetes",
+    "time": "45 minutes",
+    "pathwayId": "istio",
+    "pathwayTitle": "Istio",
+    "icon": "fa-istio",
+    "title": "Curso de Istio",
+    "description": "Você aprenderá sobre os recursos de telemetria, gerenciamento de segurança e segurnaça.",
+    "authenticated": false,
+    "details": {
+        "steps": [
+            {
+                "title": "Preparando o ambiente execução",
+                "courseData": "step1-back.sh",
+                "code": "step1-fore.sh",
+                "text": "01_preparacao.md"
+            },
+            {
+                "title": "Colocando o Istio em execução",
+                "text": "02_execucao_istio.md"
+            },
+            {
+                "title": "Visualizando a malha de serviços com Kiali",
+                "text": "03_visualizacao_kiali.md"
+            },
+            {
+                "title": "A aplicação simul-shop",
+                "text": "istio/kubernetes-istio-curso/04_instalando_simul_shop.md"
+            },
+            {
+                "title": "Multi-container PODs",
+                "text": "05_multi_container_pods.md"
+            },
+            {
+                "title": "Arquitetura do Istio",
+                "text": "06_arquitetura_do_istio.md"
+            },
+            {
+                "title": "Telemetria",
+                "text": "07_telemetria.md"
+            },
+            {
+                "title": "Gerenciamento de tráfego - Visão geral",
+                "text": "08_gerenciamento_trafego_visao_geral.md"
+            },
+            {
+                "title": "Balanceamento de carga",
+                "text": "09_load_balancing.md"
+            },
+            {
+                "title": "Gateways",
+                "text": "10_gateways.md"
+            },
+            {
+                "title": "Gerenciamento de tráfego - Avançado",
+                "text": "11_gerenciamento_trafego_avancado.md"
+            },
+            {
+                "title": "Segurança",
+                "text": "12_seguranca.md"
+            },
+            {
+                "title": "Segurança - parte 2",
+                "text": "12a_seguranca.md"
+            },
+            {
+                "title": "Criando o caos",
+                "text": "13_engenharia_caos.md"
+            },
+            {
+                "title": "Istio em VMs",
+                "text": "14_istio_vms.md"
+            },
+            {
+                "title": "Referências",
+                "text": "15_referencias.md"
+            }
+        ],
+        "intro": {
+            "text": "00_introducao.md",
+            "credits": "kdop-dev.md"
+        },
+        "finish": {
+            "text": "16_contribuicoes.md"
+        },
+        "assets": {
+            "host01": [
+                {"file": "wait.sh", "target": "/usr/local/bin/", "chmod": "+x"},
+                {"file": "kiali-crds.yaml", "target": "/root/"},
+                {"file": "services-addons.yaml", "target": "/root/"}
+            ]
+        }
+    },
+    "environment": {
+        "dashboards": [
+            {"name": "Port 8000", "port": 8000},
+            {"name": "Repo", "href": "https://github.com/kdop-dev/istio-curso"},
+            {"name": "Jupyter", "href": "https://[[HOST_SUBDOMAIN]]-8888-[[KATACODA_HOST]].environments.katacoda.com"},
+            {"name": "Apps", "href": "https://[[HOST_SUBDOMAIN]]-8000-[[KATACODA_HOST]].environments.katacoda.com"},
+            {"name": "K8s", "href": "https://[[HOST_SUBDOMAIN]]-6443-[[KATACODA_HOST]].environments.katacoda.com"}],
+        "terminals": [
+            {"name": "Terminal 2", "target": "host01"}
+        ],
+        "showdashboard": true,
+        "uieditorpath": "/root",
+        "uimessage1": "\u001b[32mYour Interactive Bash Terminal.\u001b[m\r\n",
+        "showide": true,
+        "idePort": 23000,
+        "uilayout": "terminal-terminal"
+      },
+      "backend": {
+        "imageid": "kubernetes-cluster-running:1.18"
+      }
+}

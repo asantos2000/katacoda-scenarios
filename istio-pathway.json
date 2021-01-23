@@ -12,6 +12,11 @@
       "course_id": "apply-traffic-management",
       "title": "Apply Traffic Management",
       "description": ""
+    },
+    {
+      "course_id": "kubernetes-istio-curso",
+      "title": "kubernetes para curso istio",
+      "description": ""
     }
   ]
 }
