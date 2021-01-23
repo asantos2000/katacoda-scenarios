@@ -50,7 +50,7 @@ Que dá um total de 66 possíveis canais de comunicação, claro que não usamos
 
 Em 2019 na QCon em Nova Iorque, Yuri Shkuro apresentou uma palestra intitulada [Conquering Microservices Complexity @Uber with Distributed Tracing](https://youtu.be/EW9GjQNcyzI), onde ele exibe o seguinte diagrma que representa uma parcela da infraestrutura de serviços do Uber.
 
-![Uber microservices](media/uber-microservices.png)
+![Uber microservices](./assets/uber-microservices.png)
 
 Como ele explica nessa palestra, identificar problemas é muito difícil e introduz uma das ferramentas que veremos no curso, o Jaeger, um dos _dashboards_ que usaremos para rastrear logs.
 
@@ -68,7 +68,7 @@ Vamos revisar os componentes do Istio e suas principais funcionalidades.
 
 ## Como o Istio funciona
 
-![Istio works](media/istio-works.gif)
+![Istio works](./assets/istio-works.gif)
 
 O objetivo do Istio é aplica políticas de segurança, regras de tráfego e obter métricas da execução dos processos que são as aplicações, esse processos podem rodar em qualquer lugar, em uma VM, uma máquina física ou em um container, que é o escopo desse curso, mas é importante entender que o Istio não é uma solução apenas para container ou kubernetes, de fato, todos os seus componentes podem ser executados fora de um container.
 
@@ -82,7 +82,7 @@ Dessa forma, o Istio controla as requisições, impõe polítcas e captura métr
 
 O Istio, desde a versão 1.6 simplificou sua arquitetura reunindo o Pilot, Citadel, Galley e o Mixer, em um único serviço, o **istiod**
 
-![arquitetura istio](media/istio-arch.png)
+![arquitetura istio](./assets/istio-arch.png)
 
 [Arquitetura do Istio na versão 1.8.x](https://istio.io/latest/docs/ops/deployment/architecture/)
 

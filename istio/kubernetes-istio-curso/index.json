@@ -74,14 +74,19 @@
             {
                 "title": "Referências",
                 "text": "15_referencias.md"
+            },
+            {
+                "title": "Contribuições",
+                "text": "16_contribuicoes.md"
             }
+            
         ],
         "intro": {
             "text": "00_introducao.md",
-            "credits": "kdop-dev"
+            "credits": "Desenvolvido por: kdop-dev"
         },
         "finish": {
-            "text": "16_contribuicoes.md"
+            "text": "99_encerramento.md"
         },
         "assets": {
             "host01": [
@@ -93,17 +98,18 @@
     },
     "environment": {
         "dashboards": [
-            {"name": "Port 8000", "port": 8000},
-            {"name": "Repo", "href": "https://github.com/kdop-dev/istio-curso"},
-            {"name": "Jupyter", "href": "https://[[HOST_SUBDOMAIN]]-8888-[[KATACODA_HOST]].environments.katacoda.com"},
-            {"name": "Apps", "href": "https://[[HOST_SUBDOMAIN]]-8000-[[KATACODA_HOST]].environments.katacoda.com"},
-            {"name": "K8s", "href": "https://[[HOST_SUBDOMAIN]]-6443-[[KATACODA_HOST]].environments.katacoda.com"}],
+            {"name": "kiali", "port": 20001},
+            {"name": "jaeger", "port": 16686},
+            {"name": "grafana", "port": 3000},
+            {"name": "Apps", "port": 8000},
+            {"name": "Repo", "href": "https://github.com/kdop-dev/istio-curso"}
+        ],
         "showdashboard": true,
         "uieditorpath": "/root",
         "uimessage1": "\u001b[32mYour Interactive Bash Terminal.\u001b[m\r\n",
         "showide": true,
         "idePort": 23000,
-        "uilayout": "vscode-terminal-split"
+        "uilayout": "terminal"
       },
       "backend": {
         "imageid": "kubernetes-cluster-running:1.18"

@@ -100,7 +100,7 @@ Também optamos por não adicionar a palavra `api` na URL, por uma simples quest
 
 ## Rota baseada no caminho
 
-![rota baseada no caminha](media/path-based-routes.png)
+![rota baseada no caminha](./assets/path-based-routes.png)
 
 Vamos implementar a tabela acima, já vimos como configurar _VirtualService_ para hosts, vamos configurá-lo para caminho, a estrutura para as URIs do front-end
 
@@ -296,7 +296,7 @@ http -v "$INGRESS_HOST:$INGRESS_PORT/anything"
 
 Os _VirtualServices_ podem adicionar ou remover campos do cabeçalho.
 
-![Adding headers](media/add-headers.png)
+![Adding headers](./assets/add-headers.png)
 
 Neste exemplo, queremos que as requisições que não são originadas de _Southeast_ tenham o campo do cabeçalho `user-region` com o valor `other`. Esse dado pode ser utilizada para regras em outros serviços, ou para fins de log.
 
@@ -360,7 +360,7 @@ O tempo de espera (timeout) ajustado para 10 segundos permitiu que o serviço fo
 
 Neste cenário, simulamos um problema com o serviço de login. Modificaremos o _Deployment_ do `front-end` para pausar a chamada automática aos serviços, isso dificultaria acompanhar os logs.
 
-![Retries](media/retries.png)
+![Retries](./assets/retries.png)
 
 
 ```bash
@@ -400,11 +400,11 @@ Nesta última execução, o serviço retorna após 1s com sucesso (200).
 
 Você deverá ver os errors no kiali e jaeger. No jaeger filtre os rastros colocando em _Service_ escolha `front-end.default` e em _Tags_ preencha com o valor `http.status_code=500`
 
-![Jaeger search retries](media/jaeger-retries-search.png)
+![Jaeger search retries](./assets/jaeger-retries-search.png)
 
 E as execuções que acompanhamos nos logs.
 
-![Jaeger failed retries](media/jaeger-failed-retries.png)
+![Jaeger failed retries](./assets/jaeger-failed-retries.png)
 
 Vamos restaurar as configurações do front-end e login:
 
@@ -425,7 +425,7 @@ kubectl apply -f exemplos/simul-shop/istio/11/login-dr-vs.yaml
 
 Os [disjuntores](https://istio.io/latest/docs/concepts/traffic-management/#circuit-breakers), analogia aos [dispositivos](https://en.wikipedia.org/wiki/Circuit_breaker) que cortam a energia elétrica em caso de sobre carga, são mecanismos úteis para incrementar a resiliência dos serviços.
 
-![disjuntores](media/disjuntores.png)
+![disjuntores](./assets/disjuntores.png)
 
 Em um disjuntor, você define os limites para chamadas para hosts individuais em um serviço, como o número de conexões simultâneas ou quantas vezes as chamadas para este host falharam. Uma vez que esse limite tenha sido atingido, o disjuntor “desarma” e interrompe outras conexões com aquele host.
 
@@ -502,7 +502,7 @@ Vamos executar a carga par o serviço:
 kubectl exec "$FORTIO_POD" -c fortio -- /usr/bin/fortio load -c 1 -qps 0 -n 20 -loglevel Warning "http://catalogue:8000/r?code=200&wait=2"
 ```
 
-![load 3](media/load-catalogue-1.png)
+![load 3](./assets/load-catalogue-1.png)
 
 Conte o número de logs com status 200 nos dois logs, devem coincidir com o resultado do fortio.
 
@@ -515,7 +515,7 @@ Vamos repetir o teste, mas dessa vez adicionando mais pressão.
 kubectl exec "$FORTIO_POD" -c fortio -- /usr/bin/fortio load -c 3 -qps 0 -n 20 -loglevel Warning "http://catalogue:8000/r?code=200&wait=2"
 ```
 
-![load 3](media/load-catalogue-3.png)
+![load 3](./assets/load-catalogue-3.png)
 
 Repita a contagem, conte também os 503.
 
@@ -523,7 +523,7 @@ O uso desse padrão deve ser cuidadosamente configurado e testado, acionamentoa 
 
 Use o kiali para entender a sua malha, procure os serviços que tem configurações e avalie as métricas.
 
-![kiali circuit breaker](media/kiali-graph-circuit-breaker.png)
+![kiali circuit breaker](./assets/kiali-graph-circuit-breaker.png)
 
 Removendo a configuração
 
@@ -542,7 +542,7 @@ Usando o Istio, você pode usar o espelhamento de tráfego para duplicar o tráf
 
 Esse recurso permite obter dados valiosos de produção sem colocar em risco suas operações.
 
-![Mirroring requests](media/mirror.png)
+![Mirroring requests](./assets/mirror.png)
 
 Vamos configurar nossa aplicação:
 
@@ -574,7 +574,7 @@ kubectl exec -it svc/front-end -c front-end -- bash -c 'time http -v "http://fro
 
 Nos terminais, você pode ver que imediatamente após uma chamada para a v1, a mesma chamada é realizada para v2, vamos ver como o kiali representa essa configuração.
 
-![Kiali graph mirror](media/kiali-mirror-orders.png)
+![Kiali graph mirror](./assets/kiali-mirror-orders.png)
 
 Ele representou a chamada para o serviço e uma ligação para o _workload_ v1, mas não para o v2, porém tanto os _workloads_ v1 e v2 chamam os demais serviços.
 

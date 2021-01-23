@@ -192,7 +192,6 @@ Criamos dois arquivos, o `deployment.yaml` e o `service.yaml` no diretório `exe
 
 Inspecione os arquivos e tente descobrir o que será instalado no cluster, uma dica, procure a pela imagem.
 
-
 `kubectl apply -f exemplos/2_simple-app`{{execute}}
 
 Verificando a situação do POD.
@@ -203,13 +202,13 @@ Verificando a situação do POD.
 
 Vamos acessar nossa aplicação, ela foi configurada para o tipo de serviço `ClusterIP`, o que significa que o acesso é interno, apenas entre os PODs do cluster, mas podemos acessá-la utilizando o comando `kubectl port-forward`.
 
-`kubectl port-forward svc/simple-app 8000:80`{{execute}}
+`kubectl port-forward svc/simple-app 8000:80`{{execute T1}}
 
-Vamos testart `curl localhost:8000`{{execute T2}}
+Vamos testar em um segundo terminal `curl localhost:8000`{{execute T2}}
 
 Pronto, você tem acesso à sua aplicação como se estivesse sendo executada na sua máquina. Claro que o kubernetes pode estar na sua máquina, mas isso funcionará em qualquer kubernetes, local ou remoto.
 
-Para interromper, no terminal tecle <kbd>CTRL</kbd>+<kbd>C</kbd>. Ou click em `echo" Pronto para ir. "`{{Execute interrupt}}
+Para interromper, no terminal tecle <kbd>CTRL</kbd>+<kbd>C</kbd>. Ou click em `echo " Pronto para ir. "`{{Execute interrupt T1}}
 
 Verificando o que foi instalado.
 

@@ -20,7 +20,7 @@ Para simular este legado, iremos criar uma VM e executar o script python que usa
 
 A arquitetura da solução ficará assim:
 
-![Simulshpo vm architecture](media/simul-shop-vms-arch.png)
+![Simulshpo vm architecture](./assets/simul-shop-vms-arch.png)
 
 ## Configuração
 

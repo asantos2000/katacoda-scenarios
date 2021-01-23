@@ -16,13 +16,13 @@ Os _gateways_ do Istio são aplicações independentes (Envoys) que controlam o 
 
 Há algumas formas de fazer isso, podemos configurar os [serviços do kubernetes](https://kubernetes.io/docs/concepts/services-networking/service/) (_LoadBalancer_ e _NodePort_), mas consumiríamos balanceadores de carga, que na nuvem são recursos pagos, ou podemos configurar um _NodePort_, porém, além de consumirem portas, não funcionariam com os _istio-proxies_ porque as requisições seriam direcionadas para o POD e só então chegariam ao _proxy_, dessa forma, o _NodePort_ iria direcionar uma fração para cada POD que fizer parte do seletor e só então as requisições seriam tratadas pelo Istio.
 
-![balanceamento utilizando nodeport](media/k8s-nodeport-balance.png)
+![balanceamento utilizando nodeport](./assets/k8s-nodeport-balance.png)
 
 Como ilustrado, somente 50% das requisições externas chegariam ao POD A, sendo assim, mesmo que configurassemos o _proxy_ para lidar com o tráfego, seria tarde demais.
 
 A solução é a adição de um _gateway_ ([ingress gateway](https://istio.io/latest/docs/tasks/traffic-management/ingress/#accessing-istio-service-mesh-by-a-browser)) que entenda as configurações do Istio e faça o trabalho de direcionar para os PODs. Para isso o Istio inclue um _gateway_ que é identico ao Envoy que utilizamos nas nossas aplicações.
 
-![balanceamento utilizando istio-ingressgateway](media/istio-ingress-balance.png)
+![balanceamento utilizando istio-ingressgateway](./assets/istio-ingress-balance.png)
 
 O Istio configura o Envoy em um POD independente para fazer o papel de Ingress (entrada) e outro para Egress (saída). Sendo o mesmo Envoy que está em execução com nossa aplicação, ele é configurado pelo Istio com o objetivo de direcionar o tráfego para os nossos _VirtualServices_, funcionando como um _proxy_ reverso.
 
@@ -125,7 +125,7 @@ istioctl dashboard kiali &
 export KIALI_PID=$!
 ```
 
-![kiali exibindo o istio ingress](media/kiali-istio-ingress.png)
+![kiali exibindo o istio ingress](./assets/kiali-istio-ingress.png)
 
 Agora conseguimos ver a origem das nossas requisições com uma pequena modificação no _VirtualService_. O Istio separa as configurações do _gateway_ (L3/L4) das configurações das rotas (L7), com isso podemos reaproveitá-las para vários _VitrualServices_.
 
@@ -170,7 +170,7 @@ Agora podemos testar, no terminal, sem a necessidade de usar o login container, 
 
 No kiali devemos ter algo parecido com isso:
 
-![kiali gateway with canary release.png](media/kiali-gateway-with-canary.png)
+![kiali gateway with canary release.png](./assets/kiali-gateway-with-canary.png)
 
 ## Configurando segurança (TLS) para o ingress
 
@@ -292,7 +292,7 @@ Se tudo estiver OK, o resultado será:
 
 Você poderá acessar o front-end pelo navegador, mas como o certificado não foi assinado por uma autoridade conhecida pelo navegador, ele irá bloqueá-la.
 
-![erro certificado auto-assinado](media/front-end-certificate-error.png)
+![erro certificado auto-assinado](./assets/front-end-certificate-error.png)
 
 ### Dica pro
 
@@ -328,7 +328,7 @@ kubectl apply -f istio-1.8.1/samples/httpbin/httpbin.yaml
 
 Vamos para o [kiali](http://localhost:20001) verificar como ficou essa configuração, mas antes precisaremos de tráfego, execute o [scripts/call-simul-shop.sh](scripts/call-simul-shop.sh) em um terminal.
 
-![kiali istio egress](media/kiali-istio-without-serviceentry.png)
+![kiali istio egress](./assets/kiali-istio-without-serviceentry.png)
 
 Sem as configurações do Istio, o kiali exibe o tráfego de saída como um "buraco negro", um _PassthroughCluster_ porque ele não infere sobre o destino. Isso será válido para quantos serviços externos forem chamado, fazendo com que várias linhas convertam para o mesmo ponto.
 
@@ -341,7 +341,7 @@ http
 
 Com a configuração do _ServiceEntry_ adicionamos ao registro de serviços do Istio o nosso serviço de crédito, isso possibilia que o Kiali exiba como um destino conhecido.
 
-![](media/kiali-istio-with-serviceentry.png)
+![](./assets/kiali-istio-with-serviceentry.png)
 
 ## Configurando um gateway de saída (egress)
 
@@ -353,7 +353,7 @@ Outro caso de uso é um cluster onde os nós do aplicativo não têm IPs públic
 
 A figura abaixo ilustra como configuraremos o nosso gateway:
 
-![configuração do egress](media/egress-config.png)
+![configuração do egress](./assets/egress-config.png)
 
 Nesta [configuração](exemplos/simul-shop/istio/10/egress-example-credit.yaml) temos:
 
@@ -434,11 +434,11 @@ Vamos verificar como ficou no kiali. Selecione os três _namespaces_ (default, f
 
 O gráfico de _app_:
 
-![kiali com a configuração do egress para credit](media/kiali-egress-credit.png)
+![kiali com a configuração do egress para credit](./assets/kiali-egress-credit.png)
 
 E a configuração:
 
-![kiali com a configuração do egress para credit](media/kiali-config-egress-credit.png)
+![kiali com a configuração do egress para credit](./assets/kiali-config-egress-credit.png)
 
 ### Considerações
 

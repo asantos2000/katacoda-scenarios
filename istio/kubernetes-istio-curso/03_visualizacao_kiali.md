@@ -70,13 +70,11 @@ O serviço do kiali é do tipo `ClusterIP`, o que significa que não podemos ace
 
 Porém o `istioctl` oferece um subcomando conveniente para acessar o kiali:
 
-`istioctl dashboard kiali`{{execute}}
+`istioctl dashboard kiali`{{execute T1}}
 
 Vamos acessa-lo, mas antes, vamos [gerar algum tráfego](scripts/simple-app.sh) para a nossa aplicação:
 
-`scripts/simple-app.sh`{{execute}}
-
-`istioctl dashboard kiali`{{execute}}
+`scripts/simple-app.sh`{{execute T2}}
 
 E voilá, você está acessando o painel do kiali.
 
@@ -86,15 +84,15 @@ Vamos explorar alguns recursos do kiali.
 
 O kiali oferece uma visibilidade inpressionante da malha de serviços e tudo que precisamos fazer é anotar o _namespace_ onde nossa aplicação será instalada.
 
-Interrompa a execução do dashboard tecle <kbd>CTRL</kbd>+<kbd>C</kbd> no terminal ou `click aqui`{{Execute interrupt}}
+Interrompa a execução do dashboard tecle <kbd>CTRL</kbd>+<kbd>C</kbd> no terminal ou `click aqui`{{Execute interrupt T1}}
 
 Se você participou do nosso curso de [Kubernetes avançado para iniciantes](TODO) deve imaginar o que o `istioctl`automatizou, foi o comando `kubectl port-forward` e adicionou um comando de ` open` para abrir a página inicial no navegador.
 
 O comando a seguir tem efeito semelhante (sem a parte do navegador)
 
-`kubectl port-forward service/kiali 20001:20001 -n istio-system`{{execute}}
+`kubectl port-forward service/kiali 20001:20001 -n istio-system`{{execute T1}}
 
-Kiali _dashboard_: <http://localhost:20001>
+Kiali _dashboard_: <https://[[HOST_SUBDOMAIN]]-20001-[[KATACODA_HOST]].environments.katacoda.com>
 
 Mesmo resultado, mas não tão elegante. Ficaremos com o `istioctl dashboard <dashboard>` pelo resto do curso.
 
@@ -106,7 +104,9 @@ E vamos executar o kiali novamente, mas agora em segundo plano.
 
 `export KIALI_PID=$!`{{execute}}
 
-E acessá-lo pela url <http://localhost:20001>, caso não abra automaticamente.
+E acessá-lo pela url <https://[[HOST_SUBDOMAIN]]-20001-[[KATACODA_HOST]].environments.katacoda.com>.
+
+> Se você estiver executando o curso na sua máquina, provavelmente o istioctl irá abrir a URI automaticamente, em outros ambientes e provável que falhe (`Failed to open browser`).
 
 ### Labels
 

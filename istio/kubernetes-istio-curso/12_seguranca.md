@@ -6,7 +6,7 @@ O Istio oferece uma solução de segurança abrangente para resolver problemas, 
 * Fornecer controle de acesso de serviço flexível;
 * Determinar quem fez o quê e quando.
 
-![Istio security architecture](media/istio-sec-arch.png)
+![Istio security architecture](./assets/istio-sec-arch.png)
 Istio [High-level architecture](https://istio.io/latest/docs/concepts/security/#high-level-architecture)
 
 Neste cursos iremos abordar dois aspectos da segurança do Istio: TLS mútuo e autenticação de requisições com JWT.
@@ -33,7 +33,7 @@ Vá para o gráfico (Versioned App graph) e na caixa de seleção _Display_, mar
 
 Vocë deverá ver que todas as conexões agora tem um símbolo de cadeado, isso indica que as requisições são seguras (TLS).
 
-![Kiali MTLS](media/kiali-MTLS.png)
+![Kiali MTLS](./assets/kiali-MTLS.png)
 
 ### Desabilitando o TLS múto
 
@@ -188,7 +188,7 @@ kubectl get istiooperator installed-state -n istio-system -o jsonpath='{.spec.me
 
 Vamos verificar no kiali o que está acontecendo. <http://localhost:20001>
 
-![Kiali serviço sem registro](media/kiali-registry-only.gif)
+![Kiali serviço sem registro](./assets/kiali-registry-only.gif)
 
 Como você pode verificar, o tráfego entre os serviços está OK, mas o tráfego para fora da malha foi bloqueado.
 
@@ -236,7 +236,7 @@ Vá ao kiali e veja como ficou o tráfego.
 
 Vamos permitir o invocações do método GET, para o [_front-end_](exemplos/simul-shop/istio/12/authorization-policy-allow-front-end.yaml) e do _front-end_ para [_orders_](exemplos/simul-shop/istio/12/authorization-policy-allow-orders.yaml) e [_catalogue_](exemplos/simul-shop/istio/12/authorization-policy-allow-catalogue.yaml).
 
-![Access Control](media/access-control.png)
+![Access Control](./assets/access-control.png)
 
 
 ```bash

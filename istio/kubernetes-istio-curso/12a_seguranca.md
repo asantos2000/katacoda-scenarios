@@ -8,7 +8,7 @@ O Istio utiliza [JSON Web Token (JWT)](https://jwt.io/introduction/) que é um t
 
 Os JWTs contêm informações sobre o chamador do cliente e podem ser usados como parte de uma arquitetura de sessão do cliente. Um [JSON Web Key Set (JWKS)](https://auth0.com/docs/jwks) contém as chaves criptográficas usadas para verificar os JWTs recebidos.
 
-![istio jwt](media/istio-jwt.png)
+![istio jwt](./assets/istio-jwt.png)
 
 Adaptamos o exemplo do [Istio](https://istio.io/latest/docs/tasks/security/authentication/authn-policy/#end-user-authentication) e iremos criar nossos próprios certificados.
 
@@ -457,7 +457,7 @@ http "$INGRESS_HOST:$INGRESS_PORT/healthz" "Authorization: Bearer $TOKEN" "Host:
 
 Copie o token gerado para decodifica-lo em [jwt.io](jwt.io). Se quiser validar o token, utilize a [chave pública](exemplos/certificates/istio-curso.pub.pem).
 
-![](media/jwt-io-debugger.png)
+![](./assets/jwt-io-debugger.png)
 
 ## Limpando as configurações
 
