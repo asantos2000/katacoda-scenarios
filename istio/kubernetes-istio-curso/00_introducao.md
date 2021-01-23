@@ -1,6 +1,6 @@
 # Bem vindo ao Istio Avançado para Iniciantes
 
-![cover](istio-course-cover-small.png)
+![cover](./assets/istio-course-cover-small.png)
 
 ## Sobre este curso
 
@@ -30,7 +30,7 @@ Uma coleção desses proxies forma uma “malha” de serviços que agora compar
 
 Se você não está familiarizado com o [Radar de tecnologia da Thoughworks](https://www.thoughtworks.com/pt/radar), ele é uma lista de tecnologias avaliada por pessoas como [Martin Fowler](https://martinfowler.com/), [Neal Ford](http://nealford.com/), [Rebecca Parsons](https://www.thoughtworks.com/profiles/rebecca-parsons) entre outros. Grande parte da industria utiliza o radar para guiar suas decisões no desenvolvimento de software. Nas suas avaliações são recomendos a adoção, teste ou deixar de usar, linguagens, frameworks, ferramentas e plataformas. O Istio aparece am algumas [edições e em 2020](https://www.thoughtworks.com/pt/radar/platforms/istio) foi recomendada a sua adoção.
 
-![Istio visão geral](media/istio-big-picture.png)
+![Istio visão geral](./assets/istio-big-picture.png)
 Arquitetura do Istio
 
 Você também pode obter uma lista atualizada das empresas que utilizam o Istio e ler sobre alguns dos seus casos de uso em [Istio - Who's using Istio](https://istio.io/latest/about/community/customers/).
@@ -39,7 +39,7 @@ Você também pode obter uma lista atualizada das empresas que utilizam o Istio 
 
 Istio endereças três áreas para manutenção dos serviços:
 
-![O que o Istio faz](what-istio-do.png)
+![O que o Istio faz](./assets/what-istio-do.png)
 
 Se você tem um crescente número de serviços, escritos em diferentes linguagens, em infraestruturas heterogêneas, o Istio oferece a abstração necessária para simplificar a manutenção desses serviços.
 

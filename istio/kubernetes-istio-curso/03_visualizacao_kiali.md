@@ -82,7 +82,7 @@ E voilá, você está acessando o painel do kiali.
 
 Vamos explorar alguns recursos do kiali.
 
-![kiali overview](media/kiali-overview.gif)
+![kiali overview](./assets/kiali-overview.gif)
 
 O kiali oferece uma visibilidade inpressionante da malha de serviços e tudo que precisamos fazer é anotar o _namespace_ onde nossa aplicação será instalada.
 

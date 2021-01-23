@@ -25,7 +25,7 @@ Sabemos que nada disso é verdadeiro, e ao distribuirmos nosso processamento, to
 
 Essa é uma das principais funções do Istio, reconcilar a visão de aplicação e fornecer visibiliade e controle das comunicações dos serviços distribuídos (malha de serviços).
 
-![Microservices capabilities](media/microservices-capabilities.png)
+![Microservices capabilities](./assets/microservices-capabilities.png)
 Capacidades dos microsserviços atendidas pelo Kubernetes e Istio
 
 Neste curso, usamos um simulador de serviços, que não tem uma interface web e é apenas um programa em python que recebe requisições e invoca outras URLs com base nos parâmetros passados por variável de ambiente.
@@ -34,7 +34,7 @@ Como nosso objetivo não são os microsserviços, essa abordagem simplifica a cr
 
 Você pode criar malhas diferentes configurando o simulador, por exemplo, vamos simular uma aplicação que tem apenas um front-end e um backend e usaremos o docker para executá-la.
 
-![](media/simul-shop-fb.png)
+![](./assets/simul-shop-fb.png)
 
 
 ```bash
@@ -86,7 +86,7 @@ docker network rm my-net
 
 Neste curso criaremos uma malha mais complexa, iremos configurar o simul-shop com a seguinte arquittura:
 
-![arquitetura](media/simul-shop-arq.png)
+![arquitetura](./assets/simul-shop-arq.png)
 
 E usaremos essa malha para explorar os recursos do Istio.
 
