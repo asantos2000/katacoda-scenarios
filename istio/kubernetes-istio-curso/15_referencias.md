@@ -1,5 +1,3 @@
-# Referências
-
 Referência consultadas durante o desenvolvimento desse curso.
 
 1. [Canary and Dark Release Using an Istio Service Mesh on Kubernetes](https://dzone.com/articles/canary-amp-dark-release-using-istio-service-mesh-o)

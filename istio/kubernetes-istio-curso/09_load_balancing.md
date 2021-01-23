@@ -1,5 +1,3 @@
-# Balanceamento de carga
-
 Uma das aplicações no controle de tráfego é o balanceamento de carga, diferente da versão canário, que distribui a carga com base em pesos, o balanceamento de carga tem como objetivo distribuir a carga uniforme, aplicando algum algoritmo.
 
 O Istio tem um grande conjunto de recursos para balanceamento de carga, eles são configurados nas [Destination Rule](https://istio.io/latest/docs/reference/config/networking/destination-rule/), vamos analisar os mais comuns.

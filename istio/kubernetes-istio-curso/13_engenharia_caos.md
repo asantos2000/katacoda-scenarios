@@ -1,5 +1,3 @@
-# Criando o caos
-
 > _In the midst of chaos, there is also opportunity._ - Sun Tzu
 
 Provavelmente você já ouviu falar sobre engenharia do caos, conceito criado no Netflix e envolve quebrar coisas em produção de propósito com objetivo de certificar que a alta disponibilidade e a tolerância à falhas das suas aplicações funcionam.
@@ -29,9 +27,9 @@ As falhas incluem abortar uma solicitação http do serviço e/ou atrasa-la. Uma
 
 ### Atrasos
 
+Login DestinationRules:
 
-```bash
-# Login DestinationRules
+```
 kubectl apply -f - <<EOF
 kind: DestinationRule
 apiVersion: networking.istio.io/v1alpha3
@@ -44,11 +42,11 @@ spec:
         version: v1
       name: v1
 EOF
+```{{execute}}
+
+Vamos configurar um atraso de 2s se o campo `test-mode: yes` estiver presente no cabeçalho da requisição:
+
 ```
-
-
-```bash
-# Inject delay
 kubectl apply -f - <<EOF
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -76,27 +74,25 @@ spec:
         host: login
         subset: v1
 EOF
-```
+```{{execute}}
 
+Testando:
 
-```bash
-kubectl exec -it svc/front-end -c front-end -- bash -c 'time http -v "http://login:8000/"'
-```
+`kubectl exec -it svc/front-end -c front-end -- bash -c 'time http -v "http://login:8000/"'`{{execute}}
 
 Sem o campo `test-mode: yes` no cabeçalho o tempo de resposta é inferior a 1s, vamos adicionar o campo.
 
-
-```bash
-kubectl exec -it svc/front-end -c front-end -- bash -c 'time http -v "http://login:8000/" "test-mode: yes"'
-```
+`kubectl exec -it svc/front-end -c front-end -- bash -c 'time http -v "http://login:8000/" "test-mode: yes"'`{{execute}}
 
 Agora o tempo de resposta foi acrescido de 2s, experimente tempos diferentes para testar o limite de tempo (_timeout_).
 
 ### Falhas
 
+Usaremos o mesmo recurso, iremos retornar erro somente na presença do cabeçalho `test-mode: yes`:
 
-```bash
-# Inject abort code
+Injetando o código de erro:
+
+```
 kubectl apply -f - <<EOF
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -124,19 +120,15 @@ spec:
         host: login
         subset: v1
 EOF
-```
+```{{execute}}
 
+Testando:
 
-```bash
-kubectl exec -it svc/front-end -c front-end -- bash -c 'time http -v "http://login:8000/"'
-```
+`kubectl exec -it svc/front-end -c front-end -- bash -c 'time http -v "http://login:8000/"'`{{execute}}
 
 Sem o campo `test-mode: yes` no cabeçalho o código de retorno foi 200, vamos adicionar o campo.
 
-
-```bash
-kubectl exec -it svc/front-end -c front-end -- bash -c 'time http -v "http://login:8000/" "test-mode: yes"'
-```
+`kubectl exec -it svc/front-end -c front-end -- bash -c 'time http -v "http://login:8000/" "test-mode: yes"'`{{execute}}
 
 Com o campo no cabeçalho, o código de retorno foi 404.
 
@@ -144,8 +136,7 @@ Com o campo no cabeçalho, o código de retorno foi 404.
 
 Vamos combinar o código de retorno com o atraso para obter o equivalente ao que o generic-service faz.
 
-
-```bash
+```
 kubectl apply -f - <<EOF
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -177,21 +168,19 @@ spec:
         host: login
         subset: v1
 EOF
-```
+```{{execute}}
 
 Nesta combinação, em todas as requisições haverá um código de retorno 504 e um atraso de 2s.
 
 > **Dica pro**: Utilizar atrasos e código de retorno é uma boa forma de calibrar as suas métricas. Vá para o grafana e monitore o serviço de login para ver seus comportamento.
 
+Testando:
 
-```bash
-kubectl exec -it svc/front-end -c front-end -- bash -c 'time http -v "http://login:8000/" "test-mode: yes"'
-```
+`kubectl exec -it svc/front-end -c front-end -- bash -c 'time http -v "http://login:8000/" "test-mode: yes"'`
 
 Agora combinaremos falhas e erros em uma única confiugração:
 
-
-```bash
+```
 kubectl apply -f - <<EOF
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -214,16 +203,15 @@ spec:
     - destination:
         host: login
 EOF
+```{{execute}}
+
+Testando:
+
 ```
-
-
-```bash
-# Calling service n time
-# Better run in a terminal
 for i in $(seq 1 10);
     do kubectl exec -it svc/front-end -c front-end -- bash -c 'time http -v "http://login:8000/" "test-mode: yes"';
 done
-```
+```{{execute}}
 
 Agora você tem uma variedade de situações, com probabilidade de 50% para retornar o código 500 ou 200 e 50% para atrasar 0s ou 2s.
 
@@ -235,13 +223,13 @@ Quando aplicamos uma nova configuração ela tem efeito praticamente no mesmo in
 
 Vamos remover o que instalamos para a próxima seção.
 
+DestinationRule:
 
-```bash
-# DestinationRule
-kubectl delete dr login
-# Virtual service
-kubectl delete vs login
-```
+`kubectl delete dr login`{{execute}}
+
+Virtual service:
+
+`kubectl delete vs login`{{execute}}
 
 ## Conclusão
 

@@ -1,5 +1,3 @@
-# Segurança
-
 O Istio oferece uma solução de segurança abrangente para resolver problemas, como:
 
 * Defender contra ataques _man-in-the-middle_;
@@ -27,7 +25,7 @@ O Istio configura automaticamente os _sidecars_ da carga de trabalho para usar T
 
 Vamos verificar isso com ajuda do kiali
 
-<http://localhost:20001/kiali>
+<https://[[HOST_SUBDOMAIN]]-20001-[[KATACODA_HOST]].environments.katacoda.com>
 
 Vá para o gráfico (Versioned App graph) e na caixa de seleção _Display_, marque _Security_.
 
@@ -40,7 +38,7 @@ Vocë deverá ver que todas as conexões agora tem um símbolo de cadeado, isso 
 Você pode utilizar a mesma confiugração para desabilitar o TLS múto, porém isso não é recomendado, a não ser que você implemente sua própria solução.
 
 
-```bash
+```
 # Desabilitando o MTLS
 cat <<EOF | kubectl apply -f -
 apiVersion: "security.istio.io/v1beta1"
@@ -52,13 +50,13 @@ spec:
   mtls:
     mode: DISABLE
 EOF
-```
+```{{execute}}
 
 Verifique novamente no Kiali, após alguns segundos, os cadeados desapareceram.
 
 Vocë pode desligar o MTLS para toda a malha
 
-```bash
+```
 kubectl apply -n istio-system -f - <<EOF
 apiVersion: "security.istio.io/v1beta1"
 kind: "PeerAuthentication"
@@ -68,15 +66,13 @@ spec:
   mtls:
     mode: DISABLE
 EOF
-```
+```{{execute}}
+
 > Para excluir a configuração acima `kubectl delete pa/disable-mtls-mesh -n istio-system`
 
 Para voltar para a configuração original, vamos excluir o PeerAuthentication. Veremos mais sobre como controlar o MTLS nas proximas seções.
 
-
-```bash
-kubectl delete PeerAuthentication/disable-mtls-namespace
-```
+`kubectl delete PeerAuthentication/disable-mtls-namespace`
 
 #### Desabilitando TLS múto para uma aplicação
 
@@ -115,10 +111,9 @@ spec:
 
 Verifique se sobrou alguma configura configuração e exclua.
 
+Request authentication policy:
 
-```bash
-# request authentication policy
-
+```
 kubectl apply -f - <<EOF
 apiVersion: "security.istio.io/v1beta1"
 kind: "RequestAuthentication"
@@ -133,7 +128,7 @@ spec:
   - issuer: "testing@secure.istio.io"
     jwksUri: "https://raw.githubusercontent.com/istio/istio/release-1.8/security/tools/jwt/samples/jwks.json"
 EOF
-```
+```{{execute}}
 
 ## Bloquear tráfego de saída
 
@@ -151,42 +146,35 @@ Pense nisso quando estiver configurando sua malha de serviços.
 
 Vamos verificar em que modo nossa malha está configurada:
 
-
-```bash
-kubectl get istiooperator installed-state -n istio-system -o jsonpath='{.spec.meshConfig.outboundTrafficPolicy.mode}'
-```
+`kubectl get istiooperator installed-state -n istio-system -o jsonpath='{.spec.meshConfig.outboundTrafficPolicy.mode}'`{{execute}}
 
 Vamos instalar um serviço externo e modificar o _deployment_ da order para chamá-lo:
 
+Cria o serviço credit no namespace financial:
 
-```bash
-# Cria o serviço credit no namespace financial
-kubectl apply -f exemplos/simul-shop/manifests/10/credit-deployment.yaml
+`kubectl apply -f exemplos/simul-shop/manifests/10/credit-deployment.yaml`{{execute}}
 
-# Serviço externo
-kubectl apply -f istio-1.8.1/samples/httpbin/httpbin.yaml
+Serviço externo:
 
-# Modificando o order para invocar serviço externo
-kubectl apply -f exemplos/simul-shop/manifests/10/orders-deployment-external-api.yaml
-```
+`kubectl apply -f istio-1.8.1/samples/httpbin/httpbin.yaml`{{execute}}
+
+Modificando o order para invocar serviço externo:
+
+`kubectl apply -f exemplos/simul-shop/manifests/10/orders-deployment-external-api.yaml`{{execute}}
 
 > O _namespace_ financial não tem o rótulo do Istio para injeção automática de _sidecar_.
 
 Agora bloquearemos todo o tráfego de saída que não está registrado:
 
+Faremos um novo deploy do istiod com a nova configuração:
 
-```bash
-# Fará um novo deploy do istiod com a nova configuração
-istioctl install --set profile=demo --skip-confirmation --set meshConfig.outboundTrafficPolicy.mode=REGISTRY_ONLY
-```
+`istioctl install --set profile=demo --skip-confirmation --set meshConfig.outboundTrafficPolicy.mode=REGISTRY_ONLY`{{execute}}
 
+Verificando se as configurações foram alteradas:
 
-```bash
-# Verificando se as configurações foram alteradas
-kubectl get istiooperator installed-state -n istio-system -o jsonpath='{.spec.meshConfig.outboundTrafficPolicy.mode}'
-```
+`kubectl get istiooperator installed-state -n istio-system -o jsonpath='{.spec.meshConfig.outboundTrafficPolicy.mode}'`{{execute}}
 
-Vamos verificar no kiali o que está acontecendo. <http://localhost:20001>
+Vamos verificar no kiali o que está acontecendo.
 
 ![Kiali serviço sem registro](./assets/kiali-registry-only.gif)
 
@@ -194,10 +182,7 @@ Como você pode verificar, o tráfego entre os serviços está OK, mas o tráfeg
 
 Vamos registrar o serviço bloqueado e tentar novamente.
 
-
-```bash
-kubectl apply -f exemplos/simul-shop/istio/12/httpbin-serviceentry.yaml
-```
+`kubectl apply -f exemplos/simul-shop/istio/12/httpbin-serviceentry.yaml`{{execute}}
 
 Retorne para o kiali e veja o resultado.
 
@@ -205,19 +190,25 @@ Você notou que o serviço de crédito, embora não tenha um _sidecar_ não teve
 
 Vamos restaurar a configuração ao modo padrão.
 
+Retornndo o flag para o padrão:
 
-```bash
-# Retornndo o flag para o padrão
-istioctl install --set profile=demo --skip-confirmation --set meshConfig.outboundTrafficPolicy.mode=ALLOW_ANY
-# Excluindo a entrada no registro de serviço
-kubectl delete -f exemplos/simul-shop/istio/12/httpbin-serviceentry.yaml
-# Removendo o namespace financial
-kubectl delete ns financial
-# Serviço externo
-kubectl delete -f istio-1.8.1/samples/httpbin/httpbin.yaml
-# Restaurando os deployments
-kubectl apply -f exemplos/simul-shop/manifests/4
-```
+`istioctl install --set profile=demo --skip-confirmation --set meshConfig.outboundTrafficPolicy.mode=ALLOW_ANY`{{execute}}
+
+Excluindo a entrada no registro de serviço:
+
+`kubectl delete -f exemplos/simul-shop/istio/12/httpbin-serviceentry.yaml`{{execute}}
+
+Removendo o namespace financial:
+
+`kubectl delete ns financial`{{execute}}
+
+Serviço externo:
+
+`kubectl delete -f istio-1.8.1/samples/httpbin/httpbin.yaml`{{execute}}
+
+Restaurando os deployments:
+
+`kubectl apply -f exemplos/simul-shop/manifests/4`{{execute}}
 
 ## Controle de Acesso
 
@@ -227,10 +218,7 @@ O Istio converte suas _AuthorizationPolicies_ em configurações para os _sideca
 
 Vamos começar modificando o padrão, [negando autorização](exemplos/simul-shop/istio/12/authorization-policy-deny-all.yaml) para toda a comunicação na malha.
 
-
-```bash
-kubectl apply -f exemplos/simul-shop/istio/12/authorization-policy-deny-all.yaml
-```
+`kubectl apply -f exemplos/simul-shop/istio/12/authorization-policy-deny-all.yaml`{{execute}}
 
 Vá ao kiali e veja como ficou o tráfego.
 
@@ -238,14 +226,11 @@ Vamos permitir o invocações do método GET, para o [_front-end_](exemplos/simu
 
 ![Access Control](./assets/access-control.png)
 
+`kubectl apply -f exemplos/simul-shop/istio/12/authorization-policy-allow-front-end.yaml`{{execute}}
 
-```bash
-kubectl apply -f exemplos/simul-shop/istio/12/authorization-policy-allow-front-end.yaml
+`kubectl apply -f exemplos/simul-shop/istio/12/authorization-policy-allow-orders.yaml`{{execute}}
 
-kubectl apply -f exemplos/simul-shop/istio/12/authorization-policy-allow-orders.yaml
-
-kubectl apply -f exemplos/simul-shop/istio/12/authorization-policy-allow-catalogue.yaml
-```
+`kubectl apply -f exemplos/simul-shop/istio/12/authorization-policy-allow-catalogue.yaml`{{execute}}
 
 > Você pode aplicar um de cada vez e conferir no kiali a mudança.
 
@@ -253,22 +238,16 @@ Volte para o kiali e verifique como o tráfego está.
 
 Para liberar todo o tráfego novamente, como o padrão, basta excluir a política de negação.
 
-
-```bash
-kubectl delete -f exemplos/simul-shop/istio/12/authorization-policy-deny-all.yaml
-```
+`kubectl delete -f exemplos/simul-shop/istio/12/authorization-policy-deny-all.yaml`{{execute}}
 
 Novamente no kiali, verifique que ao excluir a política, todo o tráfego foi liberado e as demais políticas não tem mais efeito.
 
 Para manter o ambiente limpo, vamos exclui-las também.
 
+`kubectl delete -f exemplos/simul-shop/istio/12/authorization-policy-allow-front-end.yaml`{{execute}}
 
-```bash
-kubectl delete -f exemplos/simul-shop/istio/12/authorization-policy-allow-front-end.yaml
+`kubectl delete -f exemplos/simul-shop/istio/12/authorization-policy-allow-orders.yaml`{{execute}}
 
-kubectl delete -f exemplos/simul-shop/istio/12/authorization-policy-allow-orders.yaml
-
-kubectl delete -f exemplos/simul-shop/istio/12/authorization-policy-allow-catalogue.yaml
-```
+`kubectl delete -f exemplos/simul-shop/istio/12/authorization-policy-allow-catalogue.yaml`{{execute}}
 
 O controle de acesso permite de uma forma granular, controlar quem pode acessar o que, isso pode ser necessário em ambientes compartilhados e oferece mais um nível de controle, além do RBAC do kubernetes.

@@ -1,11 +1,8 @@
-# A aplicação simul-shop
-
 A aplicação simul-shop é um simulador de loja online.
 
 Inspirado no micro-sock, desenvolvida pela [weaveworks](https://www.weave.works/) e [distribuída](https://github.com/microservices-demo/microservices-demo/tree/master) de forma gratuíta (licença [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0)) para demonstrar seu produto [Waeve Scope](https://www.weave.works/oss/scope/).
 
 O simulador foi construída usando [Python](https://www.python.org/) e é empacotado uma imagem Docker e entregue em um cluster de kubernetes.
-
 
 ## Simul Shop implementação
 
@@ -34,10 +31,9 @@ Como nosso objetivo não são os microsserviços, essa abordagem simplifica a cr
 
 Você pode criar malhas diferentes configurando o simulador, por exemplo, vamos simular uma aplicação que tem apenas um front-end e um backend e usaremos o docker para executá-la.
 
-![](./assets/simul-shop-fb.png)
+![frontend e backend](./assets/simul-shop-fb.png)
 
-
-```bash
+```
 # Create net
 docker network create my-net
 
@@ -59,28 +55,29 @@ docker run -d --rm \
     -e SCHED_CALL_INTERVAL=10 \
     -e SPLIT_CALL_URL_LST=http://backend:8000 \
     kdop/generic-service:0.0.5
-```
+```{{execute}}
 
 Vamos acompanhar os _logs_ para ver o que está acontecento. Abra duas abas de terminais e entre com os comandos abaixo em cada um deles:
 
-```bash
-# Terminal 1
-docker logs -f front-end
-# Terminal 2
-docker logs -f backend
-```
+Terminal 1
+
+`docker logs -f front-end`{{execute T1}}
+
+Terminal 2
+
+`docker logs -f backend`{{execute T2}}
 
 Agora que conhecemos como configurar e acompanhar nossa aplicação, vamos ir para algo mais complexo.
 
 Vamos remover os recursos criados:
 
-
-```bash
+```
 # Parando e excluindo os contêineres
 docker kill front-end backend
+
 # Clean-up
 docker network rm my-net
-```
+```{{execute}}
 
 ### Istio + Simul Shop
 
@@ -92,12 +89,13 @@ E usaremos essa malha para explorar os recursos do Istio.
 
 ## Instalando a aplicação
 
-Com o clone ou download do repo istio-curso, você tem um diretório com a aplicação.
+Vamos clonar o repositório do curso:
 
+`git clone https://github.com/kdop-dev/istio-curso.git`{{execute}}
 
-```bash
-ls -la exemplos/simul-shop/manifests/4
-```
+Você tem agora o diretório com a aplicação.
+
+`ls -la exemplos/simul-shop/manifests/4`{{execute}}
 
 A configuração para kubernetes compreende apenas dois recursos, o _deployment_ e o _service_ para cada um dos módulos da nossa aplicação, de acordo coma arquitetura da seção anterior.
 
@@ -141,31 +139,26 @@ Dessa forma os serviços podem ser endereçados na forma http://nome-modulo:port
 
 Vamos aplicar a configuração no cluster, mas primeiro vamos verificar o acesso ao cluster e o _namespace_ está preparado para o Istio.
 
-
-```bash
+```
 # verifica se o rótulo de auto injeção do Istio está ativo
 kubectl describe ns default
+
 # Caso não esteja, ativá-lo
 kubectl label namespace default istio-injection=enabled
+
 # Verificando se os pods do Istio estão em execução (Running)
 kubectl get pods -n istio-system
-```
+```{{execute}}
 
 Tudo parece OK, temos acesso ao cluster, o `istiod` está em execução e o _namespace_ está com o rótulo `istio-injection=enabled`, agora aplicamos a configuração:
 
-
-```bash
-kubectl apply -f exemplos/simul-shop/manifests/4/
-```
+`kubectl apply -f exemplos/simul-shop/manifests/4/`{{execute}}
 
 Vamos verificar o que foi criado:
 
+`kubectl get all`{{execute}}
 
-```bash
-kubectl get all
-```
-
-Dependendo do seu computador a inicialização dos PODs pode demorar um pouco, entre 2 a 5 minutos, você pode repetir o comando algumas vezes para ver a situação dos PODs ou se preferir, abra um terminal e execute o comando `watch kubectl get all` para que atualize automaticamente.
+Dependendo do seu computador a inicialização dos PODs pode demorar um pouco, entre 2 a 5 minutos, você pode repetir o comando algumas vezes para ver a situação dos PODs ou se preferir, execute o comando `watch kubectl get all`{{execute}} para que atualize automaticamente.
 
 Após alguns minutos todos os PODs devem estar na seguinte situação:
 
@@ -184,7 +177,7 @@ queue-6884748c5d-2qmst        2/2     Running   0          3m16s
 shipping-b7b68d8d9-d78p6      2/2     Running   0          3m16s
 ```
 
-> Se a colune _Ready_ estiver exibindo 1//1 provavelmente o _namespace_ está sem o rótulo do Istio ou o POD `istiod` no _namespace_ `istio-system` não está em execução. Verifique antes de prosseguir.
+> Se a coluna _Ready_ estiver exibindo 1//1 provavelmente o _namespace_ está sem o rótulo do Istio ou o POD `istiod` no _namespace_ `istio-system` não está em execução. Verifique antes de prosseguir.
 
 Dependendo da quantidade de recursos disponíveis para o cluster de kubernetes o tempo pode variar e alguns PODs podem falhar (CrashBackoff) algumas vezes (RESTARTS > 0).
 
@@ -192,24 +185,17 @@ Para conhecer mais sobre o ciclo de vida de um POD, acesse [Kubernetes - POD Lif
 
 Se algum dos seus PODs não alcançar o estágio _Running_ verifique o motivo com o comando `kubectl describe pod -l app=<nome-do-modulo>`, por exemplo:
 
-
-```bash
-kubectl describe pod -l app=front-end
-```
+`kubectl describe pod -l app=front-end`{{execute}}
 
 Se você for direto para o final, verá uma seção _Events_, e uma série de eventos que aconteceram com o seu POD, os últimos eventos indicaram algum tipo de problema, como por exemplo, que não foi possível encontrar um nó para fazer o _deploy_.
 
 `0/1 nodes are available: 1 Insufficient cpu.`
 
-Isso indica que o cluster não têm recursos suficientes e precisa de mais memória e/ou CPU.
-
-No docker-desktop, você pode modificar as configurações e adicionar mais recursos, para mais informações acesse [docker-desktop - Resources](https://docs.docker.com/docker-for-windows/#resources).
-
-Caso esteja executando o cluster na nuvem, você pode aumentar o número de nós, ou configurar a escala automática.
+Isso indica que o cluster não têm recursos suficientes.
 
 ## Istio proxy
 
-Vamos olhar novamente a descrição do POD front-end que acabamos de executar, você deve ter percebido algo diferente, há muita informação que não configuramos e quando listamos os PODs (`kubectl get pods`) havia uma indicação que 2/2 contêineres estavam prontos (READY), mas nossa aplicação tem apenas um, o segundo contêiner pode ser descoberto procurando no describe a seção `Containers:`.
+Vamos olhar novamente a descrição do POD front-end que acabamos de executar, você deve ter percebido algo diferente, há muita informação que não configuramos e quando listamos os PODs (`kubectl get pods`{{execute}}) havia uma indicação que 2/2 contêineres estavam prontos (READY), mas nossa aplicação tem apenas um, o segundo contêiner pode ser descoberto procurando no describe a seção `Containers:`.
 
 Neste _describe_ encontramos dois _containers_:
 
@@ -227,10 +213,7 @@ Containers:
 
 Um dos contêineres utiliza a imagem da nossa aplicação e o outro do proxy do Istio. Esse contêiner foi adicionado automaticamente pelo `istiod` quando instalamos nossa aplicação no _namespace_ `default`, porque esse _namespace_ está com um rótulo (`istio-injection=enabled`) que indica para o `istiod` executar essa operação de injeção de um _sidecar_ no nosso POD.
 
-
-```bash
-kubectl describe ns default
-```
+`kubectl describe ns default`{{execute}}
 
 ## Conclusão
 

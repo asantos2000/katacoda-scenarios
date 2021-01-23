@@ -1,6 +1,4 @@
-# Gerenciamento de tráfego
-
-##  Visão geral - o que é gerenciamento de tráfego
+## O que é gerenciamento de tráfego
 
 Gerenciar o tráfego é controlar o fluxo das requisições, tanto as de entrada (ingress), quanto as de saída (egress).
 
@@ -40,7 +38,6 @@ Dessa forma é possível manter a dupla convivência de serviços por períodos 
 
 Um serviço pode selecionar vários PODs, dependendo apenas de como configuramos o seletor. Se lançarmos uma nova versão em um segundo _deployment_ com o mesmo rótulo usado como seletor, o serviço irá "balancear" as requisições entre os PODs.
 
-
 O balanceamento é feito pelo kube-proxy e dependendo do [modo que ele foi configurado](https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies), o resultado pode ser melhor, por exemplo, de qualquer forma, para alcançar um balanceamento de dez porcento para a versão dois, seria necessário nove PODs (réplica) da versão um e um POD da versão dois, já deu para perceber o que acontece se a distribuição for um para noventa e nove.
 
 ![Multiplos PODs por serviço](./assets/k8s-loadbalancing-service.png)
@@ -49,10 +46,7 @@ O balanceamento é feito pelo kube-proxy e dependendo do [modo que ele foi confi
 
 Vamos fazer um teste simples, vamos criar um novo _deployment_ com uma nova versão do front-end.
 
-
-```bash
-kubectl apply -f exemplos/simul-shop/manifests/8/front-end-deployment-v2.yaml
-```
+`kubectl apply -f exemplos/simul-shop/manifests/8/front-end-deployment-v2.yaml`{{execute}}
 
 Depois de algum tempo, o Kiali irá exibir uma gráfico de versão como o abaixo:
 
@@ -62,17 +56,15 @@ Depois de algum tempo, o Kiali irá exibir uma gráfico de versão como o abaixo
 
 Agora vamos testar o balanceamento, lembrando que svc/front-end tem como seletor o rótulo app=frotn-end, o mesmo rótulo nas versões um e dois.
 
+Verificando o serviço
 
-```bash
-# Verificando o serviço
-kubectl describe svc/front-end
-```
+`kubectl describe svc/front-end`{{execute}}
 
 Nós temos um problema com essa abordagem, nosso serviço é do tipo `ClusterIP` e não podemos chamá-lo de fora do cluster, como alternativa, poderíamos utilizar o `kubectl port-forward`, mas o balanceamento não funcionaria, uma outra alternativa é testar de dentro de um dos containêres de outro POD.
 
 Execute esse comando em um terminal, copie o comando abaixo, vá ao menul lateral, click em <kbd>+</kbd> e selecione um terminal.
 
-`kubectl exec -it svc/login -c login -- bash`
+`kubectl exec -it svc/login -c login -- bash`{{execute}}
 
 Você deverá ver um prompt, cole ou digite o comando:
 
@@ -119,10 +111,7 @@ Faremos com arquivos yaml nossa primeira configuração de Istio até agora.
 
 Vamos aplicá-lo.
 
-
-```bash
-kubectl apply -f exemplos/simul-shop/istio/8/front-end-canary-release.yaml
-```
+`kubectl apply -f exemplos/simul-shop/istio/8/front-end-canary-release.yaml`{{execute}}
 
 Foram criados dois recursos do Istio, vamos entender a configuração:
 
@@ -197,10 +186,7 @@ spec:
 
 Vamos aplicá-lo:
 
-
-```bash
-kubectl apply -f exemplos/simul-shop/istio/8/front-end-config-error.yaml
-```
+`kubectl apply -f exemplos/simul-shop/istio/8/front-end-config-error.yaml`{{execute}}
 
 O kubernetes não reclamou do erro de digitação, vamos verificar o terminal.
 
@@ -233,10 +219,7 @@ E ao selecionar a configuração YAML, a seção com problema é destacada.
 
 Poderiamos corrigir o erro no editor, mas vamos executar a configuração novamente:
 
-
-```bash
-kubectl apply -f exemplos/simul-shop/istio/8/front-end-canary-release.yaml
-```
+`kubectl apply -f exemplos/simul-shop/istio/8/front-end-canary-release.yaml`{{execute}}
 
 Volte para kiali na opção _Istio Config_ e agora há um indicador de OK para as duas configurações e o no terminal não exibe mais o erro `no healthy upstream`.
 

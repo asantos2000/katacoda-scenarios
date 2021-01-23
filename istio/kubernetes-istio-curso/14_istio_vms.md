@@ -1,5 +1,3 @@
-# Istio em VMs
-
 Trazendo VMs e outros serviços de fora do kubernetes para a malha de serviços.
 
 Executar serviços em contêineres adicionam muitos benefícios, tasi como escalonamento automático, isolamento de dependência e otimização de recursos. Adicionar o Istio ao seu ambiente Kubernetes pode simplificar radicalmente a agregação de métricas e o gerenciamento de políticas, principalmente se você estiver operando muitos contêineres.
@@ -26,10 +24,7 @@ A arquitetura da solução ficará assim:
 
 Antes de iniciarmos as configurações no Kubernetes e Istio, precisamos colocar nosso sistema legado em operação, para isso você precisará de um host.
 
-Você tem duas alternativas:
-
-1. Usar seu computador - Se você estiver executando o kubernetes em sua máquina, você poderá executar o generic-services usando docker localmente. Na seção 4 você tem um exemplo de como fazer isso.
-2. Criar uma VM - Você pode criar uma vm na nuvem ou local, se você tiver recursos.
+Crie uma VM em um provedor de nuvem da sua escolha, lembre-se de que ela precisa ser acessível pela internet, configure a política de segurnaça para permitir que sua máquina acesse a VM nas portas 22 (ssh) e da aplicação (8000).
 
 Iremos utilizar uma VM na nuvem, mas a diferença é como criar a vm, os demias passos são os mesmos.
 
@@ -45,20 +40,39 @@ Nossa VM foi criada na Azure e abrimos as portas 22 (ssh), 8000 (aplicação) e 
 
 Vamos testar a conectividade do cluster:
 
+Verificando conectividade:
 
-```bash
-# Verificando conectividade
-VM_ADDRESS=10.240.0.115 # Usando o IP interno, o mesmo da subnet do cluster k8s
-kubectl exec -it svc/payment -c payment -- ping -c 5 $VM_ADDRESS
-```
+`VM_ADDRESS=10.240.0.115 # Usando o IP interno, o mesmo da subnet do cluster k8s`{{execute T2}}
+
+`kubectl exec -it svc/payment -c payment -- ping -c 5 $VM_ADDRESS`{{execute T2}}
 
 Para simplificar, instalamos docker na VM e executaremos o nosso aplicativo usando a imagem do generic-services. Para mais informações de como instalar docker no seu sistema operacional [Install Docker Engine](https://docs.docker.com/engine/install/).
 
 > Se você instalar docker em linux provavelmente precisará ajustar as permissões do usuário. Acesse [Post-installation steps for Linux](https://docs.docker.com/engine/install/linux-postinstall/)
 
-Acesse a VM via SSH (linux) ou RDP (windows) e execute o serviço:
+Criaremos um diretório de trabalho:
 
-```bash
+`mkdir -p "${WORK_DIR}"`{{execute T1}}
+
+E vamos definir as variáveis para acesso a VM. Preencha com os valores da sua VM. Ela deve ser acessível via internet.
+
+```
+VM_PUB_ADDRESS="pegasus.eastus.cloudapp.azure.com"
+VM_APP="pegasus-pay"
+VM_NAMESPACE="legacy"
+WORK_DIR="bkp/vmintegration"
+SERVICE_ACCOUNT="legacy-pegasus"
+VM_USER="peguser"
+VM_PKEY_PATH="bkp/pegasus_key.pem"
+```
+
+Abriremos uma sessão de ssh para a VM:
+
+`ssh -i $VM_PKEY_PATH $VM_USER@$VM_PUB_ADDRESS"`{{execute T2}}
+
+E executaremos o comando docker para iniciar nossa aplicação:
+
+```
 # pegasus-pay API
 docker run -d --rm \
 -p 8000:8000 \
@@ -69,117 +83,65 @@ docker run -d --rm \
 -e APP=pegasus-pay \
 -e VERSION=v1 \
 kdop/generic-service:0.0.5
+```{{execute T2}}
 
-# Logs (CTRL+C para sair)
-docker logs -f pegasus-pay
+Logs (CTRL+C para sair)
 
-# Parando o servico
-kubectl stop pegasus-pay
-```
+`docker logs -f pegasus-pay`{{execute T2}}
 
-Vamos verificar a conectividade e o serviço:
+Vamos verificar a conectividade e o serviço.
 
+Verificando firewall e serviço:
 
-```bash
-ssh-vm docker run -d --rm \
--p 8000:8000 \
---hostname pegasus-pay \
---name pegasus-pay \
--e SCHED_CALL_URL_LST=http://localhost:8000/healthz \
--e SCHED_CALL_INTERVAL=300 \
--e APP=pegasus-pay \
--e VERSION=v1 \
-kdop/generic-service:0.0.5
-```
+`SVC_PORT=8000`{{execute T1}}
 
+`kubectl exec -it svc/payment -c payment -- curl http://$VM_ADDRESS:$SVC_PORT`{{execute T1}}
 
-```bash
-# Verificando firewall e serviço
-SVC_PORT=8000
-kubectl exec -it svc/payment -c payment -- curl http://$VM_ADDRESS:$SVC_PORT
-```
+Deixaremos o serviço em execução no segundo plano e faremos mais configurações.
 
-## Configuring Cluster
-
-### Prepare the guide environment
-
-
-```bash
-# Defina as variáveis
-VM_PUB_ADDRESS="pegasus.eastus.cloudapp.azure.com"
-VM_APP="pegasus-pay"
-VM_NAMESPACE="legacy"
-WORK_DIR="bkp/vmintegration"
-SERVICE_ACCOUNT="legacy-pegasus"
-VM_USER="peguser"
-VM_PKEY_PATH="bkp/pegasus_key.pem"
-
-# Alias ssh command
-alias ssh-vm="ssh -i $VM_PKEY_PATH $VM_USER@$VM_PUB_ADDRESS"
-
-mkdir -p "${WORK_DIR}"
-```
-
-### Instalando o Istio
+### Instalando ou modificando a instalação o Istio
 
 Você já fez isso antes neste curso, mas agora iremos modificar a instalação para registrar as VMs automaticamente.
 
+No nosso cluster (terminal 1):
 
-```bash
-# Instala ou modifica a instalação coma configuração para resgistrar VMs automaticamente
-istioctl install --set values.pilot.env.PILOT_ENABLE_WORKLOAD_ENTRY_AUTOREGISTRATION=true --skip-confirmation
-```
+`istioctl install --set values.pilot.env.PILOT_ENABLE_WORKLOAD_ENTRY_AUTOREGISTRATION=true --skip-confirmation`{{execute T1}}
 
+Deploy do gateway:
 
-```bash
-# Deploy do east-west gateway:
-istio-1.8.1/samples/multicluster/gen-eastwest-gateway.sh --single-cluster | istioctl install -y -f -
-```
+`istio-1.8.2/samples/multicluster/gen-eastwest-gateway.sh --single-cluster | istioctl install -y -f -`{{execute T1}}
 
+Expondo o gateway com um serviço de LoadBalancer:
 
-```bash
-# Expor o gateway criando um serviço LoadBalancer:
-kubectl apply -f istio-1.8.1/samples/multicluster/expose-istiod.yaml
-```
+`kubectl apply -f istio-1.8.1/samples/multicluster/expose-istiod.yaml`{{execute T1}}
 
+Verificando o que foi criado:
 
-```bash
-# Verificando o que foi criado
-kubectl get pods,dr,vs,gw -n istio-system
-```
+`kubectl get pods,dr,vs,gw -n istio-system`{{execute T1}}
 
 Verifique o endereço e as portas expostas pelo `gateway/istio-eastwestgateway`, usaremos esses dados para a comunicação da VM com o cluster.
 
-
-```bash
-kubectl get svc -n istio-system
-```
+`kubectl get svc -n istio-system`{{execute T1}}
 
 ### Configurando o namespace para a VM
 
 As VMs serão registradas em um _namespace_, iremos criá-lo e associar uma conta de serviço.
 
+Namespace:
 
-```bash
-# Namespace
-kubectl create namespace "${VM_NAMESPACE}"
-```
+`kubectl create namespace "${VM_NAMESPACE}"`{{execute T1}}
 
+ServiceAccount:
 
-```bash
-# ServiceAccount
-kubectl create serviceaccount "${SERVICE_ACCOUNT}" -n "${VM_NAMESPACE}"
-```
+`kubectl create serviceaccount "${SERVICE_ACCOUNT}" -n "${VM_NAMESPACE}"`{{execute T1}}
 
 ### Criando os arquivos e transferindo para a VM
 
 Para configurar o Envoy na VM, o `istioctl` fornece um utilitário que permite criar o [WorkloadGroup](https://istio.io/latest/docs/reference/config/networking/workload-group/) e os arquivos de configuração, token e certificado que são utiliza para configurar o Envoy na VM.
 
+Crie um modelo de WorkloadGroup para as VMs:
 
-```bash
-# Crie um modelo de WorkloadGroup para as VMs
-istioctl x workload group create --name "${VM_APP}" --namespace "${VM_NAMESPACE}" --labels app="${VM_APP}" --serviceAccount "${SERVICE_ACCOUNT}" > workloadgroup.yaml
-```
+`istioctl x workload group create --name "${VM_APP}" --namespace "${VM_NAMESPACE}" --labels app="${VM_APP}" --serviceAccount "${SERVICE_ACCOUNT}" > workloadgroup.yaml`{{execute T1}}
 
 Cria os arquivos para configuração:
 
@@ -189,19 +151,17 @@ Cria os arquivos para configuração:
 * `root-cert.pem`: O certificado raiz usado para autenticação.
 * `hosts`: Um adendo ao arquivo `/etc/hosts` que o proxy usará para alcançar istiod para.
 
+Criando os arquivo em WORK_DIR:
 
-```bash
-# Criando os arquivo em WORK_DIR
-istioctl x workload entry configure -f workloadgroup.yaml -o "${WORK_DIR}"
-# Aplicando o template no cluster
-kubectl apply -f workloadgroup.yaml
-```
+`istioctl x workload entry configure -f workloadgroup.yaml -o "${WORK_DIR}"`{{execute T1}}
 
+Aplicando o template no cluster:
 
-```bash
-# Verificando o que foi criado
-ls -l $WORK_DIR
-```
+`kubectl apply -f workloadgroup.yaml`{{execute T1}}
+
+Verificando o que foi criado:
+
+`ls -l $WORK_DIR`{{execute T1}}
 
 ## Configurando a VM
 
@@ -209,83 +169,65 @@ Nesta etápa iremos configurar a VM.
 
 > **Dica pro**: Fora do escopo deste curso, idealmente você deve ter um script para automatizar essas etapas para cada nova VM criada que fará parte da malha.
 
+Transferindo os arquivos para a VM:
 
-```bash
-# Transferindo os arquivos para a VM
-scp -i $VM_PKEY_PATH $WORK_DIR/* $VM_USER@$VM_PUB_ADDRESS:/home/$VM_USER
-```
+`scp -i $VM_PKEY_PATH $WORK_DIR/* $VM_USER@$VM_PUB_ADDRESS:/home/$VM_USER`{{execute T1}}
 
-> Se vc preferir, abra um terminal para a sua máquina virtual e entre com os comandos abaixo, retirando o comando `ssh-vm`.
+Abriremos o terminal 2 para a sua máquina virtual.
 
+Instalando o certificado root:
 
-```bash
-# Instalando o certificado root
-ssh-vm sudo mkdir -p /etc/certs
-ssh-vm sudo cp /home/$VM_USER/root-cert.pem /etc/certs/root-cert.pem
-```
+`sudo mkdir -p /etc/certs`{{execute T2}}
 
+`sudo cp /home/$VM_USER/root-cert.pem /etc/certs/root-cert.pem`{{execute T2}}
 
-```bash
-# Instalando o token
-ssh-vm sudo mkdir -p /var/run/secrets/tokens
-ssh-vm sudo cp /home/$VM_USER/istio-token /var/run/secrets/tokens/istio-token
-```
+Instalando o token:
 
+`sudo mkdir -p /var/run/secrets/tokens`{{execute T2}}
 
-```bash
-# Instalando a configuração cluster.env
-ssh-vm sudo cp /home/$VM_USER/cluster.env /var/lib/istio/envoy/cluster.env
-```
+`sudo cp /home/$VM_USER/istio-token /var/run/secrets/tokens/istio-token`{{execute T2}}
 
+Instalando a configuração cluster.env:
 
-```bash
-# Instalando a configuração mesh.yaml
-ssh-vm sudo cp /home/$VM_USER/mesh.yaml /etc/istio/config/mesh
-```
+`sudo cp /home/$VM_USER/cluster.env /var/lib/istio/envoy/cluster.env`{{execute T2}}
 
+Instalando a configuração mesh.yaml:
 
-```bash
-# Ajustando permissões
-ssh-vm sudo mkdir -p /etc/istio/proxy
-ssh-vm sudo chown -R istio-proxy /var/lib/istio /etc/certs /etc/istio/proxy /etc/istio/config /var/run/secrets /etc/certs/root-cert.pem
-```
+`sudo cp /home/$VM_USER/mesh.yaml /etc/istio/config/mesh`{{execute T2}}
 
+Ajustando permissões:
 
-```bash
-# Adicionando o endereço do LoadBalancer do gateway/istio-eastwestgateway no /etc/hosts
-ssh-vm sudo -- sh -c "cat /home/peguser/hosts >> /etc/hosts" # TODO: Não funciona adicionar manualmente
-```
+`sudo mkdir -p /etc/istio/proxy`{{execute T2}}
+
+`sudo chown -R istio-proxy /var/lib/istio /etc/certs /etc/istio/proxy /etc/istio/config /var/run/secrets /etc/certs/root-cert.pem`{{execute T2}}
+
+Adicionando o endereço do LoadBalancer do gateway/istio-eastwestgateway no /etc/hosts:
+
+`sudo -- sh -c "cat /home/peguser/hosts >> /etc/hosts" # TODO: Não funciona adicionar manualmente`{{execute T2}}
 
 > **Dica pro**: O objetivo desse comando é resolver o nome do serviço de descobert do Istio (discoveryAddress). Em produção, não adicione entradas no `/etc/hosts`, registre o endereço em um DNS e utilize o registro. Se não for possível, certifique-se de que o endereço atribuído ao balanceador de carga não mudará.
 
+Instando o sidecar (Linux):
 
-```bash
-# Instando o sidecar (Linux)
-ssh-vm curl -LO https://storage.googleapis.com/istio-release/releases/1.8.1/deb/istio-sidecar.deb
-ssh-vm sudo dpkg -i istio-sidecar.deb
-```
+`curl -LO https://storage.googleapis.com/istio-release/releases/1.8.1/deb/istio-sidecar.deb`{{execute T2}}
+
+`sudo dpkg -i istio-sidecar.deb`{{execute T2}}
 
 > Nesta versão, o Istio suporta apenas os sistemas operacionais Linux baseados em centos e debian.
 
+Inicia o sidecar:
 
-```bash
-# Inicia o sidecar
-ssh-vm sudo systemctl start istio
-```
+`sudo systemctl start istio`{{execute T2}}
 
+Habilita a inicialização automática do sidecar após o boot:
 
-```bash
-# Habilita a inicialização automática do sidecar após o boot
-ssh-vm sudo systemctl enable istio
-```
+`sudo systemctl enable istio`{{execute T2}}
 
 ### Verificando o funcionamento do _sidecar_
 
+Verifica os logs em /var/log/istio/istio.log:
 
-```bash
-# Check the log in /var/log/istio/istio.log. You should see entries similar to the following:
-ssh-vm tail /var/log/istio/istio.log
-```
+`tail /var/log/istio/istio.log`{{execute T2}}
 
 Os logs não devem exibir erros, e devem se parecer com este:
 
@@ -310,22 +252,13 @@ Os erros que encontramos durante a instalação:
 
 Para verificar a conectividade da máquina virtual, execute o seguinte comando:
 
-
-```bash
-ssh-vm curl localhost:15000/clusters | grep payment
-```
+`curl localhost:15000/clusters | grep payment`{{execute T2}}
 
 Vamos enviar requisições para os serviços no cluster:
 
+`curl -s payment.default.svc:8000/`{{execute T2}}
 
-```bash
-ssh-vm curl -s payment.default.svc:8000/
-```
-
-
-```bash
-ssh-vm curl -s "front-end.default.svc:8000/r?code=404&wait=1s"
-```
+`curl -s "front-end.default.svc:8000/r?code=404&wait=1s"`{{execute T2}}
 
 ### Conectando os serviços do cluster aos da VM
 
@@ -333,24 +266,19 @@ Conseguimos consumir serviços do cluster desde a VM, agora vamos configurar o c
 
 Como instalamos o Istio com o parâmetro de criação automática de [WorkLoadEntry](https://istio.io/latest/docs/reference/config/networking/workload-entry/), a nossa VM já foi registrada, podemos verificar:
 
-
-```bash
-kubectl get workloadentry.networking.istio.io -A
-```
+`kubectl get workloadentry.networking.istio.io -A`{{execute T1}}
 
 Você pode configurar qualquer endereço que o cluster consiga chegar na VM, verificamos que o autoregistro do Istio escolheu o endereço privado.
 
 Se o Istio não estiver configurado para autogegistrar as VMs ou se você deseja configurá-los em um _pipeline_, por exemplo, basta escrever e aplicar no cluster a configuração abaixo.
 
+`echo "Interno: $VM_ADDRESS"`{{execute T1}}
 
-```bash
-echo "Interno: $VM_ADDRESS"
-echo "Público: $VM_PUB_ADDRESS"
+`echo "Público: $VM_PUB_ADDRESS"`{{execute T1}}
+
+[Opcional] Se o autoregistro estiver desligado
+
 ```
-
-
-```bash
-# [Desnecessário se o autoregistro estiver ligado]
 cat <<EOF | kubectl -n legacy apply -f -
 apiVersion: networking.istio.io/v1beta1
 kind: WorkloadEntry
@@ -363,13 +291,11 @@ spec:
     app: pegasus-pay
   serviceAccount: "legacy-pegasus"
 EOF
-```
+```{{execute T1}}
 
 A configuração a seguir registrar um serviço kubernetes para a nossa VM, dessa forma os demais serviços poderão acessá-la como qualquer outro serviço:
 
-
-```bash
-# Add virtual machine services to the mesh
+```
 cat <<EOF | kubectl -n legacy apply -f -
 apiVersion: v1
 kind: Service
@@ -385,14 +311,11 @@ spec:
   selector:
     app: pegasus-pay
 EOF
-```
+```{{execute T1}}
 
 Acessando o serviço da VM pelo cluster:
 
-
-```bash
-kubectl exec -it svc/payment -c payment -- curl pegasus-pay.legacy.svc.cluster.local:8000
-```
+`kubectl exec -it svc/payment -c payment -- curl pegasus-pay.legacy.svc.cluster.local:8000`{{execute T1}}
 
 #### TLS mutuo
 
@@ -402,10 +325,7 @@ Ao executar o comando acima retornou o erro:
 
 Vamos desabilitar o TLS mútuo para o _namespace_
 
-
-```bash
-# Desabilitando o MTLS para o namesapce legacy
-# Solução de contorno para comunicação Cluster -> VM
+```
 cat <<EOF | kubectl apply -f -
 apiVersion: "security.istio.io/v1beta1"
 kind: "PeerAuthentication"
@@ -416,21 +336,14 @@ spec:
   mtls:
     mode: DISABLE
 EOF
-```
+```{{execute T1}}
 
-
-```bash
-#kubectl delete peerauthentication.security.istio.io/disable-mtls-legacy -n legacy
-```
+> Desabilitando o MTLS para o namesapce legacy. Solução de contorno para comunicação Cluster -> VM (TODO)
+> Para restaurar o TLS mútuo: `kubectl delete peerauthentication.security.istio.io/disable-mtls-legacy -n legacy`
 
 E executar o teste novamente:
 
-
-```bash
-kubectl exec -it svc/payment -c payment -- curl pegasus-pay.legacy.svc.cluster.local:8000
-```
-
-Ver Issues.
+`kubectl exec -it svc/payment -c payment -- curl pegasus-pay.legacy.svc.cluster.local:8000`{{execute T1}}
 
 ### Monitorando a VM
 
@@ -440,29 +353,21 @@ Inicie o kiali e jaeger.
 
 Abra um terminal e execute o comando algumas vezes.
 
+`kubectl exec -it svc/payment -c payment -- bash`{{execute T3}}
 
-```bash
-kubectl exec -it svc/payment -c payment -- bash
 ```
-
-
-```bash
 for i in $(seq 1 10);
 do curl pegasus-pay.legacy.svc.cluster.local:8000;
 done
-```
+```{{execute T3}}
 
 Conecte um terminal a VM e execute o comando abaixo algumas vezes.
 
-
-```bash
-for i in $(seq 1 100); do curl payment.default.svc.cluster.local:8000; done
-```
+`for i in $(seq 1 100); do curl payment.default.svc.cluster.local:8000; done`{{execute T2}}
 
 Para que o kiali represente corretamente o serviço.
 
-
-```bash
+```
 cat <<EOF | kubectl apply -f -
 apiVersion: networking.istio.io/v1alpha3
 kind: ServiceEntry
@@ -479,12 +384,9 @@ spec:
     protocol: HTTP
   resolution: DNS
 EOF
-```
+```{{execute T1}}
 
-
-```bash
-kubectl get se/pegasus-pay -n legacy
-```
+`kubectl get se/pegasus-pay -n legacy`{{execute T1}}
 
 ## Limpando o ambiente
 
@@ -492,19 +394,17 @@ Esta é a última seção do curso, então não se esqueça de remover todos os 
 
 > A exclusão dos recursos abaixo só é necessário se você não excluir a VM e o cluster.
 
-
-```bash
+```
 # Na VM
-#Stop Istio on the virtual machine:
-ssh-vm sudo systemctl stop istio
+#Parando Istio:
+sudo systemctl stop istio
 
 # Remove a instalação do sidecar
-ssh-vm sudo dpkg -r istio-sidecar
-ssh-vm dpkg -s istio-sidecar
+sudo dpkg -r istio-sidecar
+dpkg -s istio-sidecar
+```{{execute T2}}
+
 ```
-
-
-```bash
 # No cluster
 # Namespace legacy
 kubectl delete ns legacy
@@ -517,146 +417,4 @@ kubectl delete -f exemplos/simul-shop/manifests/
 
 # Istio
 kubectl delete namespace istio-system
-```
-
-## Issues
-
-### Cluster -> VM fail to validade TLS
-
-
-```bash
-kubectl apply -f istio-1.8.1/samples/sleep/sleep.yaml
-```
-
-
-```bash
-# On VM
-python -m SimpleHTTPServer 8080
-```
-
-
-```bash
-cat <<EOF | kubectl apply -f -
-apiVersion: networking.istio.io/v1beta1
-kind: WorkloadEntry
-metadata:
-  name: cloud-vm
-  namespace: legacy
-spec:
-  address: 10.240.0.115
-  labels:
-    app: cloud-vm
-  serviceAccount: pegasus-legacy
-EOF
-```
-
-
-```bash
-cat <<EOF | kubectl apply -f -
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: cloud-vm
-  name: cloud-vm
-  namespace: legacy
-spec:
-  clusterIP: 10.0.183.31
-  ports:
-  - name: http-vm
-    port: 8080
-    protocol: TCP
-    targetPort: 8080
-  selector:
-    app: cloud-vm
-  type: ClusterIP
-EOF
-```
-
-
-```bash
-kubectl exec -it svc/sleep -c sleep -- curl cloud-vm.legacy.svc.cluster.local:8080
-```
-
-
-```bash
-kubectl exec -it svc/payment -c payment -- curl pegasus-pay.legacy.svc.cluster.local:8000
-```
-
-
-```bash
-# Desabilitando o MTLS
-cat <<EOF | kubectl apply -f -
-apiVersion: "security.istio.io/v1beta1"
-kind: "PeerAuthentication"
-metadata:
-  name: "disable-mtls-legacy"
-  namespace: "legacy"
-spec:
-  mtls:
-    mode: DISABLE
-EOF
-```
-
-
-```bash
-kubectl delete PeerAuthentication/disable-mtls-legacy -n legacy
-```
-
-### Fail DNS resolution for external URI on VM
-
-Mesmo com o padrão do cluster que permite acessar qualquer endereço fora fora da malha, na VM não é observado o mesmo comportamento.
-
-
-```bash
-kubectl get istiooperator installed-state -n istio-system -o jsonpath='{.spec.meshConfig.outboundTrafficPolicy.mode}'
-```
-
-
-```bash
-kubectl exec -it svc/payment -c payment -- nslookup azure.archive.ubuntu.com
-```
-
-
-```bash
-ssh-vm nslookup azure.archive.ubuntu.com
-```
-
-Problema está relacionado a configuração do `cluster.env` no sidecar da VM
-
-```ini
-CANONICAL_REVISION='latest'
-CANONICAL_SERVICE='pegasus-pay'
-DNS_AGENT=''
-ISTIO_INBOUND_PORTS='*'
-ISTIO_METAJSON_LABELS='{"app":"pegasus-pay","service.istio.io/canonical-name":"pegasus-pay","service.istio.io/canonical-version":"latest"}'
-ISTIO_META_CLUSTER_ID='Kubernetes'
-ISTIO_META_DNS_CAPTURE='true'
-ISTIO_META_MESH_ID=''
-ISTIO_META_NETWORK=''
-ISTIO_META_WORKLOAD_NAME='pegasus-pay'
-ISTIO_NAMESPACE='legacy'
-ISTIO_SERVICE='pegasus-pay.legacy'
-ISTIO_SERVICE_CIDR='*'
-POD_NAMESPACE='legacy'
-SERVICE_ACCOUNT='legacy-pegasus'
-TRUST_DOMAIN='cluster.local'
-```
-
-O parâmetro `ISTIO_META_DNS_CAPTURE` captura as chamadas para o serviço de DNS de acordo com a [documentação](https://istio.io/latest/docs/reference/commands/pilot-agent/).
-
-Adicionado DNS primário para 8.8.8.8 em `/etc/resolv.conf`
-
-
-```bash
-kubectl exec -it svc/payment -c payment -- nslookup azure.archive.ubuntu.com
-```
-
-
-```bash
-ssh-vm nslookup azure.archive.ubuntu.com
-```
-
-### Notes
-
-* Removido o DNS do /etc/resolv.conf e continua a funcionar. Inconclusivo
+```{{execute T1}}

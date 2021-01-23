@@ -1,5 +1,3 @@
-# Telemetria
-
 Entre as funcionalidades do Istio a telemetria é que materealiza a malha de serviços, ela fornece visibilidade e rastreamento das relações e comunicações na malha.
 
 O interessante é que você obtem a maior parte das funcionalidades gratuitamente por ter instalado o istio-proxy ao lado da sua aplicação, nenhuma configuração adicional será necessária para as funções que iremos explorar. Nas seções seguintes veremos o rastreamento de logs e é a única funcionalidade que necessitará de algumas modificações na nossa aplicação.
@@ -12,23 +10,21 @@ Mas antes, vamos voltar ao kiali para explorar em profundidade suas funcionalida
 
 Para executá-lo:
 
+Versão do Istio
 
-```bash
-# Versão do Istio
-ISTIO_VERSION=1.8.1
+`ISTIO_VERSION=1.8.2`{{execute}}
 
-# Se necessário, configure o acesso ao cluster
-#export KUBECONFIG=~/.kube/config 
-```
+Se necessário, configure o acesso ao cluster
 
+`export KUBECONFIG=~/.kube/config`{{execute}}
 
-```bash
-# Se ainda não estiver em execução, para verificar, no terminal: ps -ef | grep "istioctl dashboard kiali"
-istioctl dashboard kiali &
-export KIALI_PID=$!
-```
+Se ainda não estiver em execução, para verificar, no terminal: ps -ef | grep "istioctl dashboard kiali"
 
-Abra no navegador a url <http://localhost:20001>
+`istioctl dashboard kiali &`{{execute}}
+
+`export KIALI_PID=$!`{{execute}}
+
+Abra no navegador a url <https://[[HOST_SUBDOMAIN]]-20001-[[KATACODA_HOST]].environments.katacoda.com>
 
 ![kiali simul-shop](./assets/kiali-simul-shop.gif)
 
@@ -40,11 +36,9 @@ A grande diferença é que o gráfico exibido pelo kiali está sendo criado com 
 
 > Tipos de leiaute: Há três opções de organização do gráfico para os gráficos do kiali, o padrão - dagre, o 1 - cose bikent e o 2 - cola. A escolha é mais uma opção de estética, mas para conhecer mais sobre os tipos acesse [Cytoscape - Layout extensions](https://js.cytoscape.org/#extensions/layout-extensions).
 
+[Opcional] Parando o redirecionamento para o dashboard do kiali
 
-```bash
-# Opcional: Parando o redirecionamento para o dashboard do kiali
-kill $KIALI_PID
-```
+`kill $KIALI_PID`{{execute}}
 
 ## Rastreamento de logs com Jaeger
 
@@ -62,20 +56,15 @@ De fato, o Kiali tem um indicador que verifica se os componentes do Istio, Jaege
 
 Enão, antes de começarmos a utlizar o Jaeger precisaremos instalá-lo em nosso cluster.
 
-
-```bash
-kubectl apply -f istio-$ISTIO_VERSION/samples/addons/jaeger.yaml
-```
+`kubectl apply -f istio-$ISTIO_VERSION/samples/addons/jaeger.yaml`{{execute}}
 
 Para acessar o dashboard vamos continuar utilizando o `istioctl`, como fizemos para o kiali.
 
+`istioctl dashboard jaeger &`{{execute}}
 
-```bash
-istioctl dashboard jaeger &
-export JAEGER_PID=$!
-```
+`export JAEGER_PID=$!`{{execute}}
 
-Abra no navegador a url <http://localhost:16686>
+Abra no navegador a url <https://[[HOST_SUBDOMAIN]]-16686-[[KATACODA_HOST]].environments.katacoda.com>
 
 ![Jaeger simul-shop](./assets/jaeger-simul-shop.gif)
 
@@ -86,11 +75,9 @@ Abra no navegador a url <http://localhost:16686>
 
 Podemos para o processo do `istioctl` para economizar recursos.
 
+[Opcional] Parando o redirecionamento para o dashboard do Jaeger
 
-```bash
-# Opcional: Parando o redirecionamento para o dashboard do Jaeger
-kill $JAEGER_PID
-```
+`kill $JAEGER_PID`{{execute}}
 
 ## Replicando cabeçalhos para o rastreamento
 
@@ -198,33 +185,23 @@ O Istio instala alguns dashboards:
 
 O dito anteriormente, o Grafana não faz parte da solução, mas pode ser instalado, juntamente com os dashboards do Istio, a partir do download do Istio.
 
-
-```bash
-kubectl apply -f istio-$ISTIO_VERSION/samples/addons/grafana.yaml
-```
+`kubectl apply -f istio-$ISTIO_VERSION/samples/addons/grafana.yaml`{{execute}}
 
 Verifique se o grafana já está em execução
 
-
-```bash
-kubectl get pods -n istio-system
-```
+`kubectl get pods -n istio-system`{{execute}}
 
 Vamos configurar o redirecionamento para o dashboard.
 
+`istioctl dashboard grafana &`{{execute}}
 
-```bash
-istioctl dashboard grafana &
-export GRAFANA_PID=$!
-```
+`export GRAFANA_PID=$!`{{execute}}
 
-Abra no navegador a url <http://localhost:3000>
+Abra no navegador a url <https://[[HOST_SUBDOMAIN]]-3000-[[KATACODA_HOST]].environments.katacoda.com>
 
+[Opcional] Parando o redirecionamento para o dashboard do graphana
 
-```bash
-# Opcional: Parando o redirecionamento para o dashboard do graphana
-kill $GRAFANA_PID
-```
+`kill $GRAFANA_PID`{{execute}}
 
 ## Conclusão
 

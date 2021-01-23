@@ -1,5 +1,3 @@
-# Visualizando a malha de serviços com Kiali
-
 Discutiremos sobre muitas ferramentas durante este curso, mas o [Kiali](https://kiali.io/) é a a ferramenta que ajudará você a entender e administrar sua malha de serviços.
 
 Até a versão 1.5, o Kiali e outras ferramentas faziam parte da distribuição do Istio, mas desde a versão 1.6 essas ferramentas devem ser instaladas.

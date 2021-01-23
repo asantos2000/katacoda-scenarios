@@ -1,5 +1,3 @@
-# Segurança - parte 2
-
 ## Políticas de autenticação
 
 ### Autenticando o usuário
@@ -14,50 +12,51 @@ Adaptamos o exemplo do [Istio](https://istio.io/latest/docs/tasks/security/authe
 
 Vamos definir como chegaremos nos nossos serviços:
 
-
-```bash
+```
 export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
 export SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].port}')
 export TCP_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="tcp")].port}')
-```
+```{{execute}}
 
 Obtenha os scripts para criar os certificados e gerar os tokens
 
+Script:
 
-```bash
-# Script
-wget --no-verbose https://raw.githubusercontent.com/istio/istio/release-1.8/security/tools/jwt/samples/gen-jwt.py -P scripts/
+`wget --no-verbose https://raw.githubusercontent.com/istio/istio/release-1.8/security/tools/jwt/samples/gen-jwt.py -P scripts/`{{execute}}
 
-# [Opcional] jwkgen. Os cerficiados estão no diretório exemplos/certificados
-# Para instalar em outros sistemas operacionais acesse: https://github.com/rakutentech/jwkgen
-brew tap rakutentech/tap
-brew install jwkgen
-```
+[Opcional] jwkgen. Os cerficiados estão no diretório exemplos/certificados
+
+Para instalar em outros sistemas operacionais acesse: https://github.com/rakutentech/jwkgen
+
+`apt install jwkgen`{{execute}}
 
 ### Aplicação
 
 Vamos implemntar o seguinte cenário, a equipe responsável pelo serviço `login` quer expó-lo para fora da malha, mas somente para usuários autenticados.
 
+Verificando a aplicação:
+
+`kubectl get pods -l app=login`{{execute}}
+
+Acessando o serviço usando o front-end:
+
+`kubectl exec "$(kubectl get pod -l app=front-end,version=v1 -o jsonpath={.items..metadata.name})" -c front-end -- curl http://login:8000/ -s -o /dev/null -w "%{http_code}\n"`{{execute}}
 
 ```bash
-# Verify app
-kubectl get pods -l app=login
-```
-
-
-```bash
-# Using front-end POD as client to call services
-kubectl exec "$(kubectl get pod -l app=front-end,version=v1 -o jsonpath={.items..metadata.name})" -c front-end -- curl http://login:8000/ -s -o /dev/null -w "%{http_code}\n"
 # Output
 # 200
 ```
 
+Acessando os serviços login, catalogue e orders:
 
-```bash
+```
 for service in "login" "catalogue" "orders";
   do kubectl exec "$(kubectl get pod -l app=front-end,version=v1 -o jsonpath={.items..metadata.name})" -c front-end -- curl "http://${service}:8000/" -s -o /dev/null -w " front-end to ${service}: %{http_code}\n"; 
 done
+```{{execute}}
+
+```bash
 # Output
 # front-end to login: 200
 # front-end to catalogue: 200
@@ -66,28 +65,29 @@ done
 
 Vamos nos certificar que não há configurações do Istio.
 
+Request auth policy:
 
-```bash
-# request auth policy:
-kubectl get requestauthentication --all-namespaces
+`kubectl get requestauthentication --all-namespaces`{{execute}}
 
-# authorization policy:
-kubectl get authorizationpolicy --all-namespaces
+Authorization policy:
 
-# virtual service
-kubectl get vs --all-namespaces
+`kubectl get authorizationpolicy --all-namespaces`{{execute}}
 
-# ingress gateway
-kubectl get gateway --all-namespaces
-```
+Virtual service:
+
+`kubectl get vs --all-namespaces`{{execute}}
+
+Ingress gateway:
+
+`kubectl get gateway --all-namespaces`{{execute}}
 
 ### Configurando o acesso ao login
 
 Iremos configurar um [ingress gateway](https://istio.io/latest/docs/tasks/traffic-management/ingress/) para o login para que possamos aplicar as regras exclusivamente para esse serviço.
 
+Ingress Gateway:
 
-```bash
-# Ingress Gateway
+```
 kubectl apply -f - <<EOF
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
@@ -105,8 +105,11 @@ spec:
     hosts:
     - "*"
 EOF
+```{{execute}}
 
-# VirtualService
+VirtualService:
+
+```
 kubectl apply -f - <<EOF
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -125,13 +128,13 @@ spec:
           number: 8000
         host: login.default.svc.cluster.local
 EOF
-```
+```{{execute}}
 
 Testando:
 
+`http "$INGRESS_HOST:$INGRESS_PORT/" "Host: login.default"`{{execute}}
 
 ```bash
-http "$INGRESS_HOST:$INGRESS_PORT/" "Host: login.default"
 # Output
 # HTTP/1.1 200 OK
 # content-length: 104
@@ -157,10 +160,7 @@ Normalmente essa infraestrutura é mais sofisticada, como o serviço PaaS da [Au
 
 Vamos criar os certificados:
 
-
-```bash
-jwkgen rsa exemplos/certificates/istio-curso
-```
+`jwkgen rsa exemplos/certificates/istio-curso`{{execute}}
 
 Isso irá criar quatro arquivos:
 
@@ -189,7 +189,7 @@ Iremos utilizar a chave privada e modificaremos a chave jwks pública, como segu
 Vamos configurar o Ingress Gateway para validar o token:
 
 
-```bash
+```
 kubectl apply -f - <<EOF
 apiVersion: "security.istio.io/v1beta1"
 kind: "RequestAuthentication"
@@ -214,14 +214,15 @@ spec:
             ]
         }
 EOF
-```
+```{{execute}}
 
 Vamos testa-lo.
 
+Sem token:
+
+`http "$INGRESS_HOST:$INGRESS_PORT/" "Host: login.default"`{{execute}}
 
 ```bash
-# no token
-http "$INGRESS_HOST:$INGRESS_PORT/" "Host: login.default"
 # Output
 # HTTP/1.1 200 OK
 # content-length: 104
@@ -239,10 +240,11 @@ http "$INGRESS_HOST:$INGRESS_PORT/" "Host: login.default"
 # }
 ```
 
+Token inválido:
+
+`http "$INGRESS_HOST:$INGRESS_PORT/" "Authorization: Bearer ItsNotAToken" "Host: login.default"`{{execute}}
 
 ```bash
-# invalid token
-http "$INGRESS_HOST:$INGRESS_PORT/" "Authorization: Bearer ItsNotAToken" "Host: login.default"
 # Output
 # HTTP/1.1 401 Unauthorized
 # content-length: 79
@@ -253,11 +255,13 @@ http "$INGRESS_HOST:$INGRESS_PORT/" "Authorization: Bearer ItsNotAToken" "Host: 
 # Jwt is not in the form of Header.Payload.Signature with two dots and 3 sections
 ```
 
+Token válido:
+
+`TOKEN=$(python3 scripts/gen-jwt.py -iss john@simul-shop.com exemplos/certificates//istio-curso.pem --expire 20)`{{execute}}
+
+`http "$INGRESS_HOST:$INGRESS_PORT/" "Authorization: Bearer $TOKEN" "Host: login.default"`{{execute}}
 
 ```bash
-# valid token
-TOKEN=$(python3 scripts/gen-jwt.py -iss john@simul-shop.com exemplos/certificates//istio-curso.pem --expire 20)
-http "$INGRESS_HOST:$INGRESS_PORT/" "Authorization: Bearer $TOKEN" "Host: login.default"
 # 200
 ```
 
@@ -271,8 +275,7 @@ Vamos modificar essa configuração.
 
 Para rejeitar solicitações sem tokens válidos, adicione uma política de autorização com uma regra especificando uma ação _DENY_ para solicitações sem principais de solicitação, mostrado como notRequestPrincipals: ["*"] no exemplo a seguir. Os principais de solicitação estão disponíveis apenas quando tokens JWT válidos são fornecidos. A regra, portanto, nega solicitações sem tokens válidos.
 
-
-```bash
+```
 kubectl apply -f - <<EOF
 apiVersion: "security.istio.io/v1beta1"
 kind: "AuthorizationPolicy"
@@ -289,14 +292,15 @@ spec:
     - source:
         notRequestPrincipals: ["*"]
 EOF
-```
+```{{execute}}
 
 Vamos testar chamar novamente o serviço sem um token.
 
+Caminho protegido:
+
+`http "$INGRESS_HOST:$INGRESS_PORT/" "Host: login.default"`{{execute}}
 
 ```bash
-# Protected path
-http "$INGRESS_HOST:$INGRESS_PORT/" "Host: login.default"
 # Output
 # HTTP/1.1 403 Forbidden
 # content-length: 19
@@ -309,11 +313,15 @@ http "$INGRESS_HOST:$INGRESS_PORT/" "Host: login.default"
 
 Agora com um token válido:
 
+Gerando o token
+
+`TOKEN=$(python3 scripts/gen-jwt.py -iss john@simul-shop.com exemplos/certificates//istio-curso.pem --expire 20)`{{execute}}
+
+Invocando com um token válido:
+
+`http "$INGRESS_HOST:$INGRESS_PORT/" "Authorization: Bearer $TOKEN" "Host: login.default"`{{execute}}
 
 ```bash
-# generate token
-TOKEN=$(python3 scripts/gen-jwt.py -iss john@simul-shop.com exemplos/certificates//istio-curso.pem --expire 20)
-http "$INGRESS_HOST:$INGRESS_PORT/" "Authorization: Bearer $TOKEN" "Host: login.default"
 # Output
 # HTTP/1.1 200 OK
 # content-length: 104
@@ -337,8 +345,7 @@ Para refinar a autorização com um requisito de token por host, caminho ou mét
 
 Nesse cenário, apenas o caminho _healthz_ deve ser protegido por um token. Vamos modificar a configuração.
 
-
-```bash
+```
 kubectl apply -f - <<EOF
 apiVersion: "security.istio.io/v1beta1"
 kind: "AuthorizationPolicy"
@@ -358,21 +365,19 @@ spec:
     - operation:
         paths: ["/healthz"]
 EOF
-```
+```{{execute}}
 
 Agora você pode chamar o caminho raíz sem token:
 
-
-```bash
-http "$INGRESS_HOST:$INGRESS_PORT/" "Host: login.default"
-```
+`http "$INGRESS_HOST:$INGRESS_PORT/" "Host: login.default"`{{execute}}
 
 Mas ao tentar chamar o caminho protegido:
 
+Caminho protegido:
+
+`http "$INGRESS_HOST:$INGRESS_PORT/healthz" "Host: login.default"`{{execute}}
 
 ```bash
-# Protected path
-http "$INGRESS_HOST:$INGRESS_PORT/healthz" "Host: login.default"
 # Output
 # HTTP/1.1 403 Forbidden
 # content-length: 19
@@ -385,11 +390,15 @@ http "$INGRESS_HOST:$INGRESS_PORT/healthz" "Host: login.default"
 
 Vamos adicionar um token válido:
 
+Gerando o token
+
+`TOKEN=$(python3 scripts/gen-jwt.py -iss john@simul-shop.com exemplos/certificates//istio-curso.pem --expire 20)`{{execute}}
+
+Invocando:
+
+`http "$INGRESS_HOST:$INGRESS_PORT/healthz" "Authorization: Bearer $TOKEN" "Host: login.default"`{{execute}}
 
 ```bash
-# generate token
-TOKEN=$(python3 scripts/gen-jwt.py -iss john@simul-shop.com exemplos/certificates//istio-curso.pem --expire 20)
-http "$INGRESS_HOST:$INGRESS_PORT/healthz" "Authorization: Bearer $TOKEN" "Host: login.default"
 # Output
 # HTTP/1.1 200 OK
 # content-length: 98
@@ -411,11 +420,13 @@ http "$INGRESS_HOST:$INGRESS_PORT/healthz" "Authorization: Bearer $TOKEN" "Host:
 
 A comunicação com o serviço através do ingress gateway foi protegida, porém, a comunicação dentro da malha não exige um token para autenticar o usuário e pode ser acessado por todos os serviços.
 
-
-```bash
+```
 for service in "login" "catalogue" "orders";
   do kubectl exec "$(kubectl get pod -l app=front-end -o jsonpath={.items..metadata.name})" -c front-end -- curl "http://${service}:8000/" -s -o /dev/null -w " front-end to ${service}: %{http_code}\n"; 
 done
+```{{execute}}
+
+```bash
 # Output
 # front-end to login: 200
 # front-end to catalogue: 200
@@ -424,8 +435,7 @@ done
 
 ## Autorizando acesso a um serviço (RBAC)
 
-
-```bash
+```
 cat <<EOF | kubectl apply -f -
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
@@ -445,15 +455,14 @@ spec:
     - key: request.auth.claims[role]
       values: ["customer"]
 EOF
-```
+```{{execute}}
 
 Somente usuários com um token válido e o papel _customer_ terão acesso ao serviço.
 
 
-```bash
-TOKEN=$(python3 scripts/gen-jwt.py -claim role:customer -iss john@simul-shop.com exemplos/certificates//istio-curso.pem --expire 20)
-http "$INGRESS_HOST:$INGRESS_PORT/healthz" "Authorization: Bearer $TOKEN" "Host: login.default"
-```
+`TOKEN=$(python3 scripts/gen-jwt.py -claim role:customer -iss john@simul-shop.com exemplos/certificates//istio-curso.pem --expire 20)`{{execute}}
+
+`http "$INGRESS_HOST:$INGRESS_PORT/healthz" "Authorization: Bearer $TOKEN" "Host: login.default"`{{execute}}
 
 Copie o token gerado para decodifica-lo em [jwt.io](jwt.io). Se quiser validar o token, utilize a [chave pública](exemplos/certificates/istio-curso.pub.pem).
 
@@ -470,20 +479,21 @@ Vamos remover o que criamos e recapitular.
 
 Agora removeremos as configurações:
 
+Authentication policy:
 
-```bash
-# Remove authentication policy:
-kubectl delete requestauthentication/jwt-login
+`kubectl delete requestauthentication/jwt-login`{{execute}}
 
-# Remove authorization policy:
-kubectl delete authorizationpolicy/login-ingress
+Authorization policy:
 
-# Remove virtual service
-kubectl delete vs/login
+`kubectl delete authorizationpolicy/login-ingress`{{execute}}
 
-# Remove ingress gateway
-kubectl delete gateway/login-gateway
-```
+Virtual service:
+
+`kubectl delete vs/login`{{execute}}
+
+Ingress gateway:
+
+`kubectl delete gateway/login-gateway`{{execute}}
 
 Agora estamos prontos para a próxima seção.
 

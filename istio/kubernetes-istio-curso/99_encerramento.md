@@ -1,5 +1,3 @@
-# Encerramento
-
 Foi um longo caminho até aqui, parabéns. Se você não compreendeu tudo não se sinta mal, Istio é uma aplicação bem grande, com muitas funcionalidades e sua documentação não é tão abrangente quanto poderia ser, mas conte conosco, deixe seus comentários, contribua criando exemplos e enviando para nós, você pode fazer um _fork_ do [projeto no github](https://github.com/kdop-dev/istio-curso) e enviar _pull requets_ que teremos o maior prazer de analisar. Você também pode enviar _links_ dos seus exemplos que adicionaremos na seção [16_contribuicoes.md](16_contribuicoes.md).
 
 Mas antes de encerrar, gostaria que você colocasse o chapéu de arquiteto de software e vamos discutir sobre a aplicação do Istio como solução arquitetura e quais implicações.
@@ -84,7 +82,7 @@ Pense nisso quando estiver desenhado sua arquitetura, se você precisa expor sua
 Vamos remover tudo que foi instalado no cluster.
 
 
-```bash
+```
 # Apaga todos os recursos do namespace
 kubectl delete ns financial
 
@@ -116,7 +114,7 @@ kubectl delete -f exemplos/simul-shop/manifests/8
 kubectl delete -f exemplos/simul-shop/manifests/9
 
 kubectl delete -f exemplos/simul-shop/manifests/10
-```
+```{{execute}}
 
 ## Referências
 

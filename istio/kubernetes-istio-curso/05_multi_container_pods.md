@@ -1,5 +1,3 @@
-# Multi-container PODs
-
 ![sidecar couple](./assets/sidecar2-small.png)
 
 O POD é o recurso gerenciável mais básico no kubernetes, é um grupo de um ou mais containers que compartilham  [armazenamento](https://kubernetes.io/docs/concepts/workloads/pods/#pod-storage) e [recursos de rede](https://kubernetes.io/docs/concepts/workloads/pods/#pod-networking), bem como a especificação de como executá-los.
@@ -29,34 +27,25 @@ Suas principais caracteristicas são:
 Vamos executar um envoy, há duas formas de fazer isso, [instalando o binário do envoy](https://www.envoyproxy.io/docs/envoy/latest/start/install) na sua máquina ou através de uma imagem docker, vamos na segunda opção.
 
 
-```bash
+```
 docker run --rm -d \
     --name envoy \
     -v $PWD/exemplos/5_envoy/envoy-demo.yaml:/envoy-demo.yaml \
     -p 9901:9901 -p 10000:10000 \
     envoyproxy/envoy-dev:1aa90808abe2531dd50bebdac0408da6f9f53da4 -c /envoy-demo.yaml
-```
+```{{execute}}
 
 Acessando o proxy
 
-
-```bash
-curl -v localhost:10000
-```
+`curl -v localhost:10000`{{execute}}
 
 Acessando a interface administrativa
 
-
-```bash
-curl -v localhost:9901
-```
+`curl -v localhost:9901`{{execute}}
 
 Parando o envoy
 
-
-```bash
-docker kill envoy
-```
+`docker kill envoy`{{execute}}
 
 ## Entendendo a configuração
 

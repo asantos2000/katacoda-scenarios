@@ -1,5 +1,3 @@
-# Arquitetura do Istio
-
 Você já começou a ter uma idéia do que o Istio é capaz e nas próximas seções iremos desvendar mais e mais das suas funcionalidades, porém ainda não discutimos como o Istio funciona, como é  a sua arquitetura.
 
 Antes de discutir a arquitetura do Istio é importante que você saibe que ele não é a única implementação desse tipo, atualmente há diversas implementações, tais como:
@@ -97,9 +95,9 @@ Então o Istio é composto de duas aplicações:
 #### Envoy
 
 Como já vimos é injetado pelo `istiod` quando fazemos a instalação da nossa aplicação em um _namesapce_ que tem a injeção automática, através do comando `istioctl kube-inject` ou ainda adicionamos o container na nossa configuração.
-    
+
 Suas principais funcionalidades são:
-    
+
 * Descobrimento dinâmico de serviços
 * Balanceamento de carga
 * Terminação TLS
@@ -113,6 +111,7 @@ Suas principais funcionalidades são:
 Basicamente todas as funcionalidades do Istio são providas pelo `proxy-istio` instalado ao lado da nossa aplicação.
 
 #### istiod
+
 O Istiod provê o registro dos serviços, usado para o descobrimento, a configuração dos proxies e o gerenciamento de certificados, usados pelo TLS.
 
 O Istiod converte a configuração de alto nível em configurações para os _proxies_ e as sincroniza.
