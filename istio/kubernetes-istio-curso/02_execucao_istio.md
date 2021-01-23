@@ -1,5 +1,3 @@
-# Colocando o Istio em execução
-
 ## Acessando o k8s
 
 Vamos configurar o ambiente, você precisará configurá-lo a cada nova seção ou executar o jupyter passando as variáveis, como descrito no [README](README.md) e não precisará repetir esses comandos novamente.
@@ -9,10 +7,6 @@ Vamos configurar o ambiente, você precisará configurá-lo a cada nova seção 
 `export KUBECONFIG=~/.kube/config`{{execute}}
 
 > Local do kubeconfig do docker-desktop. Selecione o local onde você colocou o arquivo de config para outras opções (AKS, EKS, GKE, etc).
-
-[Opcional] Se você tem o Visual Studio Code e gostaria de usá-lo como editor para o kubernetes com o comando `kubectl edit`
-
-`export KUBE_EDITOR="code -w"`{{execute}}
 
 [Opcional] Se você tem mais de um cluster na configuração, verifique se está apontando para o correto.
 
@@ -24,7 +18,7 @@ Vamos verificar como estão os nós do nosso cluster:
 
 ## Instalando o Istio (linux)
 
-Para instalar a última versão do Istio, neste momento 1.8.1, você pode ir até a página [Getting Started](https://istio.io/latest/docs/setup/getting-started/#download) ou seguir as instruções abaixo:
+Para instalar a última versão do Istio, neste momento 1.8.2, você pode ir até a página [Getting Started](https://istio.io/latest/docs/setup/getting-started/#download) ou seguir as instruções abaixo:
 
 `curl -L https://istio.io/downloadIstio | sh -`{{execute}}
 
@@ -32,7 +26,7 @@ Para usar o comando `istioctl`, que está no diretório `bin` do download, coloq
 
 ## Opção 1: Copiar o arquivo para seu diretório de binários
 
-`ISTIO_VERSION=1.8.1`{{execute}}
+`ISTIO_VERSION=1.8.2`{{execute}}
 
 Verificar onde está o executável do Istio
 
@@ -211,13 +205,11 @@ Vamos acessar nossa aplicação, ela foi configurada para o tipo de serviço `Cl
 
 `kubectl port-forward svc/simple-app 8000:80`{{execute}}
 
-Vá até o seu navegador e entre acesse a url: <http://localhost:8000>
+Vamos testart `curl localhost:8000`{{execute T2}}
 
 Pronto, você tem acesso à sua aplicação como se estivesse sendo executada na sua máquina. Claro que o kubernetes pode estar na sua máquina, mas isso funcionará em qualquer kubernetes, local ou remoto.
 
-Para interromper:
-* No Jupyter Lab ou Notebook: Clique no icone <kbd>◾</kbd> (_Interrup the kernel_ na barra de ferramentas)
-* No terminal: tecle <kbd>CTRL</kbd>+<kbd>C</kbd>
+Para interromper, no terminal tecle <kbd>CTRL</kbd>+<kbd>C</kbd>. Ou click em `echo" Pronto para ir. "`{{Execute interrupt}}
 
 Verificando o que foi instalado.
 
@@ -231,7 +223,7 @@ Usaremos um dos labels do pod para encontra-lo
 
 É uma grande quantidade de informação, vamos procurar uma seção chamada `Containers` e nela a nossa aplicação `simple-app`.
 
-Como você pode ver, a imagem desse container é `nginx`, com a tag `stable`, mais abaixo tem um segundo container `istio-proxy`, com a imagem `docker.io/istio/proxyv2` e a _tag_ para a  versão `1.8.1`.
+Como você pode ver, a imagem desse container é `nginx`, com a tag `stable`, mais abaixo tem um segundo container `istio-proxy`, com a imagem `docker.io/istio/proxyv2` e a _tag_ para a  versão `1.8.2`.
 
 Esse container não faz parte do [exemplos/2_simple-app/deployment.yaml](exemplos/2_simple-app/deployment.yaml), ele foi adicionado ao seu pod pelo `istiod`.
 

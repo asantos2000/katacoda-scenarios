@@ -1,6 +1,6 @@
 # Bem vindo ao Istio Avançado para Iniciantes
 
-![cover](media/istio-course-cover-small.png)
+![cover](istio-course-cover-small.png)
 
 ## Sobre este curso
 
@@ -39,7 +39,7 @@ Você também pode obter uma lista atualizada das empresas que utilizam o Istio 
 
 Istio endereças três áreas para manutenção dos serviços:
 
-![O que o Istio faz](media/what-istio-do.png)
+![O que o Istio faz](what-istio-do.png)
 
 Se você tem um crescente número de serviços, escritos em diferentes linguagens, em infraestruturas heterogêneas, o Istio oferece a abstração necessária para simplificar a manutenção desses serviços.
 
@@ -93,15 +93,3 @@ Nós trabalhamos em tempo integral para grandes empresas, onde temos a oportunid
 No curso do nosso trabalho, como todos, fazemos muitos amigos e aprendemos muito com eles. Nossos cursos são um agregado das nossas experiências e troca de conhecimentos com nossos colegas e tem por objetivo exclusivo, retribuir essas oportunidades e fazer novos amigos.
 
 Contribua conosco, de um feedback honesto e nos ajude a tornar esse curso mais útil pra você e seus amigos.
-
-## Vamos começar
-
-O Kubernetes já está iniciado e em execução, talvez leve alguns minutos para colocar tudo em execução. Vamos verificar a integridade do cluster.
-
-### Exame de saúde do _cluster_
-
-Você pode obter o status do cluster com estes comandos: `kubectl cluster-info`{{execute}} e ` kubectl get pods --all-namespaces`{{execute}}
-
-> Enquanto espera, vá para a aba IDE para carregá-la, isso levará alguns segundos.
-> Abra também uma aba de terminal
-> Espere até que todos os pods apareçam e estejam _Running_ e, em seguida, pressione <kbd> Ctrl </kbd> + <kbd> C </kbd> no terminal ou click em  `echo" Pronto para ir. "`{{Execute interrupt}}

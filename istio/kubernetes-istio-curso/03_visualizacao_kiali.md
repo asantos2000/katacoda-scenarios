@@ -48,11 +48,11 @@ spec:
     served: true
     storage: true
 EOF
-```
+```{{execute}}
 
 Definindo a versão do Istio:
 
-`export ISTIO_VERSION=1.8.1`{{execute}}
+`export ISTIO_VERSION=1.8.2`{{execute}}
 
 Instalando o kiali:
 
