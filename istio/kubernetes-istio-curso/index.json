@@ -98,9 +98,6 @@
             {"name": "Jupyter", "href": "https://[[HOST_SUBDOMAIN]]-8888-[[KATACODA_HOST]].environments.katacoda.com"},
             {"name": "Apps", "href": "https://[[HOST_SUBDOMAIN]]-8000-[[KATACODA_HOST]].environments.katacoda.com"},
             {"name": "K8s", "href": "https://[[HOST_SUBDOMAIN]]-6443-[[KATACODA_HOST]].environments.katacoda.com"}],
-        "terminals": [
-            {"name": "Terminal 2", "target": "host01"}
-        ],
         "showdashboard": true,
         "uieditorpath": "/root",
         "uimessage1": "\u001b[32mYour Interactive Bash Terminal.\u001b[m\r\n",
