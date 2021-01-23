@@ -6,26 +6,6 @@ Até a versão 1.5, o Kiali e outras ferramentas faziam parte da distribuição 
 
 Convenientemente o download do Istio, que fizemos na primeira parte, contém essas ferramentas.
 
-Mas antes de instalar o Kiali, vamos verificar nosso acesso ao cluster:
-
-
-```bash
-# [Opcional] Se você não estiver usando o docker-desktop será necessário obter o arquivo de configuração e ajustar a variável KUBECONFIG
-#export KUBECONFIG=~/.kube/config # Local do kubeconfig do docker-desktop
-
-# [Opcional] Se você tem o Visual Studio Code e gostaria de usá-lo como editor para o kubernetes com o comando `kubectl edit`
-export KUBE_EDITOR="code -w"
-
-kubectl config get-contexts
-kubectl get nodes
-```
-
-> Se você estiver utilizando o docker-desktop ou minikube, provavelmente não precisará configurar a variável de ambiente _KUBECONFIG_ a cada seção, mas se receber algum erro de conexão com o cluster de kubernetes, verifique se a variável existe e está apontando para o arquivo de configuração correto (`echo $KUBECONFIG`).
-
-> Você também pode passar a variável de ambiente para o Jupyter Lab no terminal: `env KUBECONFIG=~/.kube/config jupyter lab`. Isso fará com que ela esteja acessível em todas as lições (notebooks).
-
-Ok, estamos prontos para continuar, mas se tiver algum problema, consulte "Acessando o cluster" na parte 1.
-
 ### Instalando o kiali e dependências no cluster
 
 Para instalar o Kiali iremos aplicar o arquivo [kiali.yaml](istio-1.7.4/samples/addons/kiali.yaml), mas antes vamos inspecioná-lo, clique no link para abri-lo.
@@ -45,12 +25,11 @@ Com exceção do `MonitoringDashboard`, todos os demais recursos são do kuberne
 
 Vamos instalar e conhecer o kiali antes de nos aprofundar neste CDR.
 
-Bug versão 1.7.0 a 1.8.1 - [Istio 1.7.1 unable to install Kiali addon #27417](https://github.com/istio/istio/issues/27417)
+Bug versão 1.7.0 a 1.8.2 - [Istio 1.7.1 unable to install Kiali addon #27417](https://github.com/istio/istio/issues/27417)
 
 Necessário aplicar o CRD antes do restante dos recursos.
 
-
-```bash
+```
 cat <<EOF | kubectl apply -f -
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
@@ -71,46 +50,33 @@ spec:
 EOF
 ```
 
+Definindo a versão do Istio:
 
-```bash
-ISTIO_VERSION=1.8.1
+`export ISTIO_VERSION=1.8.1`{{execute}}
 
-kubectl apply -f istio-$ISTIO_VERSION/samples/addons/kiali.yaml
-```
+Instalando o kiali:
+
+`kubectl apply -f istio-$ISTIO_VERSION/samples/addons/kiali.yaml`{{execute}}
 
 E o prometheus, responsável por coletar dados dos _containers_ que serão utilizados pelo kiali.
 
-
-```bash
-kubectl apply -f istio-$ISTIO_VERSION/samples/addons/prometheus.yaml
-```
+`kubectl apply -f istio-$ISTIO_VERSION/samples/addons/prometheus.yaml`{{execute}}
 
 Vamos verificar o que foi instalado.
 
-
-```bash
-kubectl get all -n istio-system
-```
+`kubectl get all -n istio-system`{{execute}}
 
 O serviço do kiali é do tipo `ClusterIP`, o que significa que não podemos acessá-lo diretamente de fora do cluster, há algumas alternativas, modificar ou criar um serviço do tipo `NodePort` ou `LoadBalancer`, configurar um `Ingress` ou usar o subcomando `port-forward` do `kubectl`.
 
 Porém o `istioctl` oferece um subcomando conveniente para acessar o kiali:
 
+`istioctl dashboard kiali`{{execute}}
 
-```bash
-x'
-```
+Vamos acessa-lo, mas antes, vamos [gerar algum tráfego](scripts/simple-app.sh) para a nossa aplicação:
 
-Vamos acessa-lo, mas antes, vamos [gerar algum tráfego](scripts/simple-app.sh) para a nossa aplicação, abra um terminal e difite o comando:
+`scripts/simple-app.sh`{{execute}}
 
-`scripts/simple-app.sh`
-
-Agora vamos acessar o painel:
-
-
-```bash
-istioctl dashboard kiali
-```
+`istioctl dashboard kiali`{{execute}}
 
 E voilá, você está acessando o painel do kiali.
 
@@ -120,18 +86,13 @@ Vamos explorar alguns recursos do kiali.
 
 O kiali oferece uma visibilidade inpressionante da malha de serviços e tudo que precisamos fazer é anotar o _namespace_ onde nossa aplicação será instalada.
 
-Interrompa a execução do dashboard:
-* No Jupyter Lab ou Notebook: Selecione a célula com o comando `istioctl dashboard kiali` e clique no icone <kbd>◾</kbd> (_Interrup the kernel_ na barra de ferramentas)
-* No terminal: tecle <kbd>CTRL</kbd>+<kbd>C</kbd>
+Interrompa a execução do dashboard tecle <kbd>CTRL</kbd>+<kbd>C</kbd> no terminal ou `click aqui`{{Execute interrupt}}
 
 Se você participou do nosso curso de [Kubernetes avançado para iniciantes](TODO) deve imaginar o que o `istioctl`automatizou, foi o comando `kubectl port-forward` e adicionou um comando de ` open` para abrir a página inicial no navegador.
 
 O comando a seguir tem efeito semelhante (sem a parte do navegador)
 
-
-```bash
-kubectl port-forward service/kiali 20001:20001 -n istio-system
-```
+`kubectl port-forward service/kiali 20001:20001 -n istio-system`{{execute}}
 
 Kiali _dashboard_: <http://localhost:20001>
 
@@ -141,11 +102,9 @@ Interrompa a execução do `port-forward` do mesmo jeito que fizemos com o `isti
 
 E vamos executar o kiali novamente, mas agora em segundo plano.
 
+`istioctl dashboard kiali &`{{execute}}
 
-```bash
-istioctl dashboard kiali &
-export KIALI_PID=$!
-```
+`export KIALI_PID=$!`{{execute}}
 
 E acessá-lo pela url <http://localhost:20001>, caso não abra automaticamente.
 
@@ -157,17 +116,11 @@ Esses dois rótulos são requeridos e o Kiali irá indicar um alerta caso algum 
 
 Podemos utilizar os rótulos para localizar os recurso no kuberentes:
 
-
-```bash
-kubectl describe deploy -l app=simple-app
-```
+`kubectl describe deploy -l app=simple-app`{{execute}}
 
 E no nosso [deployment](exemplos/2_simple-app/deployment.yaml) adicionamos na seção _template_ os rótulos que desejamos que sejam adicionados aos PODs que forem criados.
-
-
-```bash
-kubectl get pods -l app=simple-app,version=v1
-```
+]
+`kubectl get pods -l app=simple-app,version=v1`{{execute}}
 
 A sintaxe para busca de recursos utilizando rótulos é bem rica no kubernetes, para mais exemplos acesse [kubernetes - Labels and Selectors](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/).
 
@@ -179,10 +132,7 @@ Você pode manter o redirecionamento para o dashboard do kiali ou pará-lo, irem
 
 Para interrompê-lo pare o processo do `istioctl`, que salvamos na variável `KIALI_PID`.
 
-
-```bash
-kill $KIALI_PID
-```
+`kill $KIALI_PID`{{execute}}
 
 ## Limpando
 
@@ -190,16 +140,10 @@ Não precisaremos mais da nossa aplicação de teste, vamos exluí-la para liber
 
 Os recursos criados podem ser obtidos passando as mesmas configurações que utilizamos para criá-los.
 
-
-```bash
-kubectl get -f exemplos/2_simple-app
-```
+`kubectl get -f exemplos/2_simple-app`{{execute}}
 
 E o mesmo vale para excluí-los.
 
 > O kubectl não solicita confirmação para execução, tome cuidado e revise o comando antes de executá-lo.
 
-
-```bash
-kubectl delete -f exemplos/2_simple-app
-```
+`kubectl delete -f exemplos/2_simple-app`{{execute}}

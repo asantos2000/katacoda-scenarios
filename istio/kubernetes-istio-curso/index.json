@@ -25,7 +25,7 @@
             },
             {
                 "title": "A aplicação simul-shop",
-                "text": "istio/kubernetes-istio-curso/04_instalando_simul_shop.md"
+                "text": "04_instalando_simul_shop.md"
             },
             {
                 "title": "Multi-container PODs",
