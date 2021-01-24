@@ -1,4 +1,4 @@
-![cover](./assets/istio-course-cover-small.png)
+![cover](assets/media/istio-course-cover-small.png)
 
 ## Sobre este curso
 
@@ -16,7 +16,7 @@ Nossa didática será introduzir os temas de forma simples e rapidamente apresen
 
 ## Descrição
 
-Atualizado para o Istio 1.8.1
+Atualizado para o Istio 1.8.2
 
 [Istio](https://istio.io/) é uma plataforma de malha de serviço de [código aberto](https://pt.wikipedia.org/wiki/C%C3%B3digo_aberto) que fornece maneiras de controlar e monitorar como os serviços se comunicam. Se você desenvolve ou pretende desenvolver arquiteturas orientadas à serviços e utiliza [kubernetes](https://kubernetes.io/), precisa conhecê-lo! Com este curso prático, você ganhará experiência na execução de suas próprias malhas de serviço com Istio.
 
@@ -28,7 +28,7 @@ Uma coleção desses proxies forma uma “malha” de serviços que agora compar
 
 Se você não está familiarizado com o [Radar de tecnologia da Thoughworks](https://www.thoughtworks.com/pt/radar), ele é uma lista de tecnologias avaliada por pessoas como [Martin Fowler](https://martinfowler.com/), [Neal Ford](http://nealford.com/), [Rebecca Parsons](https://www.thoughtworks.com/profiles/rebecca-parsons) entre outros. Grande parte da industria utiliza o radar para guiar suas decisões no desenvolvimento de software. Nas suas avaliações são recomendos a adoção, teste ou deixar de usar, linguagens, frameworks, ferramentas e plataformas. O Istio aparece am algumas [edições e em 2020](https://www.thoughtworks.com/pt/radar/platforms/istio) foi recomendada a sua adoção.
 
-![Istio visão geral](./assets/istio-big-picture.png)
+![Istio visão geral](assets/media/istio-big-picture.png)
 Arquitetura do Istio
 
 Você também pode obter uma lista atualizada das empresas que utilizam o Istio e ler sobre alguns dos seus casos de uso em [Istio - Who's using Istio](https://istio.io/latest/about/community/customers/).

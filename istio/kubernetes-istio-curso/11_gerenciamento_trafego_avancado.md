@@ -38,7 +38,7 @@ echo https://$INGRESS_HOST:$SECURE_INGRESS_PORT
 
 Configurar um ingress gateway:
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/istio/10/default-gateway.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/istio/10/default-gateway.yaml`{{execute}}
 
 ### Discussão: Versionamento de recursos web
 
@@ -94,7 +94,7 @@ Também optamos por não adicionar a palavra `api` na URL, por uma simples quest
 
 ## Rota baseada no caminho
 
-![rota baseada no caminha](./assets/path-based-routes.png)
+![rota baseada no caminha](assets/media/path-based-routes.png)
 
 Vamos implementar a tabela acima, já vimos como configurar _VirtualService_ para hosts, vamos configurá-lo para caminho, a estrutura para as URIs do front-end
 
@@ -133,19 +133,19 @@ spec:
 
 Uma boa prática é criar um arquivo de entrega para cada serviço, você pode manter as _DestinationRules_ no mesmo arquivo ou em arquivos separados. Nestes exemplos, manteremos as _DestinationRules_ e _VirtualServices_ no mesmo arquivo.
 
-Vamos aplicar as configuração para os serviços de [login](istio-curso/exemplos/simul-shop/istio/11/login-dr-vs.yaml), [catalogue](istio-curso/exemplos/simul-shop/istio/11/catalogue-dr-vs.yaml) e [front-end](istio-curso/exemplos/simul-shop/istio/11/front-end-dr-vs.yaml).
+Vamos aplicar as configuração para os serviços de [login](assets/exemplos/simul-shop/istio/11/login-dr-vs.yaml), [catalogue](assets/exemplos/simul-shop/istio/11/catalogue-dr-vs.yaml) e [front-end](assets/exemplos/simul-shop/istio/11/front-end-dr-vs.yaml).
 
 Login - DestinationRules e VirtualServices:
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/istio/11/login-dr-vs.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/istio/11/login-dr-vs.yaml`{{execute}}
 
 Catalogue - DestinationRules e VirtualServices:
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/istio/11/catalogue-dr-vs.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/istio/11/catalogue-dr-vs.yaml`{{execute}}
 
 Front-end - DestinationRules e VirtualServices
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/istio/11/front-end-dr-vs.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/istio/11/front-end-dr-vs.yaml`{{execute}}
 
 Vamos verificar o que foi criado:
 
@@ -177,15 +177,15 @@ Esse tipo de controle permite realizar testes e entregas para grupos de usuário
 
 Neste cenário os usuários que acessarem o front-end na região _Southeast_ serão direcionados para a versão 2 e os demais para a versão 1. 
 
-Vamos aplica a configuração [front-end-route-header.yaml](istio-curso/exemplos/simul-shop/istio/11/front-end-route-header-vs.yaml).
+Vamos aplica a configuração [front-end-route-header.yaml](assets/exemplos/simul-shop/istio/11/front-end-route-header-vs.yaml).
 
 _Deployment_ da versão 2 do front-end:
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/manifests/8/front-end-deployment-v2.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/manifests/8/front-end-deployment-v2.yaml`{{execute}}
 
 Configurar o VirtualService do front-end para direcionar com base nos campos do cabeçalho:
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/istio/11/front-end-route-header-vs.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/istio/11/front-end-route-header-vs.yaml`{{execute}}
 
 Nossa aplicação já pode ser acessada pela uri <http://INGRESS_HOST:INGRESS_PORT/>
 
@@ -223,7 +223,7 @@ E como boa prática, se nenhuma das regras for satisfeita, a requisição será 
 
 Virtual Service:
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/istio/11/front-end-multi-route-vs.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/istio/11/front-end-multi-route-vs.yaml`{{execute}}
 
 Rota padrão - v1:
 
@@ -249,13 +249,13 @@ Rota padrão, mas não tem re-escrita da URI - 404:
 
 Os _VirtualServices_ podem adicionar ou remover campos do cabeçalho.
 
-![Adding headers](./assets/add-headers.png)
+![Adding headers](assets/media/add-headers.png)
 
 Neste exemplo, queremos que as requisições que não são originadas de _Southeast_ tenham o campo do cabeçalho `user-region` com o valor `other`. Esse dado pode ser utilizada para regras em outros serviços, ou para fins de log.
 
 VirtualService:
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/istio/11/front-end-change-header-vs.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/istio/11/front-end-change-header-vs.yaml`{{execute}}
 
 Regra 1 - v2:
 
@@ -283,7 +283,7 @@ Nosso primeira [configuração](istio-curso/simul-shop/istio/11/login-timeout-vs
 
 VirtualService:
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/istio/11/login-timeout-vs.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/istio/11/login-timeout-vs.yaml`{{execute}}
 
 Para testar vamos executar o serviço, mas antes, abra um terminal para monitorar os logs do serviço.
 
@@ -305,21 +305,21 @@ O tempo de espera (timeout) ajustado para 10 segundos permitiu que o serviço fo
 
 Neste cenário, simulamos um problema com o serviço de login. Modificaremos o _Deployment_ do `front-end` para pausar a chamada automática aos serviços, isso dificultaria acompanhar os logs.
 
-![Retries](./assets/retries.png)
+![Retries](assets/media/retries.png)
 
 Modificar o _VirtualService_ do front-end:
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/manifests/8/front-end-deployment-no-auto.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/manifests/8/front-end-deployment-no-auto.yaml`{{execute}}
 
 VirtualService:
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/istio/11/login-retry-vs.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/istio/11/login-retry-vs.yaml`{{execute}}
 
 Como os tempos limite, o comportamento de retentativa pode não atender às necessidades do seu aplicativo em termos de latência (muitas tentativas para um serviço com falha podem tornar as coisas piores). Você pode ajustar as configurações por serviço.
 
 Para configurar o comportamento das retentativa, pode-se adicionar tempos limite por nova tentativa, especificando a quantidade de tempo que você deseja esperar para cada tentativa.
 
-Nesta [configuração](istio-curso/exemplos/simul-shop/istio/11/login-retry-vs.yaml) serão 3 tentativas após uma falha inicial, cada uma com um tempo limite de 2 segundos.
+Nesta [configuração](assets/exemplos/simul-shop/istio/11/login-retry-vs.yaml) serão 3 tentativas após uma falha inicial, cada uma com um tempo limite de 2 segundos.
 
 Acompanhe o log, você verá quatro entradas, a inicial e mais três, uma vez que nosso serviço continuará a retornar o erro em todas as tentativas.
 
@@ -335,29 +335,29 @@ Nesta última execução, o serviço retorna após 1s com sucesso (200).
 
 Você deverá ver os errors no kiali e jaeger. No jaeger filtre os rastros colocando em _Service_ escolha `front-end.default` e em _Tags_ preencha com o valor `http.status_code=500`
 
-![Jaeger search retries](./assets/jaeger-retries-search.png)
+![Jaeger search retries](assets/media/jaeger-retries-search.png)
 
 E as execuções que acompanhamos nos logs.
 
-![Jaeger failed retries](./assets/jaeger-failed-retries.png)
+![Jaeger failed retries](assets/media/jaeger-failed-retries.png)
 
 Vamos restaurar as configurações do front-end e login:
 
 Restaurando a configuração do front-end:
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/manifests/8/front-end-deployment-no-auto.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/manifests/8/front-end-deployment-no-auto.yaml`{{execute}}
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/istio/11/front-end-dr-vs.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/istio/11/front-end-dr-vs.yaml`{{execute}}
 
 login:
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/istio/11/login-dr-vs.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/istio/11/login-dr-vs.yaml`{{execute}}
 
 ## Disjuntores
 
 Os [disjuntores](https://istio.io/latest/docs/concepts/traffic-management/#circuit-breakers), analogia aos [dispositivos](https://en.wikipedia.org/wiki/Circuit_breaker) que cortam a energia elétrica em caso de sobre carga, são mecanismos úteis para incrementar a resiliência dos serviços.
 
-![disjuntores](./assets/disjuntores.png)
+![disjuntores](assets/media/disjuntores.png)
 
 Em um disjuntor, você define os limites para chamadas para hosts individuais em um serviço, como o número de conexões simultâneas ou quantas vezes as chamadas para este host falharam. Uma vez que esse limite tenha sido atingido, o disjuntor “desarma” e interrompe outras conexões com aquele host.
 
@@ -430,7 +430,7 @@ Vamos executar a carga para o serviço em um terceiro terminal:
 
 `kubectl exec "$FORTIO_POD" -c fortio -- /usr/bin/fortio load -c 1 -qps 0 -n 20 -loglevel Warning "http://catalogue:8000/r?code=200&wait=2"`{{execute T3}}
 
-![load 3](./assets/load-catalogue-1.png)
+![load 3](assets/media/load-catalogue-1.png)
 
 Conte o número de logs com status 200 nos dois logs, devem coincidir com o resultado do fortio.
 
@@ -442,7 +442,7 @@ Vamos repetir o teste, mas dessa vez adicionando mais pressão.
 
 `kubectl exec "$FORTIO_POD" -c fortio -- /usr/bin/fortio load -c 3 -qps 0 -n 20 -loglevel Warning "http://catalogue:8000/r?code=200&wait=2"`{{execute T3}}
 
-![load 3](./assets/load-catalogue-3.png)
+![load 3](assets/media/load-catalogue-3.png)
 
 Repita a contagem, conte também os 503.
 
@@ -450,7 +450,7 @@ O uso desse padrão deve ser cuidadosamente configurado e testado, acionamentoa 
 
 Use o kiali para entender a sua malha, procure os serviços que tem configurações e avalie as métricas.
 
-![kiali circuit breaker](./assets/kiali-graph-circuit-breaker.png)
+![kiali circuit breaker](assets/media/kiali-graph-circuit-breaker.png)
 
 Parando `terminal 1`{{Execute interrupt T1}}, `terminal 2`{{Execute interrupt T2}} e `terminal 3`{{Execute interrupt T3}}.
 
@@ -468,19 +468,19 @@ Usando o Istio, você pode usar o espelhamento de tráfego para duplicar o tráf
 
 Esse recurso permite obter dados valiosos de produção sem colocar em risco suas operações.
 
-![Mirroring requests](./assets/mirror.png)
+![Mirroring requests](assets/media/mirror.png)
 
 Vamos configurar nossa aplicação:
 
 Deployment da ordem v2:
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/manifests/11/orders-deployment-v2.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/manifests/11/orders-deployment-v2.yaml`{{execute}}
 
 Aplicando as regras de espelhamento:
 
 Ordem - DestinationRules e VirtualService:
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/istio/11/orders-mirror-dr-vs.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/istio/11/orders-mirror-dr-vs.yaml`{{execute}}
 
 Para monitorar o resultado, abra dois terminais, um monitorando a versão v1 da ordem e outro a versão v2:
 
@@ -498,7 +498,7 @@ Vamos gerar algum tráfego, execute algumas vezes e acompanhe os logs.
 
 Nos terminais, você pode ver que imediatamente após uma chamada para a v1, a mesma chamada é realizada para v2, vamos ver como o kiali representa essa configuração.
 
-![Kiali graph mirror](./assets/kiali-mirror-orders.png)
+![Kiali graph mirror](assets/media/kiali-mirror-orders.png)
 
 Ele representou a chamada para o serviço e uma ligação para o _workload_ v1, mas não para o v2, porém tanto os _workloads_ v1 e v2 chamam os demais serviços.
 

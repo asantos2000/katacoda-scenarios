@@ -27,15 +27,12 @@ Algumas ferramentas ajudarão a melhorar nossa produtividade e outras são essen
 * [wercker/stern](https://github.com/wercker/stern) - Stern permite acessar log em multiplos PODs e containers.
 * [httpie](https://httpie.io/) - utilitário para enviar requiisções http com um retorno mais amigável.
 
-## Obtendo o código do curso
-
-Vamos clonar o repositório do curso:
+### Instalando httpie e stern
 
 ```
-git clone --no-checkout https://github.com/kdop-dev/istio-curso.git
-cd istio-curso
-git sparse-checkout init --cone
-git sparse-checkout add exemplos
-git sparse-checkout add scripts
-git checkout
+apt update
+apt install httpie
+wget https://github.com/wercker/stern/releases/download/1.11.0/stern_linux_amd64
+chmod +x stern_linux_amd64
+mv stern_linux_amd64 /usr/local/bin/stern
 ```{{execute}}

@@ -1,4 +1,4 @@
-![sidecar couple](./assets/sidecar2-small.png)
+![sidecar couple](assets/media/sidecar2-small.png)
 
 O POD é o recurso gerenciável mais básico no kubernetes, é um grupo de um ou mais containers que compartilham  [armazenamento](https://kubernetes.io/docs/concepts/workloads/pods/#pod-storage) e [recursos de rede](https://kubernetes.io/docs/concepts/workloads/pods/#pod-networking), bem como a especificação de como executá-los.
 
@@ -30,7 +30,7 @@ Vamos executar um envoy, há duas formas de fazer isso, [instalando o binário d
 ```
 docker run --rm -d \
     --name envoy \
-    -v $PWD/istio-curso/exemplos/5_envoy/envoy-demo.yaml:/envoy-demo.yaml \
+    -v $PWD/assets/exemplos/5_envoy/envoy-demo.yaml:/envoy-demo.yaml \
     -p 9901:9901 -p 10000:10000 \
     envoyproxy/envoy-dev:1aa90808abe2531dd50bebdac0408da6f9f53da4 -c /envoy-demo.yaml
 ```{{execute}}
@@ -53,9 +53,9 @@ Configurar o envoy não é uma tarefa simples, há centenas de parâmetros, o Is
 
 Por enquanto vamos entender a configuração que utilizamos para demo.
 
-![Envoy demo config](./assets/envoy-demo-config.png)
+![Envoy demo config](assets/media/envoy-demo-config.png)
 
-[envoy-demo.yaml](istio-curso/exemplos/5_envoy/envoy-demo.yaml)
+[envoy-demo.yaml](assets/exemplos/5_envoy/envoy-demo.yaml)
 
 A configuração mais simples são as estática (static_resources), nela os recursos são declarados na configuração em oposição a dinâmica (dynamic_resources) onde eles são descobertos. Os principais elementos deste tipo de configuração são `listeners` e `clusters`. 
 Na seção `listeners` são configurados os _frontends_ e na seção `clusters` os _backends_.

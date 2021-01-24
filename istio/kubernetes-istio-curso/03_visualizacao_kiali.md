@@ -72,9 +72,9 @@ Porém o `istioctl` oferece um subcomando conveniente para acessar o kiali:
 
 `istioctl dashboard kiali --address 0.0.0.0`{{execute T1}}
 
-Vamos acessa-lo, mas antes, vamos [gerar algum tráfego](istio-curso/scripts/simple-app.sh) para a nossa aplicação:
+Vamos acessa-lo, mas antes, vamos gerar algum tráfego com o script `assets/scripts/simple-app.sh`{{open}} para a nossa aplicação:
 
-`istio-curso/scripts/simple-app.sh`{{execute T2}}
+`assets/scripts/simple-app.sh`{{execute T2}}
 
 Procure pelo link kiali na parte superior do terminal, ao lado do link para IDE, e voilá, você está acessando o painel do kiali.
 
@@ -120,8 +120,8 @@ Podemos utilizar os rótulos para localizar os recurso no kuberentes:
 
 `kubectl describe deploy -l app=simple-app`{{execute}}
 
-E no nosso [deployment](istio-curso/exemplos/2_simple-app/deployment.yaml) adicionamos na seção _template_ os rótulos que desejamos que sejam adicionados aos PODs que forem criados.
-]
+E no nosso _deployment_ `simple-app/deployment.yaml`{{open}} adicionamos na seção _template_ os rótulos que desejamos que sejam adicionados aos PODs que forem criados.
+
 `kubectl get pods -l app=simple-app,version=v1`{{execute}}
 
 A sintaxe para busca de recursos utilizando rótulos é bem rica no kubernetes, para mais exemplos acesse [kubernetes - Labels and Selectors](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/).
@@ -144,10 +144,10 @@ Não precisaremos mais da nossa aplicação de teste, vamos exluí-la para liber
 
 Os recursos criados podem ser obtidos passando as mesmas configurações que utilizamos para criá-los.
 
-`kubectl get -f istio-curso/exemplos/2_simple-app`{{execute}}
+`kubectl get -f assets/exemplos/simple-app`{{execute}}
 
 E o mesmo vale para excluí-los.
 
 > O kubectl não solicita confirmação para execução, tome cuidado e revise o comando antes de executá-lo.
 
-`kubectl delete -f istio-curso/exemplos/2_simple-app`{{execute}}
+`kubectl delete -f assets/exemplos/simple-app`{{execute}}

@@ -6,7 +6,7 @@ O Istio utiliza [JSON Web Token (JWT)](https://jwt.io/introduction/) que é um t
 
 Os JWTs contêm informações sobre o chamador do cliente e podem ser usados como parte de uma arquitetura de sessão do cliente. Um [JSON Web Key Set (JWKS)](https://auth0.com/docs/jwks) contém as chaves criptográficas usadas para verificar os JWTs recebidos.
 
-![istio jwt](./assets/istio-jwt.png)
+![istio jwt](assets/media/istio-jwt.png)
 
 Adaptamos o exemplo do [Istio](https://istio.io/latest/docs/tasks/security/authentication/authn-policy/#end-user-authentication) e iremos criar nossos próprios certificados.
 
@@ -23,9 +23,9 @@ Obtenha os scripts para criar os certificados e gerar os tokens
 
 Script:
 
-`wget --no-verbose https://raw.githubusercontent.com/istio/istio/release-1.8/security/tools/jwt/samples/gen-jwt.py -P istio-curso/scripts/`{{execute}}
+`wget --no-verbose https://raw.githubusercontent.com/istio/istio/release-1.8/security/tools/jwt/samples/gen-jwt.py -P assets/scripts/`{{execute}}
 
-[Opcional] jwkgen. Os cerficiados estão no diretório istio-curso/exemplos/certificados
+[Opcional] jwkgen. Os cerficiados estão no diretório assets/exemplos/certificados
 
 Para instalar em outros sistemas operacionais acesse: https://github.com/rakutentech/jwkgen
 
@@ -160,7 +160,7 @@ Normalmente essa infraestrutura é mais sofisticada, como o serviço PaaS da [Au
 
 Vamos criar os certificados:
 
-`jwkgen rsa istio-curso/exemplos/certificates/istio-curso`{{execute}}
+`jwkgen rsa assets/exemplos/certificates/istio-curso`{{execute}}
 
 Isso irá criar quatro arquivos:
 
@@ -257,7 +257,7 @@ Token inválido:
 
 Token válido:
 
-`TOKEN=$(python3 istio-curso/scripts/gen-jwt.py -iss john@simul-shop.com istio-curso/exemplos/certificates//istio-curso.pem --expire 20)`{{execute}}
+`TOKEN=$(python3 assets/scripts/gen-jwt.py -iss john@simul-shop.com assets/exemplos/certificates//istio-curso.pem --expire 20)`{{execute}}
 
 `http "$INGRESS_HOST:$INGRESS_PORT/" "Authorization: Bearer $TOKEN" "Host: login.default"`{{execute}}
 
@@ -315,7 +315,7 @@ Agora com um token válido:
 
 Gerando o token
 
-`TOKEN=$(python3 istio-curso/scripts/gen-jwt.py -iss john@simul-shop.com istio-curso/exemplos/certificates//istio-curso.pem --expire 20)`{{execute}}
+`TOKEN=$(python3 assets/scripts/gen-jwt.py -iss john@simul-shop.com assets/exemplos/certificates//istio-curso.pem --expire 20)`{{execute}}
 
 Invocando com um token válido:
 
@@ -392,7 +392,7 @@ Vamos adicionar um token válido:
 
 Gerando o token
 
-`TOKEN=$(python3 istio-curso/scripts/gen-jwt.py -iss john@simul-shop.com istio-curso/exemplos/certificates//istio-curso.pem --expire 20)`{{execute}}
+`TOKEN=$(python3 assets/scripts/gen-jwt.py -iss john@simul-shop.com assets/exemplos/certificates//istio-curso.pem --expire 20)`{{execute}}
 
 Invocando:
 
@@ -460,13 +460,13 @@ EOF
 Somente usuários com um token válido e o papel _customer_ terão acesso ao serviço.
 
 
-`TOKEN=$(python3 istio-curso/scripts/gen-jwt.py -claim role:customer -iss john@simul-shop.com istio-curso/exemplos/certificates//istio-curso.pem --expire 20)`{{execute}}
+`TOKEN=$(python3 assets/scripts/gen-jwt.py -claim role:customer -iss john@simul-shop.com assets/exemplos/certificates//istio-curso.pem --expire 20)`{{execute}}
 
 `http "$INGRESS_HOST:$INGRESS_PORT/healthz" "Authorization: Bearer $TOKEN" "Host: login.default"`{{execute}}
 
-Copie o token gerado para decodifica-lo em [jwt.io](jwt.io). Se quiser validar o token, utilize a [chave pública](istio-curso/exemplos/certificates/istio-curso.pub.pem).
+Copie o token gerado para decodifica-lo em [jwt.io](jwt.io). Se quiser validar o token, utilize a [chave pública](assets/exemplos/certificates/istio-curso.pub.pem).
 
-![](./assets/jwt-io-debugger.png)
+![](assets/media/jwt-io-debugger.png)
 
 ## Limpando as configurações
 

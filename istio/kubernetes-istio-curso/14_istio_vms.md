@@ -16,7 +16,7 @@ Para simular este legado, iremos criar uma VM e executar o script python que usa
 
 A arquitetura da solução ficará assim:
 
-![Simulshpo vm architecture](./assets/simul-shop-vms-arch.png)
+![Simulshpo vm architecture](assets/media/simul-shop-vms-arch.png)
 
 ## Configuração
 
@@ -408,10 +408,10 @@ dpkg -s istio-sidecar
 kubectl delete ns legacy
 
 # Deploys do istio para simul-shop
-kubectl delete -f istio-curso/exemplos/simul-shop/istio/
+kubectl delete -f assets/exemplos/simul-shop/istio/
 
 # Deploys do simul-shop
-kubectl delete -f istio-curso/exemplos/simul-shop/manifests/
+kubectl delete -f assets/exemplos/simul-shop/manifests/
 
 # Istio
 kubectl delete namespace istio-system

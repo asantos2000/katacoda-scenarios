@@ -107,13 +107,13 @@ kubectl delete ns istio-system
 kubectl patch ns default --type=json -p='[{"op": "remove", "path": "/metadata/labels/istio-injection"}]'
 
 # Apaga os recursos criados no curso
-kubectl delete -f istio-curso/exemplos/simul-shop/manifests/4
+kubectl delete -f assets/exemplos/simul-shop/manifests/4
 
-kubectl delete -f istio-curso/exemplos/simul-shop/manifests/8
+kubectl delete -f assets/exemplos/simul-shop/manifests/8
 
-kubectl delete -f istio-curso/exemplos/simul-shop/manifests/9
+kubectl delete -f assets/exemplos/simul-shop/manifests/9
 
-kubectl delete -f istio-curso/exemplos/simul-shop/manifests/10
+kubectl delete -f assets/exemplos/simul-shop/manifests/10
 ```{{execute}}
 
 ## Referências

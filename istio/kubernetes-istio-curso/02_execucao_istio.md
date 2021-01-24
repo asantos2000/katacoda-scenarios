@@ -26,23 +26,13 @@ Para usar o comando `istioctl`, que está no diretório `bin` do download, coloq
 
 `ISTIO_VERSION=1.8.2`{{execute}}
 
-Verificar onde está o executável do Istio
+Verificar onde está o executável do Istio:
 
 `ls istio-$ISTIO_VERSION/bin`{{execute}}
 
-Vamos coloca-lo no diretório bin do usuário
+Copiar o arquivo para o diretório de binários:
 
-`[ ! -d ~/bin ] && echo "Directory ~/bin DOES NOT exists. Creating..." && mkdir ~/bin`{{execute}}
-
-Verificar o conteúdo da variável PATH
-
-`echo $PATH | grep $HOME/bin`{{execute}}
-
-`[ ! $? -eq 0 ] && echo "Not in the PATH variable. Adding..." && export PATH=~/bin:$PATH`{{execute}}
-
-Copiar o arquivo para o diretório bin
-
-`cp istio-$ISTIO_VERSION/bin/istioctl ~/bin`{{execute}}
+`cp istio-$ISTIO_VERSION/bin/istioctl /usr/local/bin`{{execute}}
 
 Teste
 
@@ -189,7 +179,7 @@ Verificando a situação do POD.
 `kubectl get pods`{{execute}}
 
 > Repita o comando algumas vezes até que o POD esteja 2/2 _Running_.
-> Para instalar a aplicação em um _namespace_ diferente adicione `--namesapce` ou `-n`ao comando. Exemplo: `kubectl apply -f istio-curso/exemplos/simple-app -n test-app`
+> Para instalar a aplicação em um _namespace_ diferente adicione `--namesapce` ou `-n`ao comando. Exemplo: `kubectl apply -f assets/exemplos/simple-app -n test-app`
 
 Vamos acessar nossa aplicação, ela foi configurada para o tipo de serviço `ClusterIP`, o que significa que o acesso é interno, apenas entre os PODs do cluster, mas podemos acessá-la utilizando o comando `kubectl port-forward`.
 

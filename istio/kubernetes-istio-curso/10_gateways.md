@@ -14,13 +14,13 @@ Os _gateways_ do Istio são aplicações independentes (Envoys) que controlam o 
 
 Há algumas formas de fazer isso, podemos configurar os [serviços do kubernetes](https://kubernetes.io/docs/concepts/services-networking/service/) (_LoadBalancer_ e _NodePort_), mas consumiríamos balanceadores de carga, que na nuvem são recursos pagos, ou podemos configurar um _NodePort_, porém, além de consumirem portas, não funcionariam com os _istio-proxies_ porque as requisições seriam direcionadas para o POD e só então chegariam ao _proxy_, dessa forma, o _NodePort_ iria direcionar uma fração para cada POD que fizer parte do seletor e só então as requisições seriam tratadas pelo Istio.
 
-![balanceamento utilizando nodeport](./assets/k8s-nodeport-balance.png)
+![balanceamento utilizando nodeport](assets/media/k8s-nodeport-balance.png)
 
 Como ilustrado, somente 50% das requisições externas chegariam ao POD A, sendo assim, mesmo que configurassemos o _proxy_ para lidar com o tráfego, seria tarde demais.
 
 A solução é a adição de um _gateway_ ([ingress gateway](https://istio.io/latest/docs/tasks/traffic-management/ingress/#accessing-istio-service-mesh-by-a-browser)) que entenda as configurações do Istio e faça o trabalho de direcionar para os PODs. Para isso o Istio inclue um _gateway_ que é identico ao Envoy que utilizamos nas nossas aplicações.
 
-![balanceamento utilizando istio-ingressgateway](./assets/istio-ingress-balance.png)
+![balanceamento utilizando istio-ingressgateway](assets/media/media/istio-ingress-balance.png)
 
 O Istio configura o Envoy em um POD independente para fazer o papel de Ingress (entrada) e outro para Egress (saída). Sendo o mesmo Envoy que está em execução com nossa aplicação, ele é configurado pelo Istio com o objetivo de direcionar o tráfego para os nossos _VirtualServices_, funcionando como um _proxy_ reverso.
 
@@ -70,7 +70,7 @@ Claro que ainda não configuramos nenhum VirtualService para utilizar esse gatew
 
 Gateway padrão
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/istio/10/default-gateway.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/istio/10/default-gateway.yaml`{{execute}}
 
 Vamos acessar a uri:
 
@@ -78,9 +78,9 @@ Vamos acessar a uri:
 
 Retornou o erro _404 Not Found_ pelo _server: istio-envoy_, o que indica que alcançamos o gateway, mas não há configuração que indique para onde direcionar a requisição.
 
-Vamos configurar o [front-end VirtualService](istio-curso/exemplos/simul-shop/istio/10/front-end-with-gateway.yaml) para utilizar esse _gateway_.
+Vamos configurar o [front-end VirtualService](assets/exemplos/simul-shop/istio/10/front-end-with-gateway.yaml) para utilizar esse _gateway_.
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/istio/10/front-end-with-gateway.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/istio/10/front-end-with-gateway.yaml`{{execute}}
 
 Vamos tentar novamente.
 
@@ -88,7 +88,7 @@ Vamos tentar novamente.
 
 Sucesso, nossa requisição fez todo o caminho de fora do cluster, passando pelo serviço do kubernetes (LoadBalancer), alcançou o POD do gateway (istio-ingressgateway) e com as configurações de _Gateway_ e _VirtualService_ chegou até o POD da nossa aplicação (onde passou pelo container do istio-proxy e finalmente o container da aplicação).
 
-Podemos gerar tráfego acessando o serviço da nossa máquina, execute o script [istio-curso/scripts/call-local.sh](istio-curso/scripts/call-local.sh) em um terminal.
+Podemos gerar tráfego acessando o serviço da nossa máquina, execute o script [assets/scripts/call-local.sh](assets/scripts/call-local.sh) em um terminal.
 
 Vamos verificar como o kiali exibe essa configuração.
 
@@ -100,11 +100,11 @@ Caso já não esteja em execução
 
 `export KIALI_PID=$!`{{execute}}
 
-![kiali exibindo o istio ingress](./assets/kiali-istio-ingress.png)
+![kiali exibindo o istio ingress](assets/media/kiali-istio-ingress.png)
 
 Agora conseguimos ver a origem das nossas requisições com uma pequena modificação no _VirtualService_. O Istio separa as configurações do _gateway_ (L3/L4) das configurações das rotas (L7), com isso podemos reaproveitá-las para vários _VitrualServices_.
 
-Você pode combinar todas as configurações que fizemos até agora e adicionar o _gateway_ para receber tráfego externo. Aplique a configuração [istio-curso/exemplos/simul-shop/istio/10/front-end-canary-release-with-gateway.yaml](istio-curso/exemplos/simul-shop/istio/10/front-end-canary-release-with-gateway.yaml) e teste ([istio-curso/scripts/call-local.sh](istio-curso/scripts/call-local.sh)) para verificar o resultado da nossa implantação canário.
+Você pode combinar todas as configurações que fizemos até agora e adicionar o _gateway_ para receber tráfego externo. Aplique a configuração [assets/exemplos/simul-shop/istio/10/front-end-canary-release-with-gateway.yaml](assets/exemplos/simul-shop/istio/10/front-end-canary-release-with-gateway.yaml) e teste ([assets/scripts/call-local.sh](assets/scripts/call-local.sh)) para verificar o resultado da nossa implantação canário.
 
 ### Configurando um domínio para o ingress
 
@@ -128,25 +128,25 @@ Agora vamos remover as configurações do Istio que fizemos anteriormente e apli
 
 Remover a configuração do front-end
 
-`kubectl delete -f istio-curso/exemplos/simul-shop/istio/10/front-end-with-gateway.yaml`{{execute}}
+`kubectl delete -f assets/exemplos/simul-shop/istio/10/front-end-with-gateway.yaml`{{execute}}
 
 Aplicar novamente a versão v2 do front-end
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/manifests/8/front-end-deployment-v2.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/manifests/8/front-end-deployment-v2.yaml`{{execute}}
 
 Aplicar a configuração do gateway
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/istio/10/default-gateway-with-domain.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/istio/10/default-gateway-with-domain.yaml`{{execute}}
 
 Aplicar a configuração da implantação canário
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/istio/10/front-end-canary-release-with-gateway.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/istio/10/front-end-canary-release-with-gateway.yaml`{{execute}}
 
-Agora podemos testar, no terminal, sem a necessidade de usar o login container, se ainda estiver aberto, saia com o comando `exit`e execute o script [istio-curso/scripts/call-simul-shop.sh](istio-curso/scripts/call-simul-shop.sh).
+Agora podemos testar, no terminal, sem a necessidade de usar o login container, se ainda estiver aberto, saia com o comando `exit`e execute o script [assets/scripts/call-simul-shop.sh](assets/scripts/call-simul-shop.sh).
 
 No kiali devemos ter algo parecido com isso:
 
-![kiali gateway with canary release.png](./assets/kiali-gateway-with-canary.png)
+![kiali gateway with canary release.png](assets/media/kiali-gateway-with-canary.png)
 
 ## Configurando segurança (TLS) para o ingress
 
@@ -163,22 +163,22 @@ dn="O=SimulShop \n CN=*.${domain}"
 
 # root certificate
 openssl req -newkey rsa:2048 -x509 -sha256 -nodes -days 365 \
-     -out istio-curso/exemplos/simul-shop/certs/${domain}.crt \
-    -keyout istio-curso/exemplos/simul-shop/certs/${domain}.key \
+     -out assets/exemplos/simul-shop/certs/${domain}.crt \
+    -keyout assets/exemplos/simul-shop/certs/${domain}.key \
     -config <(printf "[req] \n prompt=no \n utf8=yes \n distinguished_name=dn_details \n req_extensions=san_details \n [dn_details] \n ${dn} \n [san_details] \n subjectAltName=${subjectAltName}")
 
 # certificate and a private key
 openssl req -newkey rsa:2048 -nodes \
-    -out istio-curso/exemplos/simul-shop/certs/all.${domain}.csr \
-    -keyout istio-curso/exemplos/simul-shop/certs/all.${domain}.key \
+    -out assets/exemplos/simul-shop/certs/all.${domain}.csr \
+    -keyout assets/exemplos/simul-shop/certs/all.${domain}.key \
     -config <(printf "[req] \n prompt=no \n utf8=yes \n distinguished_name=dn_details \n req_extensions=san_details \n [dn_details] \n ${dn} \n [san_details] \n subjectAltName=${subjectAltName}")
 
 openssl x509 -req -days 365 \
-    -CA istio-curso/exemplos/simul-shop/certs/${domain}.crt \
-    -CAkey istio-curso/exemplos/simul-shop/certs/${domain}.key \
+    -CA assets/exemplos/simul-shop/certs/${domain}.crt \
+    -CAkey assets/exemplos/simul-shop/certs/${domain}.key \
     -set_serial 0 \
-    -in istio-curso/exemplos/simul-shop/certs/all.${domain}.csr \
-    -out istio-curso/exemplos/simul-shop/certs/all.${domain}.crt
+    -in assets/exemplos/simul-shop/certs/all.${domain}.csr \
+    -out assets/exemplos/simul-shop/certs/all.${domain}.crt
 ```{{execute}}
 
 Criaremos um _Secret_ para armazenar o certificado:
@@ -188,23 +188,23 @@ Criaremos um _Secret_ para armazenar o certificado:
 ```
 kubectl create -n istio-system secret tls \
     ${domain}credential \
-    --key=istio-curso/exemplos/simul-shop/certs/all.${domain}.key \
-    --cert=istio-curso/exemplos/simul-shop/certs/all.${domain}.crt
+    --key=assets/exemplos/simul-shop/certs/all.${domain}.key \
+    --cert=assets/exemplos/simul-shop/certs/all.${domain}.crt
 ```{{execute}}
 
 [Opcional] Salve o secret um arquvio yaml. Remova os campos gerados pelo kubernetes:
 
-`kubectl get secret/www-simul-shop-credential -n istio-system -o yaml > istio-curso/exemplos/simul-shop/templates/secret.yaml`{{execute}}
+`kubectl get secret/www-simul-shop-credential -n istio-system -o yaml > assets/exemplos/simul-shop/templates/secret.yaml`{{execute}}
 
 [Opcional] A pode aplicá-lo quando necessário:
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/templates/secret.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/templates/secret.yaml`{{execute}}
 
-Vamos [configurar](istio-curso/exemplos/simul-shop/istio/10/default-gateway-with-domain-tls.yaml) o certificado no nosso gateway
+Vamos [configurar](assets/exemplos/simul-shop/istio/10/default-gateway-with-domain-tls.yaml) o certificado no nosso gateway
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/istio/10/default-gateway-with-domain-tls.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/istio/10/default-gateway-with-domain-tls.yaml`{{execute}}
 
-Vamos aguardar alguns minutos e realizar um teste. Execute o script [istio-curso/scripts/call-simul-shop-tls.sh](istio-curso/scripts/call-simul-shop-tls.sh) em um terminal.
+Vamos aguardar alguns minutos e realizar um teste. Execute o script [assets/scripts/call-simul-shop-tls.sh](assets/scripts/call-simul-shop-tls.sh) em um terminal.
 
 Se tudo estiver OK, o resultado será:
 
@@ -215,7 +215,7 @@ Se tudo estiver OK, o resultado será:
 * Connected to www.simul-shop.com (127.0.0.1) port 443 (#0)
 * ALPN, offering http/1.1
 * successfully set certificate verify locations:
-*   CAfile: istio-curso/exemplos/simul-shop/certs/all.simul-shop.com.crt
+*   CAfile: assets/exemplos/simul-shop/certs/all.simul-shop.com.crt
   CApath: none
 * TLSv1.3 (OUT), TLS handshake, Client hello (1):
 * TLSv1.3 (IN), TLS handshake, Server hello (2):
@@ -256,7 +256,7 @@ Se tudo estiver OK, o resultado será:
 
 Você poderá acessar o front-end pelo navegador, mas como o certificado não foi assinado por uma autoridade conhecida pelo navegador, ele irá bloqueá-la.
 
-![erro certificado auto-assinado](./assets/front-end-certificate-error.png)
+![erro certificado auto-assinado](assets/media/front-end-certificate-error.png)
 
 ### Dica pro
 
@@ -280,29 +280,29 @@ Para criar um serviço externo, iremos configurar um _generic service_ em um _na
 
 Cria o serviço credit no namespace financial:
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/manifests/10/credit-deployment.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/manifests/10/credit-deployment.yaml`{{execute}}
 
 Modificando o order para invocar serviço externo:
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/manifests/10/orders-deployment-external-api.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/manifests/10/orders-deployment-external-api.yaml`{{execute}}
 
 httpbin service:
 
 `kubectl apply -f istio-1.8.1/samples/httpbin/httpbin.yaml`{{execute}}
 
-Vamos para o [kiali](http://localhost:20001) verificar como ficou essa configuração, mas antes precisaremos de tráfego, execute o [istio-curso/scripts/call-simul-shop.sh](istio-curso/scripts/call-simul-shop.sh) em um terminal.
+Vamos para o [kiali](http://localhost:20001) verificar como ficou essa configuração, mas antes precisaremos de tráfego, execute o [assets/scripts/call-simul-shop.sh](assets/scripts/call-simul-shop.sh) em um terminal.
 
-![kiali istio egress](./assets/kiali-istio-without-serviceentry.png)
+![kiali istio egress](assets/media/kiali-istio-without-serviceentry.png)
 
 Sem as configurações do Istio, o kiali exibe o tráfego de saída como um "buraco negro", um _PassthroughCluster_ porque ele não infere sobre o destino. Isso será válido para quantos serviços externos forem chamado, fazendo com que várias linhas convertam para o mesmo ponto.
 
-Agora vamos adicionar algumas [configurações](istio-curso/exemplos/simul-shop/istio/credit-serviceentry.yaml) de saída.
+Agora vamos adicionar algumas [configurações](assets/exemplos/simul-shop/istio/credit-serviceentry.yaml) de saída.
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/istio/credit-serviceentry.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/istio/credit-serviceentry.yaml`{{execute}}
 
 Com a configuração do _ServiceEntry_ adicionamos ao registro de serviços do Istio o nosso serviço de crédito, isso possibilia que o Kiali exiba como um destino conhecido.
 
-![service entry no kiali](./assets/kiali-istio-with-serviceentry.png)
+![service entry no kiali](assets/media/kiali-istio-with-serviceentry.png)
 
 ## Configurando um gateway de saída (egress)
 
@@ -314,9 +314,9 @@ Outro caso de uso é um cluster onde os nós do aplicativo não têm IPs públic
 
 A figura abaixo ilustra como configuraremos o nosso gateway:
 
-![configuração do egress](./assets/egress-config.png)
+![configuração do egress](assets/media/egress-config.png)
 
-Nesta [configuração](istio-curso/exemplos/simul-shop/istio/10/egress-example-credit.yaml) temos:
+Nesta [configuração](assets/exemplos/simul-shop/istio/10/egress-example-credit.yaml) temos:
 
 * Definir o serviço externo através de um _ServiceEntry_;
 * Configurar um _gateway_ de saída
@@ -326,19 +326,19 @@ Mas antes de aplicá-lo, vamos remover o que fizemos até agora, deixando apenas
 
 Alguns podem retornar que não encontraram o recurso:
 
-`kubectl delete -f istio-curso/exemplos/simul-shop/manifests/4`{{execute}}
+`kubectl delete -f assets/exemplos/simul-shop/manifests/4`{{execute}}
 
-`kubectl delete -f istio-curso/exemplos/simul-shop/manifests/8/front-end-deployment-v2.yaml`{{execute}}
+`kubectl delete -f assets/exemplos/simul-shop/manifests/8/front-end-deployment-v2.yaml`{{execute}}
 
-`kubectl delete -f istio-curso/exemplos/simul-shop/manifests/9/front-end-deployment-v3.yaml`{{execute}}
+`kubectl delete -f assets/exemplos/simul-shop/manifests/9/front-end-deployment-v3.yaml`{{execute}}
 
-`kubectl delete -f istio-curso/exemplos/simul-shop/istio/10/front-end-canary-release-with-gateway.yaml`{{execute}}
+`kubectl delete -f assets/exemplos/simul-shop/istio/10/front-end-canary-release-with-gateway.yaml`{{execute}}
 
-`kubectl delete -f istio-curso/exemplos/simul-shop/istio/10/default-gateway-with-domain.yaml`{{execute}}
+`kubectl delete -f assets/exemplos/simul-shop/istio/10/default-gateway-with-domain.yaml`{{execute}}
 
-`kubectl delete -f istio-curso/exemplos/simul-shop/istio/10/credit-serviceentry.yaml`{{execute}}
+`kubectl delete -f assets/exemplos/simul-shop/istio/10/credit-serviceentry.yaml`{{execute}}
 
-`kubectl delete -f istio-curso/exemplos/simul-shop/manifests/10/orders-deployment-external-api.yaml`{{execute}}
+`kubectl delete -f assets/exemplos/simul-shop/manifests/10/orders-deployment-external-api.yaml`{{execute}}
 
 Conferindo se tudo foi excluído
 
@@ -368,13 +368,13 @@ Cliente:
 
 Serviço credit:
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/manifests/10/credit-deployment.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/manifests/10/credit-deployment.yaml`{{execute}}
 
 Configuração Gateway, ServiceEntry e VirtualService:
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/istio/10/egress-example-credit.yaml`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/istio/10/egress-example-credit.yaml`{{execute}}
 
-E executar chamadas para o serviço em um terminal ([istio-curso/scripts/call-credit.sh](istio-curso/scripts/call-credit.sh))
+E executar chamadas para o serviço em um terminal ([assets/scripts/call-credit.sh](assets/scripts/call-credit.sh))
 
 ```
 export SOURCE_POD=$(kubectl get pod -l app=sleep -o jsonpath={.items..metadata.name})
@@ -391,11 +391,11 @@ Vamos verificar como ficou no kiali. Selecione os três _namespaces_ (default, f
 
 O gráfico de _app_:
 
-![kiali com a configuração do egress para credit](./assets/kiali-egress-credit.png)
+![kiali com a configuração do egress para credit](assets/media/kiali-egress-credit.png)
 
 E a configuração:
 
-![kiali com a configuração do egress para credit](./assets/kiali-config-egress-credit.png)
+![kiali com a configuração do egress para credit](assets/media/kiali-config-egress-credit.png)
 
 ### Considerações
 
@@ -407,27 +407,27 @@ Pode para a execução das chamadas od serviço no terminal.
 
 Gateway padrão:
 
-`kubectl delete -f istio-curso/exemplos/simul-shop/istio/10/default-gateway.yaml`{{execute}}
+`kubectl delete -f assets/exemplos/simul-shop/istio/10/default-gateway.yaml`{{execute}}
 
 Configuração front-end:
 
-`kubectl delete -f istio-curso/exemplos/simul-shop/istio/10/front-end-with-gateway.yaml`{{execute}}
+`kubectl delete -f assets/exemplos/simul-shop/istio/10/front-end-with-gateway.yaml`{{execute}}
 
 Configuração Gateway, ServiceEntry e VirtualService:
 
-`kubectl delete -f istio-curso/exemplos/simul-shop/istio/10/egress-example-credit.yaml`{{execute}}
+`kubectl delete -f assets/exemplos/simul-shop/istio/10/egress-example-credit.yaml`{{execute}}
 
 Cria o serviço credit no namespace financial:
 
-`kubectl delete -f istio-curso/exemplos/simul-shop/manifests/10/credit-deployment.yaml`{{execute}}
+`kubectl delete -f assets/exemplos/simul-shop/manifests/10/credit-deployment.yaml`{{execute}}
 
 Modificando o order para invocar serviço externo:
 
-`kubectl delete -f istio-curso/exemplos/simul-shop/manifests/10/orders-deployment-external-api.yaml`{{execute}}
+`kubectl delete -f assets/exemplos/simul-shop/manifests/10/orders-deployment-external-api.yaml`{{execute}}
 
 Restaura a configuração dos deplpyments:
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/manifests/4`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/manifests/4`{{execute}}
 
 httpbin service:
 

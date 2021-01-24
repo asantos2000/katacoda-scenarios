@@ -22,7 +22,7 @@ Sabemos que nada disso é verdadeiro, e ao distribuirmos nosso processamento, to
 
 Essa é uma das principais funções do Istio, reconcilar a visão de aplicação e fornecer visibiliade e controle das comunicações dos serviços distribuídos (malha de serviços).
 
-![Microservices capabilities](./assets/microservices-capabilities.png)
+![Microservices capabilities](assets/media/microservices-capabilities.png)
 Capacidades dos microsserviços atendidas pelo Kubernetes e Istio
 
 Neste curso, usamos um simulador de serviços, que não tem uma interface web e é apenas um programa em python que recebe requisições e invoca outras URLs com base nos parâmetros passados por variável de ambiente.
@@ -31,7 +31,7 @@ Como nosso objetivo não são os microsserviços, essa abordagem simplifica a cr
 
 Você pode criar malhas diferentes configurando o simulador, por exemplo, vamos simular uma aplicação que tem apenas um front-end e um backend e usaremos o docker para executá-la.
 
-![frontend e backend](./assets/simul-shop-fb.png)
+![frontend e backend](assets/media/simul-shop-fb.png)
 
 ```
 # Create net
@@ -87,20 +87,20 @@ Removendo os recursos:
 
 Neste curso criaremos uma malha mais complexa, iremos configurar o simul-shop com a seguinte arquittura:
 
-![arquitetura](./assets/simul-shop-arq.png)
+![arquitetura](assets/media/simul-shop-arq.png)
 
 E usaremos essa malha para explorar os recursos do Istio.
 
 ## Instalando a aplicação
 
-Você já obteve os arquivos do curso, nesta lição iremos instalá-los no nosso cluster.
+Você já têm os arquivos do curso, nesta lição iremos instalá-los no nosso cluster.
 
-`ls -la istio-curso/exemplos/simul-shop/manifests/4`{{execute}}
+`ls -la assets/exemplos/simul-shop/manifests/4`{{execute}}
 
 A configuração para kubernetes compreende apenas dois recursos, o _deployment_ e o _service_ para cada um dos módulos da nossa aplicação, de acordo coma arquitetura da seção anterior.
 
-* [istio-curso/exemplos/simul-shop/manifests/4/deployments.yaml](istio-curso/exemplos/simul-shop/manifests/4/deployments.yaml)
-* [istio-curso/exemplos/simul-shop/manifests/4/services.yaml](istio-curso/exemplos/simul-shop/manifests/4/services.yaml)
+* [assets/exemplos/simul-shop/manifests/4/deployments.yaml](assets/exemplos/simul-shop/manifests/4/deployments.yaml)
+* [assets/exemplos/simul-shop/manifests/4/services.yaml](assets/exemplos/simul-shop/manifests/4/services.yaml)
 
 Como na aplicação de demo, criamos um deployment para a imagem `kdop/generic-service 0.0.4` e adicionamos rótulos para representar o nome do módulo e versão.
 
@@ -152,7 +152,7 @@ kubectl get pods -n istio-system
 
 Tudo parece OK, temos acesso ao cluster, o `istiod` está em execução e o _namespace_ está com o rótulo `istio-injection=enabled`, agora aplicamos a configuração:
 
-`kubectl apply -f istio-curso/exemplos/simul-shop/manifests/4/`{{execute}}
+`kubectl apply -f assets/exemplos/simul-shop/manifests/4/`{{execute}}
 
 Vamos verificar o que foi criado:
 
