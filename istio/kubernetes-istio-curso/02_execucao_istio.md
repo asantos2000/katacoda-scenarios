@@ -18,9 +18,11 @@ Para instalar a última versão do Istio, neste momento 1.8.2, você pode ir at�
 
 `curl -L https://istio.io/downloadIstio | sh -`{{execute}}
 
+> Se o download não iniciar, interrompa o comando com <kdb>ctrl</kbd>+<kdb>c</kbd> e execute novamente.
+
 Para usar o comando `istioctl`, que está no diretório `bin` do download, coloque-o na variável `PATH` ou copie o arquivo `bin/istioctl` para um diretório no seu `PATH`
 
-## Opção 1: Copiar o arquivo para seu diretório de binários
+## Copiando o istioctl para o diretório de binários
 
 `ISTIO_VERSION=1.8.2`{{execute}}
 

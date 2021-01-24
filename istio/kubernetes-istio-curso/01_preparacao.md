@@ -12,7 +12,7 @@ O Kubernetes já está iniciado e em execução, talvez leve alguns minutos para
 
 ### Exame de saúde do _cluster_
 
-Neste momento, o seu terminal está executando o comando `kubectl get pods --all-namespaces`{{execute}} que exibe a saúde dos pods do kubernetes.
+Neste momento, o seu terminal está executando o comando `watch kubectl get pods --all-namespaces`{{execute}} que exibe a saúde dos pods do kubernetes.
 
 Você pode obter o status do cluster com estes comandos: `kubectl get nodes`{{execute}}, `kubectl cluster-info`{{execute}} e `kubectl get pods -n kube-system`{{execute}}
 
@@ -31,4 +31,11 @@ Algumas ferramentas ajudarão a melhorar nossa produtividade e outras são essen
 
 Vamos clonar o repositório do curso:
 
-`git clone https://github.com/kdop-dev/istio-curso.git`{{execute}}
+```
+git clone --no-checkout https://github.com/kdop-dev/istio-curso.git
+cd istio-curso
+git sparse-checkout init --cone
+git sparse-checkout add exemplos
+git sparse-checkout add scripts
+git checkout
+```{{execute}}
