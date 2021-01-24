@@ -15,8 +15,8 @@
     },
     {
       "course_id": "kubernetes-istio-curso",
-      "title": "kubernetes para curso istio",
-      "description": ""
+      "title": "Istio avançado para iniciantes",
+      "description": "Você aprenderá sobre os recursos de telemetria, gerenciamento de segurança e segurnaça."
     }
   ]
 }

@@ -1,5 +1,3 @@
-# Bem vindo ao Istio Avançado para Iniciantes
-
 ![cover](./assets/istio-course-cover-small.png)
 
 ## Sobre este curso

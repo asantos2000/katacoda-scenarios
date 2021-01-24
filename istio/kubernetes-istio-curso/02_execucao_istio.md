@@ -1,22 +1,16 @@
 ## Acessando o k8s
 
-Vamos configurar o ambiente, você precisará configurá-lo a cada nova seção ou executar o jupyter passando as variáveis, como descrito no [README](README.md) e não precisará repetir esses comandos novamente.
-
-[Opcional] Algumas instalações colocam o arquivo de configuração no caminho `~/.kube/config` e pode ser necessário configurar a variável de ambiente KUBECONFIG para apontar para este arquivo. Caso você obteve o arquivo de config de um cluster, você deverá configurar esta variável.
-
-`export KUBECONFIG=~/.kube/config`{{execute}}
-
-No katacoda o ambiente já está configurado e não é necessário nenhuma configuração.
-
-> Local do kubeconfig do docker-desktop. Selecione o local onde você colocou o arquivo de config para outras opções (AKS, EKS, GKE, etc).
-
-[Opcional] Se você tem mais de um cluster na configuração, verifique se está apontando para o correto.
-
-`kubectl config get-contexts`{{execute}}
+Primeiramente vamos verificar se estamos acessando o cluster de kubernetes.
 
 Vamos verificar como estão os nós do nosso cluster:
 
 `kubectl get nodes`{{execute}}
+
+> [Opcional] Algumas instalações colocam o arquivo de configuração do kubernetes no caminho `~/.kube/config` e pode ser necessário configurar a variável de ambiente KUBECONFIG para apontar para este arquivo. Caso você obteve o arquivo de config de um cluster externo (AKS, EKS, GKE, etc), você deverá configurar esta variável `export KUBECONFIG=~/.kube/config`{{execute}}
+
+No katacoda o ambiente já está configurado e não é necessário nenhuma configuração adicional.
+
+> [Opcional] Se você tem mais de um cluster na configuração, verifique se está apontando para o correto. `kubectl config get-contexts`{{execute}}
 
 ## Instalando o Istio (linux ou mac)
 
@@ -52,17 +46,9 @@ Teste
 
 `istioctl version`{{execute}}
 
-## Opção 2: Incluir a instalação no PATH
+Ok, já temos o utilitário do Istio instalado no nosso sistema operacional, vamos seguir para instalação no cluster.
 
-Você pode copiar o comando em qualquer diretório ou mantê-lo no diretório do Istio e ajustar a variável `PATH` na sessão.
-
-`export PATH=$PWD/istio-$ISTIO_VERSION/bin:$PATH`{{execute}}
-
-`echo $PATH`{{execute}}
-
-`istioctl --help`{{execute}}
-
-## O mínimo do Istio
+## Instalando o mínimo do Istio no k8s
 
 Desde a versão 1.6 o Istio é composto de uma única entrega chamada `istiod` e ela pode ser instalada com o comando abaixo:
 
@@ -76,7 +62,7 @@ Obtendo os namespaces:
 
 `kubectl get ns`{{execute}}
 
-Verificando o namespace do Istio:
+Um novo namespace foi criado, o istio-system, vamos ver o que foi instalado:
 
 `kubectl get all -n istio-system`{{execute}}
 
@@ -88,7 +74,11 @@ O Istio é uma aplicação que é executada no kubernetes e adiciona recursos pe
 
 Você pode obter uma lista completa executando o comando abaixo:
 
-`kubectl api-resources | grep istio`{{execute}}
+`kubectl api-resources --api-group=networking.istio.io`{{execute}}
+
+`kubectl api-resources --api-group=security.istio.io`{{execute}}
+
+> Note que todos as configurações para recursos do Istio são aplicados para um _namespace_ (Namespaced=true), isso significa que a configuração terá efeito apenas em um _namespace_, porém, configurações que poderão ser aplicadas para toda a malha de serviços serão realizadas no _namespace_ do Istio, o `istio-system`.
 
 Esses são os recursos adicionados e na segunda coluna o nome abreviado, você pode utilizar um ou outro, por exemplo:
 
@@ -100,13 +90,9 @@ Que é equivalente a:
 
 `kubectl get destinationrules`{{execute}}
 
-Você verá muito disso no kubernetes, para uma lista completa de recursos e suas abreviações execute o mesmo comando acima, mas sem o filtro `kubectl api-resources`
+Você verá muito disso no kubernetes, para uma lista completa de recursos e suas abreviações execute o mesmo comando acima, mas sem o filtro.
 
-`kubectl api-resources --api-group=networking.istio.io`{{execute}}
-
-`kubectl api-resources --api-group=security.istio.io`{{execute}}
-
-> Note que todos as configurações para recursos do Istio são aplicados para um _namespace_ (Namespaced=true), isso significa que a configuração terá efeito apenas em um _namespace_, porém, configurações que poderão ser aplicadas para toda a malha de serviços serão realizadas no _namespace_ do Istio, o `istio-system`.
+`kubectl api-resources`{{execute}}
 
 ## Ativando o Istio para um namespace
 
@@ -165,7 +151,7 @@ EOT
 E o serviço:
 
 ```
-cat <<EOT > _simple-app/service.yaml
+cat <<EOT > simple-app/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -190,7 +176,7 @@ Listando os arquivos criados:
 
 `ls -la simple-app`{{execute}}
 
-Criamos dois arquivos, o `deployment.yaml` e o `service.yaml` no diretório `simple-app`, agora vamos instala-la no _namespace_ default (quando omitido é onde os recursos serão criados).
+Criamos dois arquivos, o `simple-app/deployment.yaml`{{open}} e o `simple-app/service.yaml`{{open}} no diretório `simple-app`{{open}}, agora vamos instala-la no _namespace_ default (quando omitido é onde os recursos serão criados).
 
 Inspecione os arquivos e tente descobrir o que será instalado no cluster, uma dica, procure a pela imagem.
 
@@ -227,9 +213,9 @@ Usaremos um dos labels do pod para encontra-lo
 
 Como você pode ver, a imagem desse container é `nginx`, com a tag `stable`, mais abaixo tem um segundo container `istio-proxy`, com a imagem `docker.io/istio/proxyv2` e a _tag_ para a  versão `1.8.2`.
 
-Esse container não faz parte do [simple-app/deployment.yaml](simple-app/deployment.yaml), ele foi adicionado ao seu pod pelo `istiod`.
+Esse container não faz parte do `simple-app/deployment.yaml`{{open}}, ele foi adicionado ao seu pod pelo `istiod`.
 
-Caso você precise saber todos os _namespaces_ que tem a injeção do _conteiner_ _proxy_ do Istio ativado, basta executar o comando:
+Caso você precise saber todos os _namespaces_ que tem a injeção do _envoy_ do Istio ativado, basta executar o comando:
 
 `kubectl get ns -l istio-injection=enabled`{{execute}}
 
