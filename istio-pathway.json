@@ -1,6 +1,6 @@
 {
   "title": "Istio",
-  "description": "Introduction to Istio Service Mesh",
+  "description": "Istio Service Mesh Series",
   "icon": "fa-kubernetes fa-istio",
   "courses": [
     {
