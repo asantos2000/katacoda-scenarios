@@ -6,7 +6,7 @@
     "pathwayTitle": "Istio",
     "icon": "fa-istio",
     "title": "Istio avançado para iniciantes",
-    "description": "Você aprenderá sobre os recursos de telemetria, gerenciamento de segurança e segurnaça.",
+    "description": "Você aprenderá sobre os recursos de telemetria, gerenciamento de tráfego e segurança.",
     "authenticated": false,
     "details": {
         "steps": [
