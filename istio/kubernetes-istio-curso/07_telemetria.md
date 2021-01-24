@@ -135,7 +135,7 @@ async def split(request: Request):
     return message
 ```
 
-> Código completo está em [exemplos/generic-service/py/app/main.py](exemplos/generic-service/py/app/main.py)
+> Código completo está em [istio-curso/exemplos/generic-service/py/app/main.py](istio-curso/exemplos/generic-service/py/app/main.py)
 
 Usando a biblioteca [fastapi_opentracing](https://github.com/wesdu/fastapi-opentracing), obtemos o cabeçalho de rastreamento e o adicionamos no request para o próximo serviço, dessa forma mantêmos a relação entre as requisições.
 

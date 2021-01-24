@@ -152,15 +152,15 @@ Vamos instalar um serviço externo e modificar o _deployment_ da order para cham
 
 Cria o serviço credit no namespace financial:
 
-`kubectl apply -f exemplos/simul-shop/manifests/10/credit-deployment.yaml`{{execute}}
+`kubectl apply -f istio-curso/exemplos/simul-shop/manifests/10/credit-deployment.yaml`{{execute}}
 
 Serviço externo:
 
-`kubectl apply -f istio-1.8.1/samples/httpbin/httpbin.yaml`{{execute}}
+`kubectl apply -f istio-1.8.2/samples/httpbin/httpbin.yaml`{{execute}}
 
 Modificando o order para invocar serviço externo:
 
-`kubectl apply -f exemplos/simul-shop/manifests/10/orders-deployment-external-api.yaml`{{execute}}
+`kubectl apply -f istio-curso/exemplos/simul-shop/manifests/10/orders-deployment-external-api.yaml`{{execute}}
 
 > O _namespace_ financial não tem o rótulo do Istio para injeção automática de _sidecar_.
 
@@ -182,11 +182,11 @@ Como você pode verificar, o tráfego entre os serviços está OK, mas o tráfeg
 
 Vamos registrar o serviço bloqueado e tentar novamente.
 
-`kubectl apply -f exemplos/simul-shop/istio/12/httpbin-serviceentry.yaml`{{execute}}
+`kubectl apply -f istio-curso/exemplos/simul-shop/istio/12/httpbin-serviceentry.yaml`{{execute}}
 
 Retorne para o kiali e veja o resultado.
 
-Você notou que o serviço de crédito, embora não tenha um _sidecar_ não teve problema de comunicação, isso porque o Istio cria uma entrada para cada serviço do kubernetes, mas o serviço httpbin.org não têm e foi bloqueado até que fosse criado um [registro](exemplos/simul-shop/istio/12/httpbin-serviceentry.yaml).
+Você notou que o serviço de crédito, embora não tenha um _sidecar_ não teve problema de comunicação, isso porque o Istio cria uma entrada para cada serviço do kubernetes, mas o serviço httpbin.org não têm e foi bloqueado até que fosse criado um [registro](istio-curso/exemplos/simul-shop/istio/12/httpbin-serviceentry.yaml).
 
 Vamos restaurar a configuração ao modo padrão.
 
@@ -196,7 +196,7 @@ Retornndo o flag para o padrão:
 
 Excluindo a entrada no registro de serviço:
 
-`kubectl delete -f exemplos/simul-shop/istio/12/httpbin-serviceentry.yaml`{{execute}}
+`kubectl delete -f istio-curso/exemplos/simul-shop/istio/12/httpbin-serviceentry.yaml`{{execute}}
 
 Removendo o namespace financial:
 
@@ -204,11 +204,11 @@ Removendo o namespace financial:
 
 Serviço externo:
 
-`kubectl delete -f istio-1.8.1/samples/httpbin/httpbin.yaml`{{execute}}
+`kubectl delete -f istio-1.8.2/samples/httpbin/httpbin.yaml`{{execute}}
 
 Restaurando os deployments:
 
-`kubectl apply -f exemplos/simul-shop/manifests/4`{{execute}}
+`kubectl apply -f istio-curso/exemplos/simul-shop/manifests/4`{{execute}}
 
 ## Controle de Acesso
 
@@ -216,21 +216,21 @@ Por padrão, todas as solicitações na malha de serviços do Istio são permiti
 
 O Istio converte suas _AuthorizationPolicies_ em configurações para os _sidecars_ (istio-proxy) e, nos demais _proxies_ (gateways).
 
-Vamos começar modificando o padrão, [negando autorização](exemplos/simul-shop/istio/12/authorization-policy-deny-all.yaml) para toda a comunicação na malha.
+Vamos começar modificando o padrão, [negando autorização](istio-curso/exemplos/simul-shop/istio/12/authorization-policy-deny-all.yaml) para toda a comunicação na malha.
 
-`kubectl apply -f exemplos/simul-shop/istio/12/authorization-policy-deny-all.yaml`{{execute}}
+`kubectl apply -f istio-curso/exemplos/simul-shop/istio/12/authorization-policy-deny-all.yaml`{{execute}}
 
 Vá ao kiali e veja como ficou o tráfego.
 
-Vamos permitir o invocações do método GET, para o [_front-end_](exemplos/simul-shop/istio/12/authorization-policy-allow-front-end.yaml) e do _front-end_ para [_orders_](exemplos/simul-shop/istio/12/authorization-policy-allow-orders.yaml) e [_catalogue_](exemplos/simul-shop/istio/12/authorization-policy-allow-catalogue.yaml).
+Vamos permitir o invocações do método GET, para o [_front-end_](istio-curso/exemplos/simul-shop/istio/12/authorization-policy-allow-front-end.yaml) e do _front-end_ para [_orders_](istio-curso/exemplos/simul-shop/istio/12/authorization-policy-allow-orders.yaml) e [_catalogue_](istio-curso/exemplos/simul-shop/istio/12/authorization-policy-allow-catalogue.yaml).
 
 ![Access Control](./assets/access-control.png)
 
-`kubectl apply -f exemplos/simul-shop/istio/12/authorization-policy-allow-front-end.yaml`{{execute}}
+`kubectl apply -f istio-curso/exemplos/simul-shop/istio/12/authorization-policy-allow-front-end.yaml`{{execute}}
 
-`kubectl apply -f exemplos/simul-shop/istio/12/authorization-policy-allow-orders.yaml`{{execute}}
+`kubectl apply -f istio-curso/exemplos/simul-shop/istio/12/authorization-policy-allow-orders.yaml`{{execute}}
 
-`kubectl apply -f exemplos/simul-shop/istio/12/authorization-policy-allow-catalogue.yaml`{{execute}}
+`kubectl apply -f istio-curso/exemplos/simul-shop/istio/12/authorization-policy-allow-catalogue.yaml`{{execute}}
 
 > Você pode aplicar um de cada vez e conferir no kiali a mudança.
 
@@ -238,16 +238,16 @@ Volte para o kiali e verifique como o tráfego está.
 
 Para liberar todo o tráfego novamente, como o padrão, basta excluir a política de negação.
 
-`kubectl delete -f exemplos/simul-shop/istio/12/authorization-policy-deny-all.yaml`{{execute}}
+`kubectl delete -f istio-curso/exemplos/simul-shop/istio/12/authorization-policy-deny-all.yaml`{{execute}}
 
 Novamente no kiali, verifique que ao excluir a política, todo o tráfego foi liberado e as demais políticas não tem mais efeito.
 
 Para manter o ambiente limpo, vamos exclui-las também.
 
-`kubectl delete -f exemplos/simul-shop/istio/12/authorization-policy-allow-front-end.yaml`{{execute}}
+`kubectl delete -f istio-curso/exemplos/simul-shop/istio/12/authorization-policy-allow-front-end.yaml`{{execute}}
 
-`kubectl delete -f exemplos/simul-shop/istio/12/authorization-policy-allow-orders.yaml`{{execute}}
+`kubectl delete -f istio-curso/exemplos/simul-shop/istio/12/authorization-policy-allow-orders.yaml`{{execute}}
 
-`kubectl delete -f exemplos/simul-shop/istio/12/authorization-policy-allow-catalogue.yaml`{{execute}}
+`kubectl delete -f istio-curso/exemplos/simul-shop/istio/12/authorization-policy-allow-catalogue.yaml`{{execute}}
 
 O controle de acesso permite de uma forma granular, controlar quem pode acessar o que, isso pode ser necessário em ambientes compartilhados e oferece mais um nível de controle, além do RBAC do kubernetes.

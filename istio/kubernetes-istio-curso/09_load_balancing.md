@@ -8,28 +8,21 @@ O mais comum dos algoritmos de balanceamento, simplesmente o algoritmo entrega u
 
 Para implementálo na nossa aplicação, primeiro removeremos as outras ocnfigurações:
 
-
-```bash
-kubectl delete -f exemplos/simul-shop/istio/8/front-end-canary-release.yaml
-```
+`kubectl delete -f istio-curso/exemplos/simul-shop/istio/8/front-end-canary-release.yaml`{{execute T1}}
 
 Vamos adicionar mais uma versão ao front-end para que vejamos as diferenças entre os algoritmos.
 
+`kubectl apply -f istio-curso/exemplos/simul-shop/manifests/9/front-end-deployment-v3.yaml`{{execute T1}}
 
-```bash
-kubectl apply -f exemplos/simul-shop/manifests/9/front-end-deployment-v3.yaml
-```
+Agora vamos aplicar a configuração do arquivo [istio-curso/exemplos/simul-shop/istio/9/front-end-loadbalancer-round-robin.yaml](istio-curso/exemplos/simul-shop/istio/9/front-end-loadbalancer-round-robin.yaml).
 
-Agora vamos aplicar a configuração do arquivo [exemplos/simul-shop/istio/9/front-end-loadbalancer-round-robin.yaml](exemplos/simul-shop/istio/9/front-end-loadbalancer-round-robin.yaml).
+`kubectl apply -f istio-curso/exemplos/simul-shop/istio/9/front-end-loadbalancer-round-robin.yaml`{{execute T1}}
 
+Vamos olhar no terminal, se você fechou o script [istio-curso/scripts/call.sh](istio-curso/scripts/call.sh) que estavamos executando no container `login`, execute-o novamente.
 
-```bash
-kubectl apply -f exemplos/simul-shop/istio/9/front-end-loadbalancer-round-robin.yaml
-```
+`kubectl exec -it svc/login -c login -- bash`{{execute T2}} e copie e cole o script.
 
-Vamos olhar no terminal, se você fechou o script [scripts/call.sh](scripts/call.sh) que estavamos executando no container `login`, execute-o novamente.
-
-você deve obter uma saída semelhante a esta:
+Você deve obter uma saída semelhante a esta:
 
 ```bash
 {"name":"split","description":"List ['http://login:8000/', 'http://catalogue:8000/', 'http://orders:8000/s']","app":"front-end","version":"v1","when":"2020-11-09 22:21:31"}
@@ -50,14 +43,11 @@ Agora vamos tentar um algoritmo diferente.
 
 ## Simples: Random
 
-Essa [configuração](exemplos/simul-shop/istio/9/front-end-loadbalancer-random.yaml), usa um algoritmo que escolhe aleatoriamente uma das três opções e envia a requisição.
+Essa [configuração](istio-curso/exemplos/simul-shop/istio/9/front-end-loadbalancer-random.yaml), usa um algoritmo que escolhe aleatoriamente uma das três opções e envia a requisição.
 
+`kubectl apply -f istio-curso/exemplos/simul-shop/istio/9/front-end-loadbalancer-random.yaml`{{execute T1}}
 
-```bash
-kubectl apply -f exemplos/simul-shop/istio/9/front-end-loadbalancer-random.yaml
-```
-
-Agora o script [scripts/call.sh](scripts/call.sh) deve exibir algo mais aleatório, como isto:
+Agora o script [istio-curso/scripts/call.sh](istio-curso/scripts/call.sh) deve exibir algo mais aleatório, como isto:
 
 ```bash
 {"name":"split","description":"List ['http://login:8000/', 'http://catalogue:8000/', 'http://orders:8000/s']","app":"front-end","version":"v3","when":"2020-11-09 22:25:52"}
@@ -78,11 +68,9 @@ Até o momemnto testamos _RANDOM_ e _ROUND_ROBIN_ proque são as mais fáceis de
 
 Para conhecer quais PODs o Istio irá considerar no balanceamento você pode inspecionar a configurações do Envoy.
 
+`POD=$(kubectl get pod -l "app=front-end,version=v1" --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')`{{execute T1}}
 
-```bash
-POD=$(kubectl get pod -l "app=front-end,version=v1" --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')
-istioctl proxy-config endpoints $POD --cluster "outbound|8000|all-pods|front-end.default.svc.cluster.local"
-```
+`istioctl proxy-config endpoints $POD --cluster "outbound|8000|all-pods|front-end.default.svc.cluster.local"`{{execute T1}}
 
 > Você pode consultar qualquer um dos três PODs (v1, v2, v3), todos tem a mesma configuração.
 
@@ -103,14 +91,11 @@ As opções são:
 
 > O Istio irá configurar o envoy com a política de balanceamento `RING_HASH`, para mais informações consulte: [Envoy - Load Balancing](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/load_balancing)-[Ring hash](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/load_balancers.html?highlight=hash#ring-hash) e [Destination Rule](https://istio.io/latest/docs/reference/config/networking/destination-rule/)-[LoadBalancerSettings.ConsistentHashLB](https://istio.io/latest/docs/reference/config/networking/destination-rule/#LoadBalancerSettings-ConsistentHashLB).
 
-Neste exemplo [exemplos/simul-shop/istio/9/front-end-loadbalancer-stick.yaml](exemplos/simul-shop/istio/9/front-end-loadbalancer-stick.yaml) iremos configurar a afinidade por IP de origem da requisição:
+Neste exemplo [istio-curso/exemplos/simul-shop/istio/9/front-end-loadbalancer-stick.yaml](istio-curso/exemplos/simul-shop/istio/9/front-end-loadbalancer-stick.yaml) iremos configurar a afinidade por IP de origem da requisição:
 
+`kubectl apply -f istio-curso/exemplos/simul-shop/istio/9/front-end-loadbalancer-stick.yaml`{{execute T1}}
 
-```bash
-kubectl apply -f exemplos/simul-shop/istio/9/front-end-loadbalancer-stick.yaml
-```
-
-Vá para o terminal, agora você deve ter todas as saídas para o mesmo POD/versão.
+Vá para o terminal 2, agora você deve ter todas as saídas para o mesmo POD/versão.
 
 ```bash
 {"name":"split","description":"List ['http://login:8000/', 'http://catalogue:8000/', 'http://orders:8000/s']","app":"front-end","version":"v3","when":"2020-11-10 17:48:24"}
@@ -122,16 +107,13 @@ Vá para o terminal, agora você deve ter todas as saídas para o mesmo POD/vers
 
 Nesse caso foi a v3, mas poderia ser qualquer uma dos três.
 
-Essa configuração [exemplos/simul-shop/istio/9/front-end-loadbalancer-query.yaml](exemplos/simul-shop/istio/9/front-end-loadbalancer-query.yaml) irá usar o parâmetro `name` na URL para criar o _ hash_.
+Essa configuração [istio-curso/exemplos/simul-shop/istio/9/front-end-loadbalancer-query.yaml](istio-curso/exemplos/simul-shop/istio/9/front-end-loadbalancer-query.yaml) irá usar o parâmetro `name` na URL para criar o _hash_.
 
+`kubectl apply -f istio-curso/exemplos/simul-shop/istio/9/front-end-loadbalancer-query.yaml`{{execute T1}}
 
-```bash
-kubectl apply -f exemplos/simul-shop/istio/9/front-end-loadbalancer-query.yaml
-```
+Agora vá para o terminal 2 e adicione o parâmetro `name` com qualquer valor (ou copie de [istio-curso/scripts/call-param.sh](istio-curso/scripts/call-param.sh)).
 
-Agora vá para o terminal e adicione o parâmetro `name` com qualquer valor (ou copie de [scripts/call-param.sh](scripts/call-param.sh)).
-
-`while true; do curl http://front-end:8000/s?name=anderson; echo; sleep 1; done`
+`while true; do curl http://front-end:8000/s?name=anderson; echo; sleep 1; done`{{execute T2}}
 
 ```bash
 {"name":"split","description":"List ['http://login:8000/', 'http://catalogue:8000/', 'http://orders:8000/s']","app":"front-end","version":"v1","when":"2020-11-10 17:52:46"}
@@ -140,9 +122,9 @@ Agora vá para o terminal e adicione o parâmetro `name` com qualquer valor (ou 
 {"name":"split","description":"List ['http://login:8000/', 'http://catalogue:8000/', 'http://orders:8000/s']","app":"front-end","version":"v1","when":"2020-11-10 17:52:49"}
 ````
 
-Modifique o valor algumas vezes para ser direcionado para PODs diferentes.
+Pare a execução e modifique o valor algumas vezes para ser direcionado para PODs diferentes.
 
-`while true; do curl http://front-end:8000/s?name=stela; echo; sleep 1; done`
+`while true; do curl http://front-end:8000/s?name=stela; echo; sleep 1; done`{{execute T2}}
 
 ```bash
 {"name":"split","description":"List ['http://login:8000/', 'http://catalogue:8000/', 'http://orders:8000/s']","app":"front-end","version":"v3","when":"2020-11-10 17:53:01"}
@@ -166,27 +148,22 @@ Na próxima seção iremos discutir como configurar gerenciamento de tráfego pa
 
 Vamos remover as regras para não conflitar com as próximas seções.
 
+Removendo config do Istio:
 
-```bash
-# Removendo config do Istio
-kubectl delete -f exemplos/simul-shop/istio/9/front-end-loadbalancer-query.yaml
-```
+`kubectl delete -f istio-curso/exemplos/simul-shop/istio/9/front-end-loadbalancer-query.yaml`{{execute T1}}
 
+Verificando se deixamos passar algo:
 
-```bash
-# Verificando se deixamos passar algo
-kubectl get vs,dr
-```
+`kubectl get vs,dr`{{execute T1}}
 
+Removendo versões do front-end:
 
-```bash
-# Removendo versões do front-end
-kubectl delete -f exemplos/simul-shop/manifests/8/front-end-deployment-v2.yaml
-kubectl delete -f exemplos/simul-shop/manifests/9/front-end-deployment-v3.yaml
-```
+`kubectl delete -f istio-curso/exemplos/simul-shop/manifests/8/front-end-deployment-v2.yaml`{{execute T1}}
 
+`kubectl delete -f istio-curso/exemplos/simul-shop/manifests/9/front-end-deployment-v3.yaml`{{execute T1}}
 
-```bash
-# Verificando os PODs da aplicação
-kubectl get pods
-```
+Verificando os PODs da aplicação:
+
+`kubectl get pods`{{execute T1}}
+
+`Pare a execução do terminal 2`{{execute interrupt T2}} e saia do POD com `exit`{{execute T2}}.

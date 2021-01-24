@@ -1,5 +1,3 @@
-Trazendo VMs e outros serviços de fora do kubernetes para a malha de serviços.
-
 Executar serviços em contêineres adicionam muitos benefícios, tasi como escalonamento automático, isolamento de dependência e otimização de recursos. Adicionar o Istio ao seu ambiente Kubernetes pode simplificar radicalmente a agregação de métricas e o gerenciamento de políticas, principalmente se você estiver operando muitos contêineres.
 
 Mas como ficam os aplicativos legados em máquinas virtuais? Ou se você estiver migrando de VMs para contêineres?
@@ -410,10 +408,10 @@ dpkg -s istio-sidecar
 kubectl delete ns legacy
 
 # Deploys do istio para simul-shop
-kubectl delete -f exemplos/simul-shop/istio/
+kubectl delete -f istio-curso/exemplos/simul-shop/istio/
 
 # Deploys do simul-shop
-kubectl delete -f exemplos/simul-shop/manifests/
+kubectl delete -f istio-curso/exemplos/simul-shop/manifests/
 
 # Istio
 kubectl delete namespace istio-system

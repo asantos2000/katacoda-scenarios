@@ -2,9 +2,11 @@
 
 Vamos configurar o ambiente, você precisará configurá-lo a cada nova seção ou executar o jupyter passando as variáveis, como descrito no [README](README.md) e não precisará repetir esses comandos novamente.
 
-[Opcional] Se você não estiver usando o docker-desktop será necessário obter o arquivo de configuração e ajustar a variável KUBECONFIG
+[Opcional] Algumas instalações colocam o arquivo de configuração no caminho `~/.kube/config` e pode ser necessário configurar a variável de ambiente KUBECONFIG para apontar para este arquivo. Caso você obteve o arquivo de config de um cluster, você deverá configurar esta variável.
 
 `export KUBECONFIG=~/.kube/config`{{execute}}
+
+No katacoda o ambiente já está configurado e não é necessário nenhuma configuração.
 
 > Local do kubeconfig do docker-desktop. Selecione o local onde você colocou o arquivo de config para outras opções (AKS, EKS, GKE, etc).
 
@@ -16,7 +18,7 @@ Vamos verificar como estão os nós do nosso cluster:
 
 `kubectl get nodes`{{execute}}
 
-## Instalando o Istio (linux)
+## Instalando o Istio (linux ou mac)
 
 Para instalar a última versão do Istio, neste momento 1.8.2, você pode ir até a página [Getting Started](https://istio.io/latest/docs/setup/getting-started/#download) ou seguir as instruções abaixo:
 
@@ -64,7 +66,7 @@ Você pode copiar o comando em qualquer diretório ou mantê-lo no diretório do
 
 Desde a versão 1.6 o Istio é composto de uma única entrega chamada `istiod` e ela pode ser instalada com o comando abaixo:
 
-Isso deve demorar de 2 a 5 minutos.
+Isso deve demorar de 1 a 5 minutos, dependendo da capacidade do cluster.
 
 `istioctl install --set profile=minimal --skip-confirmation`{{execute}}
 
@@ -124,12 +126,12 @@ Vamos fazer _deploy_ de uma aplicação exemplo para verificar esse comportament
 
 Vamos criar uma aplicação simples.
 
-`mkdir -p exemplos/2_simple-app`{{execute}}
+`mkdir -p simple-app`{{execute}}
 
 Criando o arquivo de deployment:
 
 ```
-cat <<EOT > exemplos/2_simple-app/deployment.yaml
+cat <<EOT > simple-app/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -160,10 +162,10 @@ spec:
 EOT
 ```{{execute}}
 
-O de serviço:
+E o serviço:
 
 ```
-cat <<EOT > exemplos/2_simple-app/service.yaml
+cat <<EOT > _simple-app/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -186,23 +188,24 @@ EOT
 
 Listando os arquivos criados:
 
-`ls -la exemplos/2_simple-app`{{execute}}
+`ls -la simple-app`{{execute}}
 
-Criamos dois arquivos, o `deployment.yaml` e o `service.yaml` no diretório `exemplos/simple-app`, agora vamos instala-la no _namespace_ default (quando omitido é onde os recursos serão criados).
+Criamos dois arquivos, o `deployment.yaml` e o `service.yaml` no diretório `simple-app`, agora vamos instala-la no _namespace_ default (quando omitido é onde os recursos serão criados).
 
 Inspecione os arquivos e tente descobrir o que será instalado no cluster, uma dica, procure a pela imagem.
 
-`kubectl apply -f exemplos/2_simple-app`{{execute}}
+`kubectl apply -f simple-app`{{execute}}
 
 Verificando a situação do POD.
 
 `kubectl get pods`{{execute}}
 
-> Para instalar a aplicação em um _namespace_ diferente adicione `--namesapce` ou `-n`ao comando. Exemplo: `kubectl apply -f exemplos/2_simple-app -n test-app`
+> Repita o comando algumas vezes até que o POD esteja 2/2 _Running_.
+> Para instalar a aplicação em um _namespace_ diferente adicione `--namesapce` ou `-n`ao comando. Exemplo: `kubectl apply -f istio-curso/exemplos/simple-app -n test-app`
 
 Vamos acessar nossa aplicação, ela foi configurada para o tipo de serviço `ClusterIP`, o que significa que o acesso é interno, apenas entre os PODs do cluster, mas podemos acessá-la utilizando o comando `kubectl port-forward`.
 
-`kubectl port-forward svc/simple-app 8000:80`{{execute T1}}
+`kubectl port-forward svc/simple-app 8000:80 --address 0.0.0.0`{{execute T1}}
 
 Vamos testar em um segundo terminal `curl localhost:8000`{{execute T2}}
 
@@ -224,7 +227,7 @@ Usaremos um dos labels do pod para encontra-lo
 
 Como você pode ver, a imagem desse container é `nginx`, com a tag `stable`, mais abaixo tem um segundo container `istio-proxy`, com a imagem `docker.io/istio/proxyv2` e a _tag_ para a  versão `1.8.2`.
 
-Esse container não faz parte do [exemplos/2_simple-app/deployment.yaml](exemplos/2_simple-app/deployment.yaml), ele foi adicionado ao seu pod pelo `istiod`.
+Esse container não faz parte do [simple-app/deployment.yaml](simple-app/deployment.yaml), ele foi adicionado ao seu pod pelo `istiod`.
 
 Caso você precise saber todos os _namespaces_ que tem a injeção do _conteiner_ _proxy_ do Istio ativado, basta executar o comando:
 

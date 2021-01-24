@@ -67,17 +67,21 @@ Terminal 2
 
 `docker logs -f backend`{{execute T2}}
 
+> Alterne entre os terminais para ver os logs.
+
 Agora que conhecemos como configurar e acompanhar nossa aplicação, vamos ir para algo mais complexo.
 
 Vamos remover os recursos criados:
 
-```
-# Parando e excluindo os contêineres
-docker kill front-end backend
+Parando o log nos terminais 1 e 2 com <kbd>CTRL</kbd>+<kbd>C</kbd>.
 
-# Clean-up
-docker network rm my-net
-```{{execute}}
+Parando e excluindo os contêineres:
+
+`docker kill front-end backend`{{execute}}
+
+Removendo os recursos:
+
+`docker network rm my-net`{{execute}}
 
 ### Istio + Simul Shop
 
@@ -89,18 +93,14 @@ E usaremos essa malha para explorar os recursos do Istio.
 
 ## Instalando a aplicação
 
-Vamos clonar o repositório do curso:
+Você já obteve os arquivos do curso, nesta lição iremos instalá-los no nosso cluster.
 
-`git clone https://github.com/kdop-dev/istio-curso.git`{{execute}}
-
-Você tem agora o diretório com a aplicação.
-
-`ls -la exemplos/simul-shop/manifests/4`{{execute}}
+`ls -la istio-curso/exemplos/simul-shop/manifests/4`{{execute}}
 
 A configuração para kubernetes compreende apenas dois recursos, o _deployment_ e o _service_ para cada um dos módulos da nossa aplicação, de acordo coma arquitetura da seção anterior.
 
-* [exemplos/simul-shop/manifests/4/deployments.yaml](exemplos/simul-shop/manifests/4/deployments.yaml)
-* [exemplos/simul-shop/manifests/4/services.yaml](exemplos/simul-shop/manifests/4/services.yaml)
+* [istio-curso/exemplos/simul-shop/manifests/4/deployments.yaml](istio-curso/exemplos/simul-shop/manifests/4/deployments.yaml)
+* [istio-curso/exemplos/simul-shop/manifests/4/services.yaml](istio-curso/exemplos/simul-shop/manifests/4/services.yaml)
 
 Como na aplicação de demo, criamos um deployment para a imagem `kdop/generic-service 0.0.4` e adicionamos rótulos para representar o nome do módulo e versão.
 
@@ -152,7 +152,7 @@ kubectl get pods -n istio-system
 
 Tudo parece OK, temos acesso ao cluster, o `istiod` está em execução e o _namespace_ está com o rótulo `istio-injection=enabled`, agora aplicamos a configuração:
 
-`kubectl apply -f exemplos/simul-shop/manifests/4/`{{execute}}
+`kubectl apply -f istio-curso/exemplos/simul-shop/manifests/4/`{{execute}}
 
 Vamos verificar o que foi criado:
 

@@ -12,10 +12,11 @@ O Kubernetes já está iniciado e em execução, talvez leve alguns minutos para
 
 ### Exame de saúde do _cluster_
 
-Você pode obter o status do cluster com estes comandos: `kubectl cluster-info`{{execute}} e ` kubectl get pods --all-namespaces`{{execute}}
+Neste momento, o seu terminal está executando o comando `kubectl get pods --all-namespaces`{{execute}} que exibe a saúde dos pods do kubernetes.
+
+Você pode obter o status do cluster com estes comandos: `kubectl get nodes`{{execute}}, `kubectl cluster-info`{{execute}} e `kubectl get pods -n kube-system`{{execute}}
 
 > Enquanto espera, vá para a aba IDE para carregá-la, isso levará alguns segundos.
-> Abra também uma aba de terminal
 > Espere até que todos os pods apareçam e estejam _Running_ e, em seguida, pressione <kbd> Ctrl </kbd> + <kbd> C </kbd> no terminal ou click em  `echo" Pronto para ir. "`{{Execute interrupt}}
 
 ## Ferramentas
@@ -25,3 +26,9 @@ Algumas ferramentas ajudarão a melhorar nossa produtividade e outras são essen
 * [istioctl](https://istio.io/latest/docs/ops/diagnostic-tools/istioctl/) - CLI para o Istio, será instalado na seção 02.
 * [wercker/stern](https://github.com/wercker/stern) - Stern permite acessar log em multiplos PODs e containers.
 * [httpie](https://httpie.io/) - utilitário para enviar requiisções http com um retorno mais amigável.
+
+## Obtendo o código do curso
+
+Vamos clonar o repositório do curso:
+
+`git clone https://github.com/kdop-dev/istio-curso.git`{{execute}}

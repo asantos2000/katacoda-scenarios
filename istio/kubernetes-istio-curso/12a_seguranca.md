@@ -23,9 +23,9 @@ Obtenha os scripts para criar os certificados e gerar os tokens
 
 Script:
 
-`wget --no-verbose https://raw.githubusercontent.com/istio/istio/release-1.8/security/tools/jwt/samples/gen-jwt.py -P scripts/`{{execute}}
+`wget --no-verbose https://raw.githubusercontent.com/istio/istio/release-1.8/security/tools/jwt/samples/gen-jwt.py -P istio-curso/scripts/`{{execute}}
 
-[Opcional] jwkgen. Os cerficiados estão no diretório exemplos/certificados
+[Opcional] jwkgen. Os cerficiados estão no diretório istio-curso/exemplos/certificados
 
 Para instalar em outros sistemas operacionais acesse: https://github.com/rakutentech/jwkgen
 
@@ -160,7 +160,7 @@ Normalmente essa infraestrutura é mais sofisticada, como o serviço PaaS da [Au
 
 Vamos criar os certificados:
 
-`jwkgen rsa exemplos/certificates/istio-curso`{{execute}}
+`jwkgen rsa istio-curso/exemplos/certificates/istio-curso`{{execute}}
 
 Isso irá criar quatro arquivos:
 
@@ -257,7 +257,7 @@ Token inválido:
 
 Token válido:
 
-`TOKEN=$(python3 scripts/gen-jwt.py -iss john@simul-shop.com exemplos/certificates//istio-curso.pem --expire 20)`{{execute}}
+`TOKEN=$(python3 istio-curso/scripts/gen-jwt.py -iss john@simul-shop.com istio-curso/exemplos/certificates//istio-curso.pem --expire 20)`{{execute}}
 
 `http "$INGRESS_HOST:$INGRESS_PORT/" "Authorization: Bearer $TOKEN" "Host: login.default"`{{execute}}
 
@@ -315,7 +315,7 @@ Agora com um token válido:
 
 Gerando o token
 
-`TOKEN=$(python3 scripts/gen-jwt.py -iss john@simul-shop.com exemplos/certificates//istio-curso.pem --expire 20)`{{execute}}
+`TOKEN=$(python3 istio-curso/scripts/gen-jwt.py -iss john@simul-shop.com istio-curso/exemplos/certificates//istio-curso.pem --expire 20)`{{execute}}
 
 Invocando com um token válido:
 
@@ -392,7 +392,7 @@ Vamos adicionar um token válido:
 
 Gerando o token
 
-`TOKEN=$(python3 scripts/gen-jwt.py -iss john@simul-shop.com exemplos/certificates//istio-curso.pem --expire 20)`{{execute}}
+`TOKEN=$(python3 istio-curso/scripts/gen-jwt.py -iss john@simul-shop.com istio-curso/exemplos/certificates//istio-curso.pem --expire 20)`{{execute}}
 
 Invocando:
 
@@ -460,11 +460,11 @@ EOF
 Somente usuários com um token válido e o papel _customer_ terão acesso ao serviço.
 
 
-`TOKEN=$(python3 scripts/gen-jwt.py -claim role:customer -iss john@simul-shop.com exemplos/certificates//istio-curso.pem --expire 20)`{{execute}}
+`TOKEN=$(python3 istio-curso/scripts/gen-jwt.py -claim role:customer -iss john@simul-shop.com istio-curso/exemplos/certificates//istio-curso.pem --expire 20)`{{execute}}
 
 `http "$INGRESS_HOST:$INGRESS_PORT/healthz" "Authorization: Bearer $TOKEN" "Host: login.default"`{{execute}}
 
-Copie o token gerado para decodifica-lo em [jwt.io](jwt.io). Se quiser validar o token, utilize a [chave pública](exemplos/certificates/istio-curso.pub.pem).
+Copie o token gerado para decodifica-lo em [jwt.io](jwt.io). Se quiser validar o token, utilize a [chave pública](istio-curso/exemplos/certificates/istio-curso.pub.pem).
 
 ![](./assets/jwt-io-debugger.png)
 

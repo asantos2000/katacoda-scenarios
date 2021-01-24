@@ -46,7 +46,7 @@ O balanceamento é feito pelo kube-proxy e dependendo do [modo que ele foi confi
 
 Vamos fazer um teste simples, vamos criar um novo _deployment_ com uma nova versão do front-end.
 
-`kubectl apply -f exemplos/simul-shop/manifests/8/front-end-deployment-v2.yaml`{{execute}}
+`kubectl apply -f istio-curso/exemplos/simul-shop/manifests/8/front-end-deployment-v2.yaml`{{execute}}
 
 Depois de algum tempo, o Kiali irá exibir uma gráfico de versão como o abaixo:
 
@@ -64,7 +64,7 @@ Nós temos um problema com essa abordagem, nosso serviço é do tipo `ClusterIP`
 
 Execute esse comando em um terminal, copie o comando abaixo, vá ao menul lateral, click em <kbd>+</kbd> e selecione um terminal.
 
-`kubectl exec -it svc/login -c login -- bash`{{execute}}
+`kubectl exec -it svc/login -c login -- bash`{{execute T2}}
 
 Você deverá ver um prompt, cole ou digite o comando:
 
@@ -74,7 +74,7 @@ Você deverá ver um prompt, cole ou digite o comando:
 
 Agora que estamos dentro de um container, vamos executar o script bash simplesmente copiando seu conteúdo e colando no terminal.
 
-[scripts/call.sh](scripts/call.sh)
+[istio-curso/scripts/call.sh](istio-curso/scripts/call.sh)
 
 você deve ter um retorno semelhante a este:
 
@@ -95,9 +95,9 @@ Se você executar um `nslookup front-end` verá o endereço do kube-dns (Server)
 
 Mantenha essa conexão, iremos acessar esse container algumas vezes.
 
-> Caso o consumo de recurso esteja elevado, você poderá desligar a auto-chamada do front-end. Aplique uma nova configuração para o _deployment_ [exemplos/simul-shop-/manifests/8/front-end-deployment-no-auto.yaml](exemplos/simul-shop-/manifests/8/front-end-deployment-no-auto.yaml), que retira a variável de ambiente `SCHED_CALL_URL_LST`. Isso fará com que o gráfico desapareça depois de algum tempo se você não executar chamadas ao fornt-end, como fizemos acima. Não se preocupe, quando necessário iremos executar o script para geração de carga.
+> Caso o consumo de recurso esteja elevado, você poderá desligar a auto-chamada do front-end. Aplique uma nova configuração para o _deployment_ [istio-curso/exemplos/simul-shop-/manifests/8/front-end-deployment-no-auto.yaml](istio-curso/exemplos/simul-shop-/manifests/8/front-end-deployment-no-auto.yaml), que retira a variável de ambiente `SCHED_CALL_URL_LST`. Isso fará com que o gráfico desapareça depois de algum tempo se você não executar chamadas ao fornt-end, como fizemos acima. Não se preocupe, quando necessário iremos executar o script para geração de carga.
 
-> Execute em um terminal para interromper a auto-chamada do front-end: `kubectl apply -f exemplos/simul-shop-/manifests/8/front-end-deployment-no-auto.yaml`
+> Execute em um terminal para interromper a auto-chamada do front-end: `kubectl apply -f istio-curso/exemplos/simul-shop-/manifests/8/front-end-deployment-no-auto.yaml`{{execute T1}}
 
 ### Implementação com Istio
 
@@ -107,11 +107,11 @@ Podemos criá-las utilizando o Kiali, como fizemos no vídeo, ou podemos configu
 
 Faremos com arquivos yaml nossa primeira configuração de Istio até agora.
 
-[exemplos/simul-shop/istio/8/front-end-canary-release.yaml](exemplos/simul-shop/istio/8/front-end-canary-release.yaml)
+[istio-curso/exemplos/simul-shop/istio/8/front-end-canary-release.yaml](istio-curso/exemplos/simul-shop/istio/8/front-end-canary-release.yaml)
 
 Vamos aplicá-lo.
 
-`kubectl apply -f exemplos/simul-shop/istio/8/front-end-canary-release.yaml`{{execute}}
+`kubectl apply -f istio-curso/exemplos/simul-shop/istio/8/front-end-canary-release.yaml`{{execute T1}}
 
 Foram criados dois recursos do Istio, vamos entender a configuração:
 
@@ -158,9 +158,9 @@ spec:
 
 No kiali podemos ver o indicador ![](./assets/kiali-route.png), e no menu Istio config as duas configurações.
 
-Podemos realizar um novo teste para verificar o balanceamento. Vá para o terminal e verifique ou execute novamente o script [scripts/call.sh](scripts/call.sh).
+Podemos realizar um novo teste para verificar o balanceamento. Vá para o terminal 2 e verifique ou execute novamente o script [istio-curso/scripts/call.sh](istio-curso/scripts/call.sh).
 
-Deve ter um resultado semelhante ao do vídeo, aproximadamente noventa porcento das chamadas para v1 e dez por cento para v2. Modifique os valores no arquivo [exemplos/simul-shop/istio/8/front-end-canary-release.yaml](exemplos/simul-shop/istio/8/front-end-canary-release.yaml) , e aplique novamente com `kubectl apply -f exemplos/simul-shop-istio/front-end-canary-release.yaml`
+Deve ter um resultado semelhante ao do vídeo, aproximadamente noventa porcento das chamadas para v1 e dez por cento para v2. Modifique os valores no arquivo [istio-curso/exemplos/simul-shop/istio/8/front-end-canary-release.yaml](istio-curso/exemplos/simul-shop/istio/8/front-end-canary-release.yaml) , e aplique novamente com `kubectl apply -f istio-curso/exemplos/simul-shop-istio/front-end-canary-release.yaml`{{execute T1}}
 
 ### Usando o Kiali para validar as configurações do Istio
 
@@ -186,9 +186,9 @@ spec:
 
 Vamos aplicá-lo:
 
-`kubectl apply -f exemplos/simul-shop/istio/8/front-end-config-error.yaml`{{execute}}
+`kubectl apply -f istio-curso/exemplos/simul-shop/istio/8/front-end-config-error.yaml`{{execute T1}}
 
-O kubernetes não reclamou do erro de digitação, vamos verificar o terminal.
+O kubernetes não reclamou do erro de digitação, vamos verificar o terminal 2.
 
 Como cometemos um erro no rótulo v2, o erro aparece de forma intermitente.
 
@@ -219,7 +219,7 @@ E ao selecionar a configuração YAML, a seção com problema é destacada.
 
 Poderiamos corrigir o erro no editor, mas vamos executar a configuração novamente:
 
-`kubectl apply -f exemplos/simul-shop/istio/8/front-end-canary-release.yaml`{{execute}}
+`kubectl apply -f istio-curso/exemplos/simul-shop/istio/8/front-end-canary-release.yaml`{{execute T1}}
 
 Volte para kiali na opção _Istio Config_ e agora há um indicador de OK para as duas configurações e o no terminal não exibe mais o erro `no healthy upstream`.
 

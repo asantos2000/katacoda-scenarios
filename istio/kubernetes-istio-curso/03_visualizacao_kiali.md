@@ -64,17 +64,19 @@ Vamos verificar o que foi instalado.
 
 `kubectl get all -n istio-system`{{execute}}
 
+> Aguarde até que todos os PODS estejam _Running_.
+
 O serviço do kiali é do tipo `ClusterIP`, o que significa que não podemos acessá-lo diretamente de fora do cluster, há algumas alternativas, modificar ou criar um serviço do tipo `NodePort` ou `LoadBalancer`, configurar um `Ingress` ou usar o subcomando `port-forward` do `kubectl`.
 
 Porém o `istioctl` oferece um subcomando conveniente para acessar o kiali:
 
-`istioctl dashboard kiali`{{execute T1}}
+`istioctl dashboard kiali --address 0.0.0.0`{{execute T1}}
 
-Vamos acessa-lo, mas antes, vamos [gerar algum tráfego](scripts/simple-app.sh) para a nossa aplicação:
+Vamos acessa-lo, mas antes, vamos [gerar algum tráfego](istio-curso/scripts/simple-app.sh) para a nossa aplicação:
 
-`scripts/simple-app.sh`{{execute T2}}
+`istio-curso/scripts/simple-app.sh`{{execute T2}}
 
-E voilá, você está acessando o painel do kiali.
+Procure pelo link kiali na parte superior do terminal, ao lado do link para IDE, e voilá, você está acessando o painel do kiali.
 
 Vamos explorar alguns recursos do kiali.
 
@@ -82,25 +84,27 @@ Vamos explorar alguns recursos do kiali.
 
 O kiali oferece uma visibilidade inpressionante da malha de serviços e tudo que precisamos fazer é anotar o _namespace_ onde nossa aplicação será instalada.
 
-Interrompa a execução do dashboard tecle <kbd>CTRL</kbd>+<kbd>C</kbd> no terminal ou `click aqui`{{Execute interrupt T1}}
+Interrompa a execução do dashboard tecle <kbd>CTRL</kbd>+<kbd>C</kbd> no terminal ou `echo "click aqui"`{{Execute interrupt T1}}
 
 Se você participou do nosso curso de [Kubernetes avançado para iniciantes](TODO) deve imaginar o que o `istioctl`automatizou, foi o comando `kubectl port-forward` e adicionou um comando de ` open` para abrir a página inicial no navegador.
 
 O comando a seguir tem efeito semelhante (sem a parte do navegador)
 
-`kubectl port-forward service/kiali 20001:20001 -n istio-system`{{execute T1}}
+`kubectl port-forward service/kiali 20001:20001 -n istio-system --address 0.0.0.0`{{execute T1}}
 
 Kiali _dashboard_: <https://[[HOST_SUBDOMAIN]]-20001-[[KATACODA_HOST]].environments.katacoda.com>
 
 Mesmo resultado, mas não tão elegante. Ficaremos com o `istioctl dashboard <dashboard>` pelo resto do curso.
 
-Interrompa a execução do `port-forward` do mesmo jeito que fizemos com o `istioctl`.
+Interrompa a execução do `port-forward` do mesmo jeito que fizemos com o `istioctl` ou `echo "click aqui para interrromper."`{{Execute interrupt T1}}
 
 E vamos executar o kiali novamente, mas agora em segundo plano.
 
-`istioctl dashboard kiali &`{{execute}}
+`istioctl dashboard kiali --address 0.0.0.0 &`{{execute}}
 
 `export KIALI_PID=$!`{{execute}}
+
+Para cancelar um job em segundo plano, você necessita do PID (id do processo), por isso aramzenamos na variável KIALI_PID, mas se você esquecer de salvá-lo, utilize o comando `jobs -l`{{execute}} e para parar o processo `kill $KIALI_PID`{{execute}}.
 
 E acessá-lo pela url <https://[[HOST_SUBDOMAIN]]-20001-[[KATACODA_HOST]].environments.katacoda.com>.
 
@@ -116,7 +120,7 @@ Podemos utilizar os rótulos para localizar os recurso no kuberentes:
 
 `kubectl describe deploy -l app=simple-app`{{execute}}
 
-E no nosso [deployment](exemplos/2_simple-app/deployment.yaml) adicionamos na seção _template_ os rótulos que desejamos que sejam adicionados aos PODs que forem criados.
+E no nosso [deployment](istio-curso/exemplos/2_simple-app/deployment.yaml) adicionamos na seção _template_ os rótulos que desejamos que sejam adicionados aos PODs que forem criados.
 ]
 `kubectl get pods -l app=simple-app,version=v1`{{execute}}
 
@@ -132,16 +136,18 @@ Para interrompê-lo pare o processo do `istioctl`, que salvamos na variável `KI
 
 `kill $KIALI_PID`{{execute}}
 
+`jobs -l`{{execute}}
+
 ## Limpando
 
 Não precisaremos mais da nossa aplicação de teste, vamos exluí-la para liberar recursos do cluster.
 
 Os recursos criados podem ser obtidos passando as mesmas configurações que utilizamos para criá-los.
 
-`kubectl get -f exemplos/2_simple-app`{{execute}}
+`kubectl get -f istio-curso/exemplos/2_simple-app`{{execute}}
 
 E o mesmo vale para excluí-los.
 
 > O kubectl não solicita confirmação para execução, tome cuidado e revise o comando antes de executá-lo.
 
-`kubectl delete -f exemplos/2_simple-app`{{execute}}
+`kubectl delete -f istio-curso/exemplos/2_simple-app`{{execute}}
