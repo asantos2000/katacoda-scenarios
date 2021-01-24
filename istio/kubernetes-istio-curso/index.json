@@ -1,7 +1,7 @@
 {
     "id": "deploy-istio-on-kubernetes",
     "time": "45 minutes",
-    "difficulty": "Intermediate",
+    "difficulty": "intermediate",
     "pathwayId": "istio",
     "pathwayTitle": "Istio",
     "icon": "fa-istio",
