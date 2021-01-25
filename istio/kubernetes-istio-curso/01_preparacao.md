@@ -66,3 +66,67 @@ Sobre os terminais há um conjunto de abas que funcionam como links para os Term
 Vamos baixar o código que usaremos no curso:
 
 `git clone https://github.com/kdop-dev/istio-curso-files.git assets`{{execute}}
+
+## Preparando o cluster
+
+Iremos preparar um cluster com quatro nós usando kubeadm:
+
+`cat /etc/hosts`{{execute}}
+
+O arquivo de hosts tem o endereço dos quatro hosts, o controlplane será o nó master e os demais serão workers.
+
+```bash
+127.0.0.1 host01
+127.0.0.1 host01
+127.0.0.1 controlplane
+172.17.0.22 node01
+172.17.0.25 node02
+172.17.0.29 node03
+```
+
+### Master
+
+Vamos iniciar o master:
+
+`kubeadm init --token=102952.1a7dd4cc8d1f4cc6`{{executer HOST01}}
+
+Vamos ocnfigurar o acesso ao cluster:
+
+`mkdir -p $HOME/.kube`{{execute HOST01}}
+
+`sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config`{{execute}}
+
+`sudo chown $(id -u):$(id -g) $HOME/.kube/config`{{execute}}
+
+Agora para cada nó, iremos repetir a configuração copie a linha que o comando init retornou e iremos executá-la em cada um dos nós para que eles juntem-se ao cluster.
+
+```bash
+kubeadm join 172.17.0.21:6443 --token 102952.1a7dd4cc8d1f4cc6 \
+    --discovery-token-unsafe-skip-ca-verification
+```
+
+> A linha é parecida com a de cima, copie.
+
+### node01
+
+`ssh root@node01`{{execute}}
+
+`exit`{{execute}}
+
+### node02
+
+`ssh root@node02`{{execute}}
+
+`exit`{{execute}}
+
+### node03
+
+`ssh root@node02`{{execute}}
+
+`exit`{{execute}}
+
+### Verificando o cluster
+
+`kubectl get nodes`{{execute}}
+
+```bash
