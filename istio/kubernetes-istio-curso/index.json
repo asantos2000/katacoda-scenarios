@@ -102,7 +102,7 @@
             {"name": "jaeger", "port": 16686},
             {"name": "grafana", "port": 3000},
             {"name": "Apps", "port": 8000},
-            {"name": "Repo", "href": "https://github.com/kdop-dev/istio-curso"}
+            {"name": "Repo", "href": "https://github.com/asantos2000/katacoda-scenarios/tree/master/istio/deploy-istio-on-kubernetes"}
         ],
         "showdashboard": true,
         "uieditorpath": "/root",

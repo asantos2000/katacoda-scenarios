@@ -17,7 +17,7 @@ Neste momento, o seu terminal está executando o comando `watch kubectl get pods
 Você pode obter o status do cluster com estes comandos: `kubectl get nodes`{{execute}}, `kubectl cluster-info`{{execute}} e `kubectl get pods -n kube-system`{{execute}}
 
 > Enquanto espera, vá para a aba IDE para carregá-la, isso levará alguns segundos.
-> Espere até que todos os pods apareçam e estejam _Running_ e, em seguida, pressione <kbd> Ctrl </kbd> + <kbd> C </kbd> no terminal ou click em  `echo" Pronto para ir. "`{{Execute interrupt}}
+> Espere até que todos os pods apareçam e estejam _Running_ e, em seguida, pressione <kbd> Ctrl </kbd> + <kbd> C </kbd> no terminal ou click em  `echo "Pronto para ir."`{{Execute interrupt}}
 
 ## Ferramentas
 
@@ -50,3 +50,11 @@ Testando:
 `stern kube-proxy -n kube-system`{{execute}}
 
 > <kbd>ctrl</kbd>+<kbd>c</kbd> para sair.
+
+## Conhecendo a IDE
+
+A plataforma Katacoda é bastante intuitiva e basicamente você irá acomapnhar as lições que são apresentadas do lado esquerdo e os comando (em destaque) serão executados nos terminais do lado direito.
+
+Sobre os terminais há um conjunto de abas que funcionam como links para os Terminais e IDE e, neste curso, adicionamos links para os dashboards do kiali, jaeger e grafana, bem como para a aplicação. Clique nos links para acessar os dashboards quando estiverem instalados.
+
+![](assets/media/katacoda-dashboards.png)
