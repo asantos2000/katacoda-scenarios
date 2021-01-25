@@ -59,7 +59,7 @@ A plataforma Katacoda é bastante intuitiva e basicamente você irá acomapnhar 
 
 Sobre os terminais há um conjunto de abas que funcionam como links para os Terminais e IDE e, neste curso, adicionamos links para os dashboards do kiali, jaeger e grafana, bem como para a aplicação. Clique nos links para acessar os dashboards quando estiverem instalados.
 
-![](./assets/media/katacoda-dashboards.png)
+![](./assets/katacoda-dashboards.png)
 
 ## Obtendo o código
 

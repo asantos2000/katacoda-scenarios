@@ -37,7 +37,7 @@ Você também pode obter uma lista atualizada das empresas que utilizam o Istio 
 
 Istio endereças três áreas para manutenção dos serviços:
 
-![O que o Istio faz](./assets/media/what-istio-do.png)
+![O que o Istio faz](./assets/what-istio-do.png)
 
 Se você tem um crescente número de serviços, escritos em diferentes linguagens, em infraestruturas heterogêneas, o Istio oferece a abstração necessária para simplificar a manutenção desses serviços.
 

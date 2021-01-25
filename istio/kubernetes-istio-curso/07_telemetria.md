@@ -26,11 +26,11 @@ Se ainda não estiver em execução, para verificar, no terminal: ps -ef | grep 
 
 Abra no navegador a url <https://[[HOST_SUBDOMAIN]]-20001-[[KATACODA_HOST]].environments.katacoda.com>
 
-![kiali simul-shop](./assets/media/kiali-simul-shop.gif)
+![kiali simul-shop](./assets/kiali-simul-shop.gif)
 
 A aplicação simul-shop é composta por vários PODs, compare o gráfico do kiali com o gráfico da seção 04.
 
-![arquitetura](./assets/media/simul-shop-arq.png)
+![arquitetura](./assets/simul-shop-arq.png)
 
 A grande diferença é que o gráfico exibido pelo kiali está sendo criado com base no uso da aplicação e é muito mais confiável do que a documentação que pode estar desatualizada ou não representar mais a realidade.
 
@@ -48,11 +48,11 @@ O Istio aproveita o recurso de [rastreamento distribuído do Envoy](https://www.
 
 O rastreamento também está integrado com o Kiali, você deve ter percebido algumas mensagens de erro quando tentavamos acessar funcionalidades de rastreamento.
 
-![kiali erro rastreamento não encontrado](./assets/media/kiali-error-tracing.png)
+![kiali erro rastreamento não encontrado](./assets/kiali-error-tracing.png)
 
 De fato, o Kiali tem um indicador que verifica se os componentes do Istio, Jaeger e Grafana estão instalados,
 
-![kiali status](./assets/media/kiali-status.png)
+![kiali status](./assets/kiali-status.png)
 
 Enão, antes de começarmos a utlizar o Jaeger precisaremos instalá-lo em nosso cluster.
 
@@ -66,7 +66,7 @@ Para acessar o dashboard vamos continuar utilizando o `istioctl`, como fizemos p
 
 Abra no navegador a url <https://[[HOST_SUBDOMAIN]]-16686-[[KATACODA_HOST]].environments.katacoda.com>
 
-![Jaeger simul-shop](./assets/media/jaeger-simul-shop.gif)
+![Jaeger simul-shop](./assets/jaeger-simul-shop.gif)
 
 * O que é rastreamento? 
 * O que é [OpenTelemetry](https://opentelemetry.io/)
@@ -85,7 +85,7 @@ A telemetria no Istio é não-envasiva, não precisamos modificar o código para
 
 Sem essa replicação o Jaeger irá exibir o rastrei apenas da primeira requisição, pois será gerado um novo identificador a cada chamada.
 
-![Jaeger rastreio incompleto](./assets/media/jaeger-incomplete-tracing.png)
+![Jaeger rastreio incompleto](./assets/jaeger-incomplete-tracing.png)
 
 Infelizmente esse procedimento é invasivo e depende da linguagem de programação. Na documentação do Istio [Trace context propagation](https://istio.io/latest/docs/tasks/observability/distributed-tracing/overview/#trace-context-propagation) há um exemplo de código python e java.
 
@@ -147,19 +147,19 @@ Exemplo de cabeçalho de rastreamento.
 
 Isso é todo o código que iremos ver para utilizar o Istio, com esse código implementado o nosso rastreamento no Jaeger ficará completo.
 
-![Jaeger rastrei completo](./assets/media/jaeger-complete-tracing.png)
+![Jaeger rastrei completo](./assets/jaeger-complete-tracing.png)
 
 E veremos a relação entre as chamadas de serviços.
 
 ## Grafana
 
-![Grafana simul-shop](./assets/media/grafana-simul-shop.gif)
+![Grafana simul-shop](./assets/grafana-simul-shop.gif)
 
 ### Métricas no kiali
 
 Em detalhes de uma aplicação (application), serviço (service) ou carga de trabalho (workload), o Kiali exibe métricas de entrada (inbound) e saída (outbound), essas métricas também são encontradas no Grafana.
 
-![Kiali dashboard -services](./assets/media/kiali-metrics-services.png)
+![Kiali dashboard -services](./assets/kiali-metrics-services.png)
 
 Tanto o Grafana quanto o Kiali obtém métricas do mesmo lugar, o Prometheus, mas o Grafana tem mais recursos para exibição, visualização dos dados, linguagem de pesquisa e alertas, o que torna o ambiente perfeito para desenvolver painéis sofisticados para monitorar suas aplicações.
 
@@ -173,7 +173,7 @@ Adotada por muitos projetos, normalmente faz par com o [Prometheus](https://prom
 
 O Istio, nas versões anteriores trazia o Prometehus e o Grafana como parte da solução, nas versões mais recentes eles são extras que podem ser adicionados a solução, porém já integrados com o Istio.
 
-![Grafana dashboard services](./assets/media/grafana-service-dashboard.png)
+![Grafana dashboard services](./assets/grafana-service-dashboard.png)
 
 O Istio instala alguns dashboards:
 

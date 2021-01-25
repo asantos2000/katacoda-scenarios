@@ -35,7 +35,7 @@ Você deve obter uma saída semelhante a esta:
 
 E no kiali o gráfico ficará assim:
 
-![kilai loadbalancer round robin](./assets/media/kilai-loadbalancer-round-robin.png)
+![kilai loadbalancer round robin](./assets/kilai-loadbalancer-round-robin.png)
 
 Como já vimos a distribuição não é precisa, algumas vezes as requisições ficam fora da ordem, mas o Istio fará o melhor esforço para distribuir as requisições e, após um período mais longo, deverá ser de 1/3 para cada serviço.
 

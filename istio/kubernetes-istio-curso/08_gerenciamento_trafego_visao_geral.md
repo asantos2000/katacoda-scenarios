@@ -20,7 +20,7 @@ Vamos começar com um exemplo prático, mas que é base para vários cenários.
 
 ## Implantações canário ou lançamento em etapas
 
-![implantação canário](./assets/media/canary-release.png)
+![implantação canário](./assets/canary-release.png)
 
 > Não é necessário criar uma configuração de `VirtualService` para cada um dos seus serviços, vimos que com a injeção do _proxy_, os rótulos _app_ e _version_ e a replicação do cabeçalho de rastreio, você já terá a maioria das funcionalidades de monitoramento e rastreio, mesmo para liberação canário, após comutar 100% do tráfego para a nova versão, você poderá excluir o VS e deixar o tráfego sendo gerenciado pelo k8s.
 
@@ -40,7 +40,7 @@ Um serviço pode selecionar vários PODs, dependendo apenas de como configuramos
 
 O balanceamento é feito pelo kube-proxy e dependendo do [modo que ele foi configurado](https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies), o resultado pode ser melhor, por exemplo, de qualquer forma, para alcançar um balanceamento de dez porcento para a versão dois, seria necessário nove PODs (réplica) da versão um e um POD da versão dois, já deu para perceber o que acontece se a distribuição for um para noventa e nove.
 
-![Multiplos PODs por serviço](./assets/media/k8s-loadbalancing-service.png)
+![Multiplos PODs por serviço](./assets/k8s-loadbalancing-service.png)
 
 > Rótulo `app` tem se tornado um padrão e é reconhecido pelo kiali para agrupar cargas de trabalho. `version` também tem significado especial para kiali e é usado no gráfico de versões.
 
@@ -50,7 +50,7 @@ Vamos fazer um teste simples, vamos criar um novo _deployment_ com uma nova vers
 
 Depois de algum tempo, o Kiali irá exibir uma gráfico de versão como o abaixo:
 
-![kiali versões do front-end](./assets/media/kiali-front-end-versions.png)
+![kiali versões do front-end](./assets/kiali-front-end-versions.png)
 
 > Nossa aplicação front-end tem um agendador que chama a si próprio a cada intervalo de tempo para criar tráfego. Você pode verificar isso pelas setas de tráfego.
 
@@ -203,19 +203,19 @@ no healthy upstream # <---- Erro
 
 Vamos ver como o Kiali pode nos ajudar. Selecione a opção Istio Config e imediatamente vemos um indicador de problema.
 
-![kiali instio config indicador de problema](./assets/media/kiali-istio-validation1.png)
+![kiali instio config indicador de problema](./assets/kiali-istio-validation1.png)
 
 Ao seleciona o item, o kiali indica que houve falha de validação:
 
-![kiali istio config falha validação](./assets/media/kiali-istio-validation2.png)
+![kiali istio config falha validação](./assets/kiali-istio-validation2.png)
 
 Na parte inferior, há uma representação da configuração, onde verificamos qual o problema.
 
-![kiali istio config rótulo não encontrado](./assets/media/kiali-istio-validation3.png)
+![kiali istio config rótulo não encontrado](./assets/kiali-istio-validation3.png)
 
 E ao selecionar a configuração YAML, a seção com problema é destacada.
 
-![kiali istio config yaml error](./assets/media/kiali-istio-validation4.png)
+![kiali istio config yaml error](./assets/kiali-istio-validation4.png)
 
 Poderiamos corrigir o erro no editor, mas vamos executar a configuração novamente:
 

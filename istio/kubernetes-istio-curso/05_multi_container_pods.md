@@ -1,4 +1,4 @@
-![sidecar couple](./assets/media/sidecar2-small.png)
+![sidecar couple](./assets/sidecar2-small.png)
 
 O POD é o recurso gerenciável mais básico no kubernetes, é um grupo de um ou mais containers que compartilham  [armazenamento](https://kubernetes.io/docs/concepts/workloads/pods/#pod-storage) e [recursos de rede](https://kubernetes.io/docs/concepts/workloads/pods/#pod-networking), bem como a especificação de como executá-los.
 
@@ -53,7 +53,7 @@ Configurar o envoy não é uma tarefa simples, há centenas de parâmetros, o Is
 
 Por enquanto vamos entender a configuração que utilizamos para demo.
 
-![Envoy demo config](./assets/media/envoy-demo-config.png)
+![Envoy demo config](./assets/envoy-demo-config.png)
 
 `assets/exemplos/5_envoy/envoy-demo.yaml`{{open}}
 
