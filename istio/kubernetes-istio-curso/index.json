@@ -101,6 +101,8 @@
             {"name": "jaeger", "port": 16686},
             {"name": "grafana", "port": 3000},
             {"name": "Apps", "port": 8000},
+            {"name": "Envoy", "port": 9091},
+            {"name": "Envoy-proxy", "port": 10000},
             {"name": "Repo", "href": "https://github.com/asantos2000/katacoda-scenarios/tree/master/istio/deploy-istio-on-kubernetes"}
         ],
         "showdashboard": true,
@@ -108,9 +110,9 @@
         "uimessage1": "\u001b[32mYour Interactive Bash Terminal.\u001b[m\r\n",
         "showide": true,
         "idePort": 23000,
-        "uilayout": "terminal"
+        "uilayout": "editor-terminal"
       },
       "backend": {
-        "imageid": "kubernetes-cluster-running:1.18"
+        "imageid": "kubernetes-cluster-4node"
       }
 }

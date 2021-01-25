@@ -104,11 +104,11 @@ E vamos executar o kiali novamente, mas agora em segundo plano.
 
 `export KIALI_PID=$!`{{execute}}
 
-Para cancelar um job em segundo plano, você necessita do PID (id do processo), por isso aramzenamos na variável KIALI_PID, mas se você esquecer de salvá-lo, utilize o comando `jobs -l`{{execute}} e para parar o processo `kill $KIALI_PID`{{execute}}.
-
 E acessá-lo pela url <https://[[HOST_SUBDOMAIN]]-20001-[[KATACODA_HOST]].environments.katacoda.com>.
 
 > Se você estiver executando o curso na sua máquina, provavelmente o istioctl irá abrir a URI automaticamente, em outros ambientes e provável que falhe (`Failed to open browser`).
+
+Para cancelar um job em segundo plano, você necessita do PID (id do processo), por isso aramzenamos na variável KIALI_PID, mas se você esquecer de salvá-lo, utilize o comando `jobs -l`{{execute}} e para parar o processo `kill $KIALI_PID`{{execute}}.
 
 ### Labels
 
@@ -144,10 +144,10 @@ Não precisaremos mais da nossa aplicação de teste, vamos exluí-la para liber
 
 Os recursos criados podem ser obtidos passando as mesmas configurações que utilizamos para criá-los.
 
-`kubectl get -f assets/exemplos/simple-app`{{execute}}
+`kubectl get -f simple-app`{{execute}}
 
 E o mesmo vale para excluí-los.
 
 > O kubectl não solicita confirmação para execução, tome cuidado e revise o comando antes de executá-lo.
 
-`kubectl delete -f assets/exemplos/simple-app`{{execute}}
+`kubectl delete -f simple-app`{{execute}}

@@ -30,17 +30,13 @@ Uma malha é formada quando um serviço invoca outro serviço, no princípio iss
 
 Você já deve ter ouvido falar do cálculo da quantidade de canais de comunicação:
 
-\begin{equation*}
-l = \frac{n(n-1)}{2}
-\end{equation*}
+![](./assets/equation-1.png)
 
 Onde N é o número de endpoints neste caso. Ela foi popularizada pelas disciplinas de gerencia de projetos, onde N representa o número de participante em um projeto, mas ela é de fato a equação da [explosão combinatória](https://en.wikipedia.org/wiki/Combinatorial_explosion).
 
 Como você pode observar é uma equação é polinomial, mas o resultado são frequentemente interpretados como exponencial, ja que o número de canais cresce rapidamente com o acréscimo de novos participantes. Por exemplo, na nossa aplicação de demonstração, a simul-shop, temos:
 
-\begin{equation*}
-\frac{12(12-1)}{2} = 66
-\end{equation*}
+![](./assets/equation-2.png)
 
 Que dá um total de 66 possíveis canais de comunicação, claro que não usamos todos, nem todos os serviços interagem com os demais, mas isso nos dá uma idéia do potencial de canais a serem gerenciados e do crescimento da complexidade para mantê-los.
 

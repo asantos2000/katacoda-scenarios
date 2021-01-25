@@ -73,7 +73,7 @@ Agora que conhecemos como configurar e acompanhar nossa aplicação, vamos ir pa
 
 Vamos remover os recursos criados:
 
-Parando o log nos terminais 1 e 2 com <kbd>CTRL</kbd>+<kbd>C</kbd>.
+Pare o log nos terminais `1`{{execute interrupt T1}} e `2`{{execute interrupt T2}} com <kbd>CTRL</kbd>+<kbd>C</kbd>.
 
 Parando e excluindo os contêineres:
 

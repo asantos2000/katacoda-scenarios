@@ -63,4 +63,6 @@ Sobre os terminais há um conjunto de abas que funcionam como links para os Term
 
 ## Obtendo o código
 
+Vamos baixar o código que usaremos no curso:
+
 `git clone https://github.com/kdop-dev/istio-curso-files.git assets`{{execute}}

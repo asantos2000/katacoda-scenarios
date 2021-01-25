@@ -20,7 +20,7 @@ Se necessário, configure o acesso ao cluster
 
 Se ainda não estiver em execução, para verificar, no terminal: ps -ef | grep "istioctl dashboard kiali"
 
-`istioctl dashboard kiali &`{{execute}}
+`istioctl dashboard kiali --address 0.0.0.0 &`{{execute}}
 
 `export KIALI_PID=$!`{{execute}}
 
@@ -58,9 +58,13 @@ Enão, antes de começarmos a utlizar o Jaeger precisaremos instalá-lo em nosso
 
 `kubectl apply -f istio-$ISTIO_VERSION/samples/addons/jaeger.yaml`{{execute}}
 
+Vamos verificar a situação do POD do jaeger.
+
+`kubectl get pods -n istio-system`{{execute}}
+
 Para acessar o dashboard vamos continuar utilizando o `istioctl`, como fizemos para o kiali.
 
-`istioctl dashboard jaeger &`{{execute}}
+`istioctl dashboard jaeger --address 0.0.0.0 &`{{execute}}
 
 `export JAEGER_PID=$!`{{execute}}
 
@@ -193,7 +197,7 @@ Verifique se o grafana já está em execução
 
 Vamos configurar o redirecionamento para o dashboard.
 
-`istioctl dashboard grafana &`{{execute}}
+`istioctl dashboard grafana --address 0.0.0.0 &`{{execute}}
 
 `export GRAFANA_PID=$!`{{execute}}
 

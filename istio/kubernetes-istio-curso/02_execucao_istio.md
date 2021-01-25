@@ -188,6 +188,8 @@ Vamos acessar nossa aplicação, ela foi configurada para o tipo de serviço `Cl
 
 Vamos testar em um segundo terminal `curl localhost:8000`{{execute T2}}
 
+Você também pode usar o link Apps na parte superior do terminal.
+
 > Se o terminal for aberto pela primeira vez o comando pode ser ignorado, tente novamente com o terminal aberto.
 
 Pronto, você tem acesso à sua aplicação como se estivesse sendo executada na sua máquina. Claro que o kubernetes pode estar na sua máquina, mas isso funcionará em qualquer kubernetes, local ou remoto.
