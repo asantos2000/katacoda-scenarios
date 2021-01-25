@@ -36,14 +36,16 @@ Execute os comandos abaixo para instalar o httpie e stern.
 `apt -y install httpie`{{execute}}
 
 `wget https://github.com/wercker/stern/releases/download/1.11.0/stern_linux_amd64`{{execute}}
+
 `chmod +x stern_linux_amd64`{{execute}}
+
 `mv stern_linux_amd64 /usr/local/bin/stern`{{execute}}
 
 Testando:
 
 `http --version`{{execute}}
 
-`http http://httpbin.org/ip{{execute}}
+`http http://httpbin.org/ip`{{execute}}
 
 `stern --version`{{execute}}
 
@@ -57,8 +59,8 @@ A plataforma Katacoda é bastante intuitiva e basicamente você irá acomapnhar 
 
 Sobre os terminais há um conjunto de abas que funcionam como links para os Terminais e IDE e, neste curso, adicionamos links para os dashboards do kiali, jaeger e grafana, bem como para a aplicação. Clique nos links para acessar os dashboards quando estiverem instalados.
 
-![](assets/media/katacoda-dashboards.png)
+![](./assets/media/katacoda-dashboards.png)
 
 ## Obtendo o código
 
-`git clone https://github.com/kdop-dev/istio-curso-files.git`{{execute}}
+`git clone https://github.com/kdop-dev/istio-curso-files.git assets`{{execute}}

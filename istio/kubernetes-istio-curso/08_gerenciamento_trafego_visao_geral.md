@@ -20,7 +20,7 @@ Vamos começar com um exemplo prático, mas que é base para vários cenários.
 
 ## Implantações canário ou lançamento em etapas
 
-![implantação canário](assets/media/canary-release.png)
+![implantação canário](./assets/media/canary-release.png)
 
 > Não é necessário criar uma configuração de `VirtualService` para cada um dos seus serviços, vimos que com a injeção do _proxy_, os rótulos _app_ e _version_ e a replicação do cabeçalho de rastreio, você já terá a maioria das funcionalidades de monitoramento e rastreio, mesmo para liberação canário, após comutar 100% do tráfego para a nova versão, você poderá excluir o VS e deixar o tráfego sendo gerenciado pelo k8s.
 
@@ -40,7 +40,7 @@ Um serviço pode selecionar vários PODs, dependendo apenas de como configuramos
 
 O balanceamento é feito pelo kube-proxy e dependendo do [modo que ele foi configurado](https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies), o resultado pode ser melhor, por exemplo, de qualquer forma, para alcançar um balanceamento de dez porcento para a versão dois, seria necessário nove PODs (réplica) da versão um e um POD da versão dois, já deu para perceber o que acontece se a distribuição for um para noventa e nove.
 
-![Multiplos PODs por serviço](assets/media/k8s-loadbalancing-service.png)
+![Multiplos PODs por serviço](./assets/media/k8s-loadbalancing-service.png)
 
 > Rótulo `app` tem se tornado um padrão e é reconhecido pelo kiali para agrupar cargas de trabalho. `version` também tem significado especial para kiali e é usado no gráfico de versões.
 
@@ -50,7 +50,7 @@ Vamos fazer um teste simples, vamos criar um novo _deployment_ com uma nova vers
 
 Depois de algum tempo, o Kiali irá exibir uma gráfico de versão como o abaixo:
 
-![kiali versões do front-end](assets/media/kiali-front-end-versions.png)
+![kiali versões do front-end](./assets/media/kiali-front-end-versions.png)
 
 > Nossa aplicação front-end tem um agendador que chama a si próprio a cada intervalo de tempo para criar tráfego. Você pode verificar isso pelas setas de tráfego.
 
@@ -74,7 +74,7 @@ Você deverá ver um prompt, cole ou digite o comando:
 
 Agora que estamos dentro de um container, vamos executar o script bash simplesmente copiando seu conteúdo e colando no terminal.
 
-[assets/scripts/call.sh](assets/scripts/call.sh)
+`assets/scripts/call.sh`{{copy T1}}
 
 você deve ter um retorno semelhante a este:
 
@@ -95,7 +95,7 @@ Se você executar um `nslookup front-end` verá o endereço do kube-dns (Server)
 
 Mantenha essa conexão, iremos acessar esse container algumas vezes.
 
-> Caso o consumo de recurso esteja elevado, você poderá desligar a auto-chamada do front-end. Aplique uma nova configuração para o _deployment_ [assets/exemplos/simul-shop-/manifests/8/front-end-deployment-no-auto.yaml](assets/exemplos/simul-shop-/manifests/8/front-end-deployment-no-auto.yaml), que retira a variável de ambiente `SCHED_CALL_URL_LST`. Isso fará com que o gráfico desapareça depois de algum tempo se você não executar chamadas ao fornt-end, como fizemos acima. Não se preocupe, quando necessário iremos executar o script para geração de carga.
+> Caso o consumo de recurso esteja elevado, você poderá desligar a auto-chamada do front-end. Aplique uma nova configuração para o _deployment_ `assets/exemplos/simul-shop-/manifests/8/front-end-deployment-no-auto.yaml`{{open}}, que retira a variável de ambiente `SCHED_CALL_URL_LST`. Isso fará com que o gráfico desapareça depois de algum tempo se você não executar chamadas ao fornt-end, como fizemos acima. Não se preocupe, quando necessário iremos executar o script para geração de carga.
 
 > Execute em um terminal para interromper a auto-chamada do front-end: `kubectl apply -f assets/exemplos/simul-shop-/manifests/8/front-end-deployment-no-auto.yaml`{{execute T1}}
 
@@ -107,7 +107,7 @@ Podemos criá-las utilizando o Kiali, como fizemos no vídeo, ou podemos configu
 
 Faremos com arquivos yaml nossa primeira configuração de Istio até agora.
 
-[assets/exemplos/simul-shop/istio/8/front-end-canary-release.yaml](assets/exemplos/simul-shop/istio/8/front-end-canary-release.yaml)
+`assets/exemplos/simul-shop/istio/8/front-end-canary-release.yaml`{{open}}
 
 Vamos aplicá-lo.
 
@@ -158,9 +158,9 @@ spec:
 
 No kiali podemos ver o indicador ![](./assets/kiali-route.png), e no menu Istio config as duas configurações.
 
-Podemos realizar um novo teste para verificar o balanceamento. Vá para o terminal 2 e verifique ou execute novamente o script [assets/scripts/call.sh](assets/scripts/call.sh).
+Podemos realizar um novo teste para verificar o balanceamento. Vá para o terminal 2 e verifique ou execute novamente o script `assets/scripts/call.sh`{{open}}.
 
-Deve ter um resultado semelhante ao do vídeo, aproximadamente noventa porcento das chamadas para v1 e dez por cento para v2. Modifique os valores no arquivo [assets/exemplos/simul-shop/istio/8/front-end-canary-release.yaml](assets/exemplos/simul-shop/istio/8/front-end-canary-release.yaml) , e aplique novamente com `kubectl apply -f assets/exemplos/simul-shop-istio/front-end-canary-release.yaml`{{execute T1}}
+Deve ter um resultado semelhante ao do vídeo, aproximadamente noventa porcento das chamadas para v1 e dez por cento para v2. Modifique os valores no arquivo `assets/exemplos/simul-shop/istio/8/front-end-canary-release.yaml`{{open}} , e aplique novamente com `kubectl apply -f assets/exemplos/simul-shop-istio/front-end-canary-release.yaml`{{execute T1}}
 
 ### Usando o Kiali para validar as configurações do Istio
 
@@ -203,19 +203,19 @@ no healthy upstream # <---- Erro
 
 Vamos ver como o Kiali pode nos ajudar. Selecione a opção Istio Config e imediatamente vemos um indicador de problema.
 
-![kiali instio config indicador de problema](assets/media/kiali-istio-validation1.png)
+![kiali instio config indicador de problema](./assets/media/kiali-istio-validation1.png)
 
 Ao seleciona o item, o kiali indica que houve falha de validação:
 
-![kiali istio config falha validação](assets/media/kiali-istio-validation2.png)
+![kiali istio config falha validação](./assets/media/kiali-istio-validation2.png)
 
 Na parte inferior, há uma representação da configuração, onde verificamos qual o problema.
 
-![kiali istio config rótulo não encontrado](assets/media/kiali-istio-validation3.png)
+![kiali istio config rótulo não encontrado](./assets/media/kiali-istio-validation3.png)
 
 E ao selecionar a configuração YAML, a seção com problema é destacada.
 
-![kiali istio config yaml error](assets/media/kiali-istio-validation4.png)
+![kiali istio config yaml error](./assets/media/kiali-istio-validation4.png)
 
 Poderiamos corrigir o erro no editor, mas vamos executar a configuração novamente:
 

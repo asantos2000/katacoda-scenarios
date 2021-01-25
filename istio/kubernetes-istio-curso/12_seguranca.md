@@ -4,7 +4,7 @@ O Istio oferece uma solução de segurança abrangente para resolver problemas, 
 * Fornecer controle de acesso de serviço flexível;
 * Determinar quem fez o quê e quando.
 
-![Istio security architecture](assets/media/istio-sec-arch.png)
+![Istio security architecture](./assets/media/istio-sec-arch.png)
 Istio [High-level architecture](https://istio.io/latest/docs/concepts/security/#high-level-architecture)
 
 Neste cursos iremos abordar dois aspectos da segurança do Istio: TLS mútuo e autenticação de requisições com JWT.
@@ -31,7 +31,7 @@ Vá para o gráfico (Versioned App graph) e na caixa de seleção _Display_, mar
 
 Vocë deverá ver que todas as conexões agora tem um símbolo de cadeado, isso indica que as requisições são seguras (TLS).
 
-![Kiali MTLS](assets/media/kiali-MTLS.png)
+![Kiali MTLS](./assets/media/kiali-MTLS.png)
 
 ### Desabilitando o TLS múto
 
@@ -224,7 +224,7 @@ Vá ao kiali e veja como ficou o tráfego.
 
 Vamos permitir o invocações do método GET, para o [_front-end_](assets/exemplos/simul-shop/istio/12/authorization-policy-allow-front-end.yaml) e do _front-end_ para [_orders_](assets/exemplos/simul-shop/istio/12/authorization-policy-allow-orders.yaml) e [_catalogue_](assets/exemplos/simul-shop/istio/12/authorization-policy-allow-catalogue.yaml).
 
-![Access Control](assets/media/access-control.png)
+![Access Control](./assets/media/access-control.png)
 
 `kubectl apply -f assets/exemplos/simul-shop/istio/12/authorization-policy-allow-front-end.yaml`{{execute}}
 
