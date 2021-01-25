@@ -1,4 +1,4 @@
-![cover](./assets/media/istio-course-cover-small.png)
+![cover](./assets/istio-course-cover-small.png)
 
 ## Sobre este curso
 
