@@ -7,11 +7,6 @@
       "course_id": "deploy-istio-on-kubernetes",
       "title": "Get Started with Istio and Kubernetes",
       "description": "Learn how to get started with Istio Service Mesh and Kubernetes"
-    },    
-    {
-      "course_id": "apply-traffic-management",
-      "title": "Apply Traffic Management",
-      "description": ""
     },
     {
       "course_id": "kubernetes-istio-curso",

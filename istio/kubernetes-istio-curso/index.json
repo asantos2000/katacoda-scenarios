@@ -91,9 +91,7 @@
         },
         "assets": {
             "host01": [
-                {"file": "wait.sh", "target": "/usr/local/bin/", "chmod": "+x"},
-                {"file": "kiali-crds.yaml", "target": "/root/"},
-                {"file": "services-addons.yaml", "target": "/root/"}
+                {"file": "wait.sh", "target": "/usr/local/bin/", "chmod": "+x"}
             ]
         }
     },

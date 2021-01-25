@@ -7,11 +7,6 @@
       "course_id": "k8s-hello",
       "title": "Olá K8s v1.08",
       "description": "Seu primeiro deploy no K8s"
-    },    
-    {
-      "course_id": "k8s-hpa",
-      "title": "Troubleshooting your Horizontal Pod AutoScaler",
-      "description": "Test your skills by fixing the automatic scaling of your Pods."
     },
     {
       "course_id": "k8s-quiz",
