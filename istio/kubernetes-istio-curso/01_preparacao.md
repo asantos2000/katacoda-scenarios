@@ -29,10 +29,24 @@ Algumas ferramentas ajudarão a melhorar nossa produtividade e outras são essen
 
 ### Instalando httpie e stern
 
-```
-apt update
-apt install httpie
-wget https://github.com/wercker/stern/releases/download/1.11.0/stern_linux_amd64
-chmod +x stern_linux_amd64
-mv stern_linux_amd64 /usr/local/bin/stern
-```{{execute}}
+Execute os comandos abaixo para instalar o httpie e stern.
+
+`apt -y update`{{execute}}
+
+`apt -y install httpie`{{execute}}
+
+`wget https://github.com/wercker/stern/releases/download/1.11.0/stern_linux_amd64`{{execute}}
+`chmod +x stern_linux_amd64`{{execute}}
+`mv stern_linux_amd64 /usr/local/bin/stern`{{execute}}
+
+Testando:
+
+`http --version`{{execute}}
+
+`http http://httpbin.org/ip{{execute}}
+
+`stern --version`{{execute}}
+
+`stern kube-proxy -n kube-system`{{execute}}
+
+> <kbd>ctrl</kbd>+<kbd>c</kbd> para sair.

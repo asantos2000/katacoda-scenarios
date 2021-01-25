@@ -18,6 +18,7 @@ Para instalar a última versão do Istio, neste momento 1.8.2, você pode ir at�
 
 `curl -L https://istio.io/downloadIstio | sh -`{{execute}}
 
+> Verifique qual foi a versão baixada e ajuste a variável ISTIO_VERSION, caso sejam diferentes.
 > Se o download não iniciar, interrompa o comando com <kdb>ctrl</kbd>+<kdb>c</kbd> e execute novamente.
 
 Para usar o comando `istioctl`, que está no diretório `bin` do download, coloque-o na variável `PATH` ou copie o arquivo `bin/istioctl` para um diretório no seu `PATH`
@@ -72,19 +73,19 @@ Você pode obter uma lista completa executando o comando abaixo:
 
 > Note que todos as configurações para recursos do Istio são aplicados para um _namespace_ (Namespaced=true), isso significa que a configuração terá efeito apenas em um _namespace_, porém, configurações que poderão ser aplicadas para toda a malha de serviços serão realizadas no _namespace_ do Istio, o `istio-system`.
 
+Você verá muito disso no kubernetes, para uma lista completa de recursos e suas abreviações execute o mesmo comando acima, mas sem o filtro.
+
+`kubectl api-resources`{{execute}}
+
 Esses são os recursos adicionados e na segunda coluna o nome abreviado, você pode utilizar um ou outro, por exemplo:
 
 Abreviado:
 
-`kubectl get dr`{{execute}}
+`kubectl get svc`{{execute}}
 
 Que é equivalente a:
 
-`kubectl get destinationrules`{{execute}}
-
-Você verá muito disso no kubernetes, para uma lista completa de recursos e suas abreviações execute o mesmo comando acima, mas sem o filtro.
-
-`kubectl api-resources`{{execute}}
+`kubectl get services`{{execute}}
 
 ## Ativando o Istio para um namespace
 
@@ -168,7 +169,7 @@ Listando os arquivos criados:
 
 `ls -la simple-app`{{execute}}
 
-Criamos dois arquivos, o `simple-app/deployment.yaml`{{open}} e o `simple-app/service.yaml`{{open}} no diretório `simple-app`{{open}}, agora vamos instala-la no _namespace_ default (quando omitido é onde os recursos serão criados).
+Criamos dois arquivos, o `simple-app/deployment.yaml`{{open}} e o `simple-app/service.yaml`{{open}} no diretório `simple-app`, agora vamos instala-la no _namespace_ default (quando omitido é onde os recursos serão criados).
 
 Inspecione os arquivos e tente descobrir o que será instalado no cluster, uma dica, procure a pela imagem.
 
@@ -186,6 +187,8 @@ Vamos acessar nossa aplicação, ela foi configurada para o tipo de serviço `Cl
 `kubectl port-forward svc/simple-app 8000:80 --address 0.0.0.0`{{execute T1}}
 
 Vamos testar em um segundo terminal `curl localhost:8000`{{execute T2}}
+
+> Se o terminal for aberto pela primeira vez o comando pode ser ignorado, tente novamente com o terminal aberto.
 
 Pronto, você tem acesso à sua aplicação como se estivesse sendo executada na sua máquina. Claro que o kubernetes pode estar na sua máquina, mas isso funcionará em qualquer kubernetes, local ou remoto.
 

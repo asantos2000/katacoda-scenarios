@@ -80,11 +80,11 @@ Procure pelo link kiali na parte superior do terminal, ao lado do link para IDE,
 
 Vamos explorar alguns recursos do kiali.
 
-![kiali overview](./assets/kiali-overview.gif)
+![kiali overview](./assets/media/kiali-overview.gif)
 
 O kiali oferece uma visibilidade inpressionante da malha de serviços e tudo que precisamos fazer é anotar o _namespace_ onde nossa aplicação será instalada.
 
-Interrompa a execução do dashboard tecle <kbd>CTRL</kbd>+<kbd>C</kbd> no terminal ou `echo "click aqui"`{{Execute interrupt T1}}
+Interrompa a execução do dashboard tecle <kbd>ctrl</kbd>+<kbd>c</kbd> no terminal ou `echo "click aqui"`{{Execute interrupt T1}}
 
 Se você participou do nosso curso de [Kubernetes avançado para iniciantes](TODO) deve imaginar o que o `istioctl`automatizou, foi o comando `kubectl port-forward` e adicionou um comando de ` open` para abrir a página inicial no navegador.
 
