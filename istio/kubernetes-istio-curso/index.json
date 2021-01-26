@@ -113,6 +113,6 @@
         "uilayout": "editor-terminal"
       },
       "backend": {
-        "imageid": "adsantos-kubernetes-cluster-1-18"
+        "imageid": "kubernetes-cluster-4node-running:1.18"
       }
 }
