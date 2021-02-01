@@ -132,10 +132,6 @@ Dessa forma os serviços podem ser endereçados na forma http://nome-modulo:port
 * http://cart:80000
 * http://payment:80000
 * http://accounts:80000
-* http://orders-db:80000
-* http://queue:80000
-* http://cart-db:80000
-* http://accounts-db:80000
 
 Vamos aplicar a configuração no cluster, mas primeiro vamos verificar o acesso ao cluster e o _namespace_ está preparado para o Istio.
 
@@ -164,16 +160,12 @@ Após alguns minutos todos os PODs devem estar na seguinte situação:
 
 ```
 accounts-6576c98567-276qs     2/2     Running   0          3m14s
-accounts-db-c66f6d886-pfx7k   2/2     Running   0          3m14s
 cart-755d886f8f-cz62t         2/2     Running   0          3m16s
-cart-db-768bd6f7cd-n7mtk      2/2     Running   0          3m15s
 catalogue-6ccc68b854-rcb29    2/2     Running   0          3m17s
 front-end-5fdddf4dcb-vl8v9    2/2     Running   0          3m17s
 login-868764c74b-8znjz        2/2     Running   0          3m17s
 orders-77b45cc699-6r6m2       2/2     Running   0          3m17s
-orders-db-59f88cf7b-d28rm     2/2     Running   0          3m17s
 payment-8c5f4c94d-8vnlx       2/2     Running   0          3m15s
-queue-6884748c5d-2qmst        2/2     Running   0          3m16s
 shipping-b7b68d8d9-d78p6      2/2     Running   0          3m16s
 ```
 

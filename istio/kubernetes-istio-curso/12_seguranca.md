@@ -168,7 +168,7 @@ Agora bloquearemos todo o tráfego de saída que não está registrado:
 
 Faremos um novo deploy do istiod com a nova configuração:
 
-`istioctl install --set profile=demo --skip-confirmation --set meshConfig.outboundTrafficPolicy.mode=REGISTRY_ONLY`{{execute}}
+`istioctl install --set profile=preview --skip-confirmation --set meshConfig.outboundTrafficPolicy.mode=REGISTRY_ONLY`{{execute}}
 
 Verificando se as configurações foram alteradas:
 
@@ -192,7 +192,7 @@ Vamos restaurar a configuração ao modo padrão.
 
 Retornndo o flag para o padrão:
 
-`istioctl install --set profile=demo --skip-confirmation --set meshConfig.outboundTrafficPolicy.mode=ALLOW_ANY`{{execute}}
+`istioctl install --set profile=preview --skip-confirmation --set meshConfig.outboundTrafficPolicy.mode=ALLOW_ANY`{{execute}}
 
 Excluindo a entrada no registro de serviço:
 
