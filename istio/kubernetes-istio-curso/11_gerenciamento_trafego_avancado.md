@@ -15,10 +15,6 @@ Não precisamos expor cada um dos serviços da nossa aplicação, podemos criar 
 | http://cart               |                                              | cart        | 8000 |
 | http://payment            |                                              | payment     | 8000 |
 | http://accounts           |                                              | accounts    | 8000 |
-| http://orders/db          |                                              | orders-db   | 8000 |
-| http://queue              |                                              | queue       | 8000 |
-| http://cart/db            |                                              | cart-db     | 8000 |
-| http://accounts/db        |                                              | accounts-db | 8000 |
 
 Mantenha um terminal aberto e o Kiali, iremos utilizá-los com frequência.
 

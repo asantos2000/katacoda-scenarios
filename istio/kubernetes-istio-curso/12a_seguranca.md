@@ -472,10 +472,10 @@ Copie o token gerado para decodifica-lo em [jwt.io](jwt.io). Se quiser validar o
 
 Vamos remover o que criamos e recapitular.
 
-1. Criamos um _gateway_ para o `login`;
-2. Configuramos um _VirtualService_ o que o expos em `http://$INGRESS_HOST:$INGRESS_PORT/";
-3. Configuramos uma política (RequestAuthentication) para validar o token.
-4. E uma política (AuthorizationPolicy) para negar qualquer acesso que não tivesse um token válido.
+1. Criamos um _gateway_ para o `login`
+2. Configuramos um _VirtualService_ o que o expos em `http://$INGRESS_HOST:$INGRESS_PORT/`
+3. Configuramos uma política (RequestAuthentication) para validar o token
+4. E uma política (AuthorizationPolicy) para negar qualquer acesso que não tivesse um token válido
 
 Agora removeremos as configurações:
 
