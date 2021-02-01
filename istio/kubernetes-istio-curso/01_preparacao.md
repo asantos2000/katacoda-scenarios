@@ -69,7 +69,7 @@ Vamos baixar o código que usaremos no curso:
 
 ## Usando o nó master para PODs
 
-Iremos remover a restrição que impede o nó master do k8s de receber PODs da aplicação.
+Iremos remover a restrição que impede o nó master do k8s de receber PODs da aplicação, para saber mais sobre como instalar e configurar o kubernetes acesse [Creating a cluster with kubeadm - Cluster Isolation](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#control-plane-node-isolation)
 
 `kubectl taint nodes --all node-role.kubernetes.io/master-`{{execute}}
 

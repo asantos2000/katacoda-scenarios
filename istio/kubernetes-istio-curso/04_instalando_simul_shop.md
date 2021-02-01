@@ -124,14 +124,14 @@ spec:
 
 Dessa forma os serviços podem ser endereçados na forma http://nome-modulo:porta/. Na nossa arquitetura:
 
-* http://front-end:80000
-* http://login:80000
-* http://catalogue:80000
-* http://orders:80000
-* http://shipping:80000
-* http://cart:80000
-* http://payment:80000
-* http://accounts:80000
+* http://front-end:8000
+* http://login:8000
+* http://catalogue:8000
+* http://orders:8000
+* http://shipping:8000
+* http://cart:8000
+* http://payment:8000
+* http://accounts:8000
 
 Vamos aplicar a configuração no cluster, mas primeiro vamos verificar o acesso ao cluster e o _namespace_ está preparado para o Istio.
 
