@@ -89,13 +89,13 @@ kubectl delete ns financial
 kubectl delete ns legacy
 
 # Remove os add-ons (prometheus, graphana, kiali e jaeger)
-kubectl delete -f istio-1.8.1/samples/addons
+kubectl delete -f istio-1.9.0/samples/addons
 
 # Remove a aplicação sleep
-kubectl delete -f istio-1.8.1/samples/sleep
+kubectl delete -f istio-1.9.0/samples/sleep
 
 # Remove a aplicação sleep
-kubectl delete -f istio-1.8.1/samples/httpbin
+kubectl delete -f istio-1.9.0/samples/httpbin
 
 # Remove todos os compoenntes do istio
 istioctl x uninstall --purge -y

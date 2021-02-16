@@ -200,7 +200,7 @@ Containers:
 # mais abaixo
   istio-proxy:
     Container ID:  docker://9859fd6e75d4cdf9ea7f26be9e3f8fc47a6cf79664d400b87259652113792a30
-    Image:         docker.io/istio/proxyv2:1.8.1
+    Image:         docker.io/istio/proxyv2:1.9.0
 ```
 
 Um dos contêineres utiliza a imagem da nossa aplicação e o outro do proxy do Istio. Esse contêiner foi adicionado automaticamente pelo `istiod` quando instalamos nossa aplicação no _namespace_ `default`, porque esse _namespace_ está com um rótulo (`istio-injection=enabled`) que indica para o `istiod` executar essa operação de injeção de um _sidecar_ no nosso POD.

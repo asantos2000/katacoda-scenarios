@@ -126,7 +126,7 @@ spec:
       app: httpbin
   jwtRules:
   - issuer: "testing@secure.istio.io"
-    jwksUri: "https://raw.githubusercontent.com/istio/istio/release-1.8/security/tools/jwt/samples/jwks.json"
+    jwksUri: "https://raw.githubusercontent.com/istio/istio/release-1.9/security/tools/jwt/samples/jwks.json"
 EOF
 ```{{execute}}
 

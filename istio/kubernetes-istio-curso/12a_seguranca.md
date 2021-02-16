@@ -23,7 +23,7 @@ Obtenha os scripts para criar os certificados e gerar os tokens
 
 Script:
 
-`wget --no-verbose https://raw.githubusercontent.com/istio/istio/release-1.8/security/tools/jwt/samples/gen-jwt.py -P assets/scripts/`{{execute}}
+`wget --no-verbose https://raw.githubusercontent.com/istio/istio/release-1.9/security/tools/jwt/samples/gen-jwt.py -P assets/scripts/`{{execute}}
 
 [Opcional] jwkgen. Os cerficiados estão no diretório assets/exemplos/certificados
 
