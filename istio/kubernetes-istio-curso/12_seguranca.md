@@ -156,7 +156,7 @@ Cria o serviço credit no namespace financial:
 
 Serviço externo:
 
-`kubectl apply -f istio-1.8.2/samples/httpbin/httpbin.yaml`{{execute}}
+`kubectl apply -f istio-1.9.0/samples/httpbin/httpbin.yaml`{{execute}}
 
 Modificando o order para invocar serviço externo:
 
@@ -204,7 +204,7 @@ Removendo o namespace financial:
 
 Serviço externo:
 
-`kubectl delete -f istio-1.8.2/samples/httpbin/httpbin.yaml`{{execute}}
+`kubectl delete -f istio-1.9.0/samples/httpbin/httpbin.yaml`{{execute}}
 
 Restaurando os deployments:
 

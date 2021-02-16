@@ -107,11 +107,11 @@ No nosso cluster (terminal 1):
 
 Deploy do gateway:
 
-`istio-1.8.2/samples/multicluster/gen-eastwest-gateway.sh --single-cluster | istioctl install -y -f -`{{execute T1}}
+`istio-1.9.0/samples/multicluster/gen-eastwest-gateway.sh --single-cluster | istioctl install -y -f -`{{execute T1}}
 
 Expondo o gateway com um serviço de LoadBalancer:
 
-`kubectl apply -f istio-1.8.2/samples/multicluster/expose-istiod.yaml`{{execute T1}}
+`kubectl apply -f istio-1.9.0/samples/multicluster/expose-istiod.yaml`{{execute T1}}
 
 Verificando o que foi criado:
 
@@ -207,7 +207,7 @@ Adicionando o endereço do LoadBalancer do gateway/istio-eastwestgateway no /etc
 
 Instando o sidecar (Linux):
 
-`curl -LO https://storage.googleapis.com/istio-release/releases/1.8.2/deb/istio-sidecar.deb`{{execute T2}}
+`curl -LO https://storage.googleapis.com/istio-release/releases/1.9.0/deb/istio-sidecar.deb`{{execute T2}}
 
 `sudo dpkg -i istio-sidecar.deb`{{execute T2}}
 
@@ -416,3 +416,9 @@ kubectl delete -f assets/exemplos/simul-shop/manifests/
 # Istio
 kubectl delete namespace istio-system
 ```{{execute T1}}
+
+## Outras alternativas
+
+A tecnologia KubeVirt atende às necessidades das equipes de desenvolvimento que adotaram ou desejam adotar o Kubernetes, mas possuem cargas de trabalho baseadas em máquinas virtuais que não podem ser facilmente armazenadas em contêineres. Mais especificamente, a tecnologia fornece uma plataforma de desenvolvimento unificada onde os desenvolvedores podem construir, modificar e implantar aplicativos que residem tanto em contêineres de aplicativos quanto em máquinas virtuais em um ambiente comum e compartilhado.
+
+Para mais informações acesse: https://kubevirt.io/ e https://kubevirt.io/2018/Run-Istio-with-kubevirt.html
