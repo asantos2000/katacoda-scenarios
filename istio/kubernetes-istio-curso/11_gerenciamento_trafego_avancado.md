@@ -404,7 +404,7 @@ Para simular a carga utilizaremos o [Fortio](https://github.com/fortio/fortio). 
 
 Cliente:
 
-`kubectl apply -f istio-1.9.0/samples/httpbin/sample-client/fortio-deploy.yaml`{{execute}}
+`kubectl apply -f istio-1.9.1/samples/httpbin/sample-client/fortio-deploy.yaml`{{execute}}
 
 Teste:
 

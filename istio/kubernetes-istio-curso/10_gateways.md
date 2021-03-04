@@ -288,7 +288,7 @@ Modificando o order para invocar serviço externo:
 
 httpbin service:
 
-`kubectl apply -f istio-1.9.0/samples/httpbin/httpbin.yaml`{{execute}}
+`kubectl apply -f istio-1.9.1/samples/httpbin/httpbin.yaml`{{execute}}
 
 Vamos para o [kiali](http://localhost:20001) verificar como ficou essa configuração, mas antes precisaremos de tráfego, execute o [assets/scripts/call-simul-shop.sh](assets/scripts/call-simul-shop.sh) em um terminal.
 
@@ -364,7 +364,7 @@ Agora vamos aplicar uma nova configuração:
 
 Cliente:
 
-`kubectl apply -f istio-1.9.0/samples/sleep/sleep.yaml`{{execute}}
+`kubectl apply -f istio-1.9.1/samples/sleep/sleep.yaml`{{execute}}
 
 Serviço credit:
 
@@ -431,7 +431,7 @@ Restaura a configuração dos deplpyments:
 
 httpbin service:
 
-`kubectl delete -f istio-curso/istio-1.9.0/samples/httpbin/httpbin.yaml`{{execute}}
+`kubectl delete -f istio-curso/istio-1.9.1/samples/httpbin/httpbin.yaml`{{execute}}
 
 ## Conclusão
 
