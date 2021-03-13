@@ -1,4 +1,4 @@
-Na seção anterior exploramos a implantação canário com _VirtualService_ e _DestinationRule_ e como se relaciona com os serviços do k8s e dicutimos como permiir que o tráfego de fora pode chegue até a nossa aplicação.
+Na seção anterior exploramos a implantação canário com _VirtualService_ e _DestinationRule_ e como se relaciona com os serviços do k8s e discutimos como permitir que o tráfego de fora pode chegue até a nossa aplicação.
 
 Existem algumas opções para permitir que o tráfego externo chegue ao nosso cluster, são elas:
 

@@ -1,4 +1,4 @@
-Você precisará de um cluster de kubernetes para realizar os labs.
+Iremos preparar o seu notebook/desktop para executar as ferramentas necessárias para o curso e instalar e configurar um cluster de kubernetes.
 
 Você pode executar todas as lições localmente, por exemplo, com o kubernetes que acompanha o docker-desktop (mac e win), porém, para Linux, não há ainda um docker-desktop.
 
