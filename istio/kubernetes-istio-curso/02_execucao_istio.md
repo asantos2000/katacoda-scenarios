@@ -14,7 +14,7 @@ No katacoda o ambiente já está configurado e não é necessário nenhuma confi
 
 ## Instalando o Istio (linux ou mac)
 
-Para instalar a última versão do Istio, neste momento 1.9.0, você pode ir até a página [Getting Started](https://istio.io/latest/docs/setup/getting-started/#download) ou seguir as instruções abaixo:
+Para instalar a última versão do Istio, neste momento 1.9.1, você pode ir até a página [Getting Started](https://istio.io/latest/docs/setup/getting-started/#download) ou seguir as instruções abaixo:
 
 `curl -L https://istio.io/downloadIstio | sh -`{{execute}}
 
@@ -25,7 +25,7 @@ Para usar o comando `istioctl`, que está no diretório `bin` do download, coloq
 
 ## Copiando o istioctl para o diretório de binários
 
-`ISTIO_VERSION=1.9.0`{{execute}}
+`ISTIO_VERSION=1.9.1`{{execute}}
 
 Verificar onde está o executável do Istio:
 
@@ -208,7 +208,7 @@ Usaremos um dos labels do pod para encontra-lo
 
 É uma grande quantidade de informação, vamos procurar uma seção chamada `Containers` e nela a nossa aplicação `simple-app`.
 
-Como você pode ver, a imagem desse container é `nginx`, com a tag `stable`, mais abaixo tem um segundo container `istio-proxy`, com a imagem `docker.io/istio/proxyv2` e a _tag_ para a  versão `1.9.0`.
+Como você pode ver, a imagem desse container é `nginx`, com a tag `stable`, mais abaixo tem um segundo container `istio-proxy`, com a imagem `docker.io/istio/proxyv2` e a _tag_ para a  versão `1.9.1`.
 
 Esse container não faz parte do `simple-app/deployment.yaml`{{open}}, ele foi adicionado ao seu pod pelo `istiod`.
 
