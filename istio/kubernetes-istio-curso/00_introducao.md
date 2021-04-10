@@ -2,7 +2,7 @@
 
 ## Sobre este curso
 
-Neste curso você aprenderá os conceitos e práticas, básicas e avançadas de Istio Service Mesh. 
+Aprenderemos os conceitos de malha de serviços e sobre o Istio Service Mesh.
 
 Com Istio e Kubernetes, você levará seus desenvolvimentos à outro patamar.
 
@@ -53,14 +53,13 @@ Você aprenderá em detalhes:
 
 * Gestão de tráfego
 * Telemetria
-* Visualização (com Kiali)
-* Rastreamento distribuído (com Jaeger)
+* Visualização da malha de serviços (com Kiali)
+* Rastreamento de logs distribuído (com Jaeger)
 * Métricas com Grafana
 * Como implantar versões canário
 * Como fazer "Dark Releases"
-* Istio _VirtualServices_ and _DestinationRules_
 * Balanceamento de carga e afinidade de sessão
-* Gateways
+* Como controlar o tráfego para dentro e fora da malha com Gateways
 * Teste de resiliência com injeção de falha
 * Interrupção de circuito
 * Protegendo o tráfego do cluster com Mutual TLS (mTLS)
@@ -82,9 +81,11 @@ Esse é um projeto muito ativo, com muitos contribuidores de peso, então fique 
 
 ## A quem se destina este curso
 
-Qualquer desenvolvedor que deseja aprender o que o Istio pode fazer para seus projetos.
+Desenvolvedores que desejam aprender o que o Istio pode fazer para seus projetos.
 
 Qualquer pessoa que já tentou entender o Istio, mas teve dificuldades com a documentação.
+
+Arquitetos de Software que estejam projetando sistemas distribuídos (Exemplo: microsserviços)
 
 ## Por que é de graça?
 
