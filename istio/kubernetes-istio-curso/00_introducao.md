@@ -16,7 +16,7 @@ Nossa didática será introduzir os temas de forma simples e rapidamente apresen
 
 ## Descrição
 
-⛵ Atualizado para o [Istio 1.9.1](https://istio.io/latest/news/releases/1.9.x/announcing-1.9/change-notes/)!!
+⛵ Atualizado para o [Istio 1.9.2](https://istio.io/latest/news/releases/1.9.x/announcing-1.9/change-notes/)!!
 
 [Istio](https://istio.io/) é uma plataforma de malha de serviço de [código aberto](https://pt.wikipedia.org/wiki/C%C3%B3digo_aberto) que fornece maneiras de controlar e monitorar como os serviços se comunicam. Se você desenvolve ou pretende desenvolver arquiteturas orientadas à serviços e utiliza [kubernetes](https://kubernetes.io/), precisa conhecê-lo! Com este curso prático, você ganhará experiência na execução de suas próprias malhas de serviço com Istio.
 
@@ -68,7 +68,7 @@ Você aprenderá em detalhes:
 
 A curva de aprendizado do Istio é relativamente íngreme - por isso projetamos este curso para ser o mais claro e compreensível possível e espero que com as demonstrações práticas você também se divirta ao longo do caminho. Mas, acima de tudo, o Istio é uma ferramenta extremamente poderosa e também um ótimo complemento para sua caixa de ferramentas e você não precisa usar todas as funcionalidades do Istio de uma vez, pegue o que você precisa, seja entender melhor a malha de serviços através a observabilidade, ou controlar o trafego de dados, ou incrementar as segurança, cada uma dessas funcionalidades podem ser implementadas separadamente e combinadas de acordo com sua necessidade.
 
-Em poucos meses, desde que começamos a desenvolver esse curso, o Istio já recebeu diversas [atualizações](https://istio.io/latest/news/releases/) (1.6.11, 1.6.12, 1.7.4, 1.8.0, 1.8.1, 1.8.2, 1.9.1) e provavelmente, enquanto você passa pelas lições, novas atualizações foram lançadas.
+Em poucos meses, desde que começamos a desenvolver esse curso, o Istio já recebeu diversas [atualizações](https://istio.io/latest/news/releases/) (1.6.11, 1.6.12, 1.7.4, 1.8.0, 1.8.1, 1.8.2, 1.9.2) e provavelmente, enquanto você passa pelas lições, novas atualizações foram lançadas.
 
 Esse é um projeto muito ativo, com muitos contribuidores de peso, então fique ligado, sempre que necessário esse curso será atualizado para a versão mais recente.
 

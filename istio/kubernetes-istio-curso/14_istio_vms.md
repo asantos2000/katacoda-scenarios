@@ -107,11 +107,11 @@ No nosso cluster (terminal 1):
 
 Deploy do gateway:
 
-`istio-1.9.1/samples/multicluster/gen-eastwest-gateway.sh --single-cluster | istioctl install -y -f -`{{execute T1}}
+`istio-1.9.2/samples/multicluster/gen-eastwest-gateway.sh --single-cluster | istioctl install -y -f -`{{execute T1}}
 
 Expondo o gateway com um serviço de LoadBalancer:
 
-`kubectl apply -f istio-1.9.1/samples/multicluster/expose-istiod.yaml`{{execute T1}}
+`kubectl apply -f istio-1.9.2/samples/multicluster/expose-istiod.yaml`{{execute T1}}
 
 Verificando o que foi criado:
 
@@ -207,7 +207,7 @@ Adicionando o endereço do LoadBalancer do gateway/istio-eastwestgateway no /etc
 
 Instando o sidecar (Linux):
 
-`curl -LO https://storage.googleapis.com/istio-release/releases/1.9.1/deb/istio-sidecar.deb`{{execute T2}}
+`curl -LO https://storage.googleapis.com/istio-release/releases/1.9.2/deb/istio-sidecar.deb`{{execute T2}}
 
 `sudo dpkg -i istio-sidecar.deb`{{execute T2}}
 

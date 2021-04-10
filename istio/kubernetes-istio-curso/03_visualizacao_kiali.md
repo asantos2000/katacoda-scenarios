@@ -23,7 +23,7 @@ Com exceção do `MonitoringDashboard`, todos os demais recursos são do kuberne
 
 Vamos instalar e conhecer o kiali antes de nos aprofundar neste CDR.
 
-Bug versão 1.7.0 a 1.9.1 - [Istio 1.7.1 unable to install Kiali addon #27417](https://github.com/istio/istio/issues/27417)
+Bug versão 1.7.0 a 1.9.2 - [Istio 1.7.1 unable to install Kiali addon #27417](https://github.com/istio/istio/issues/27417)
 
 Necessário aplicar o CRD antes do restante dos recursos.
 
@@ -50,7 +50,7 @@ EOF
 
 Definindo a versão do Istio:
 
-`export ISTIO_VERSION=1.9.1`{{execute}}
+`export ISTIO_VERSION=1.9.2`{{execute}}
 
 Instalando o kiali:
 

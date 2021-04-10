@@ -12,7 +12,7 @@ Para executá-lo:
 
 Versão do Istio
 
-`ISTIO_VERSION=1.9.1`{{execute}}
+`ISTIO_VERSION=1.9.2`{{execute}}
 
 Se necessário, configure o acesso ao cluster
 
