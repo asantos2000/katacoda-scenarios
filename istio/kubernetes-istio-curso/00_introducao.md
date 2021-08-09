@@ -22,7 +22,7 @@ Nossa didática será introduzir os temas de forma simples e rapidamente apresen
 
 A malha de serviço é uma camada de infraestrutura dedicada para lidar com a comunicação serviço a serviço a fim de torná-la visível, gerenciável e controlada. A implementação depende da solução, mas no Istio, cada malha de serviço é implementada como uma série de _proxies_.
 
-Com uma malha de serviço, cada endpoint de aplicativo (seja um contêiner, um pod ou um host) é configurado para rotear o tráfego para um _proxy_ local (instalado como um contêiner secundário, por exemplo). Esse proxy local gerencia coisas como lógica de nova tentativa, mecanismos de criptografia, regras de roteamento personalizadas, descoberta de serviço e entre outras. 
+Com uma malha de serviço, cada endpoint de aplicativo (seja um contêiner, um pod ou um host) é configurado para rotear o tráfego para um _proxy_ local (instalado como um contêiner secundário, por exemplo). Esse proxy local gerencia coisas como lógica de nova tentativa, mecanismos de criptografia, regras de roteamento personalizadas, descoberta de serviço e entre outras.
 
 Uma coleção desses proxies forma uma “malha” de serviços que agora compartilham propriedades comuns de gerenciamento de tráfego de rede. Esses proxies podem ser controlados a partir de um plano de controle centralizado onde os operadores podem compor uma política que afeta o comportamento de toda a malha.
 
